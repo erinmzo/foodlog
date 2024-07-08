@@ -1,5 +1,5 @@
 function MyPage() {
-  return <div>MyPage</div>;
+  return <div></div>;
 }
 
 export default MyPage;
