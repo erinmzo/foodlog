@@ -1,7 +1,7 @@
 import { Post } from "@/types/store";
 
 async function StorePostList() {
-  const response = await fetch("http://localhost:3000/api/store");
+  const response = await fetch("http://localhost:3000/api/store", { headers: { "Content-Type": "application/json" } });
   const posts: Post[] = await response.json();
 
   return (
