@@ -45,7 +45,7 @@ function WritePage() {
 
           <div className="flex mt-5 items-center">
             <label className="w-[10%] whitespace-nowrap">메뉴 이미지</label>
-            <input className="w-[90%] bg-white p-2 rounded-md ml-4" type="file" />
+            <input className="w-[90%] bg-white p-2 rounded-md" type="file" />
           </div>
 
           <div className="mt-5">
