@@ -14,19 +14,18 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   console.log('🚀 ~ POST ~ request:', request)
   try {
-    const tt = await request.json()
+    const info = await request.json()
     const supabase = createClient()
-    const { data, error } = await supabase.from('posts').insert(tt).select()
+    const { data, error } = await supabase.from('posts').insert(info).select()
 
     if (error) {
-      console.log(22, error)
       return alert(`${error.message}`)
     }
     return NextResponse.json(data)
   } catch (error) {
     console.log(error)
 
-    return NextResponse.json({ error: '데이터를 가져오는 데 실패했습니다.' })
+    return NextResponse.json({ error: '게시물 등록에 실패했습니다.' })
   }
 }
 
