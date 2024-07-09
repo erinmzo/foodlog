@@ -1,3 +1,3 @@
 import { Tables } from "./supabase";
 
-export type Post = Tables<"store">;
+export type Post = Tables<"posts">;

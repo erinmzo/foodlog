@@ -1,5 +1,11 @@
+import Read from "@/components/post/read/Read";
+
 function PostReadPage() {
-  return <div>PostReadPage</div>;
+  return (
+    <div>
+      <Read />
+    </div>
+  );
 }
 
 export default PostReadPage;
