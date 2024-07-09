@@ -1,5 +1,11 @@
+import WritePage from "@/components/post/write/Write";
+
 function PostWritePage() {
-  return <div>PostWritePage</div>;
+  return (
+    <>
+      <WritePage />
+    </>
+  )
 }
 
 export default PostWritePage;
