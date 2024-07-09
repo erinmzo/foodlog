@@ -13,7 +13,11 @@ function StorePostList() {
     return data;
   };
 
-  const { data: posts, isPending, error } = useQuery<Post[]>({ queryKey: ["store"], queryFn: getStoreData });
+  const {
+    data: posts,
+    isPending,
+    error,
+  } = useQuery<Post[]>({ queryKey: ["store"], queryFn: getStoreData });
   if (isPending) return <div>Loading...</div>;
   if (error) {
     alert("데이터를 가져오는데 실패했습니다");

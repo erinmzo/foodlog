@@ -1,26 +1,43 @@
-import StorePostCard from "@/components/post/list/StorePostCard";
+"use client";
 import { Post } from "@/types/store";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
+import StorePostCard from "@/components/post/list/StorePostCard";
 
-async function MyPageList() {
-  // const response = await fetch("http://localhost:3000/api/post", {
-  //   next: { revalidate: 60 },
-  // });
-  // const posts: Post[] = await response.json();
+function MyPageList() {
+  const getStoreData = async () => {
+    const response = await fetch("http://localhost:3000/api/store", {
+      next: { revalidate: 60 },
+    });
+    const data = await response.json();
+    return data;
+  };
+
+  const {
+    data: posts,
+    isPending,
+    error,
+  } = useQuery<Post[]>({ queryKey: ["store"], queryFn: getStoreData });
+  if (isPending) return <div>Loading...</div>;
+  if (error) {
+    alert("데이터를 가져오는데 실패했습니다");
+    return null;
+  }
 
   return (
-    <div className="container mx-auto max-w-[1024px] mt-28">
-      <div className="text-center font-bold text-2xl">나의 푸드로그</div>
-      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[17px] mt-14">
-        {posts
-           .filter((post) => {
+    <div className="container mx-auto max-w-[1024px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[17px]">
+        {posts.map((post) => (
+          <Link key={post.id} href={`post/read/${post.id}`}>
+            <StorePostCard post={post} />
+          </Link>
+          /*.filter((post) => {
                return post.user_id === user.id; 유저 정보 가져올 것
-             })
-
-          .map((post) => (
-            <StorePostCard key={post.id} post={post} />
-          ))}
-      </div> */}
+             })*/
+        ))}
+      </div>
     </div>
   );
 }
+
 export default MyPageList;
