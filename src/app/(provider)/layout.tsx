@@ -1,11 +1,9 @@
-"use client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import QueryProvider from "@/queries/QueryProvider";
 import { PropsWithChildren } from "react";
 
 function ProviderLayout({ children }: PropsWithChildren) {
-  const queryClient = new QueryClient();
-
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  console.log("1");
+  return <QueryProvider>{children}</QueryProvider>;
 }
 
 export default ProviderLayout;
