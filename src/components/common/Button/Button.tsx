@@ -1,7 +1,9 @@
 import { PropsWithChildren } from "react";
 
 function Button({ children }: PropsWithChildren) {
-  return <div className="rounded py-2 px-4 bg-sky-400 border-sky-500 text-center">{children}</div>;
+  return (
+    <span className="rounded py-2 px-4 bg-[#24CAFF] border-[#00BBF7] text-center text-white font-bold">{children}</span>
+  );
 }
 
 export default Button;
