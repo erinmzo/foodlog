@@ -35,8 +35,8 @@ export type Database = {
           order_date: string;
           rating: string;
           store_name: string;
-          user_id: string;
-          user_nickname: string;
+          user_id?: string;
+          user_nickname?: string;
         };
         Update: {
           address?: string | null;
