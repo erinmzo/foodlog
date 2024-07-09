@@ -1,6 +1,7 @@
 "use client";
 import { Post } from "@/types/store";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import StorePostCard from "./StorePostCard";
 
 function StorePostList() {
@@ -21,7 +22,9 @@ function StorePostList() {
     <div className="container mx-auto max-w-[1024px]">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[17px]">
         {posts.map((post) => (
-          <StorePostCard key={post.id} post={post} />
+          <Link href={`post/read/${post.id}`}>
+            <StorePostCard key={post.id} post={post} />
+          </Link>
         ))}
       </div>
     </div>
