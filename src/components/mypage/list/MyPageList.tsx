@@ -1,15 +1,25 @@
-// import { Post } from "@/types/store";
+import StorePostCard from "@/components/post/list/StorePostCard";
+import { Post } from "@/types/store";
 
 async function MyPageList() {
-  //   const response = await fetch("http://localhost:3000/api/store");
-  //   const posts: Post[] = await response.json();
+  // const response = await fetch("http://localhost:3000/api/post", {
+  //   next: { revalidate: 60 },
+  // });
+  // const posts: Post[] = await response.json();
 
   return (
-    <div className="border-2 border-black flex flex-col my-auto items-center mx-3 mt-24 ">
-      <div className="text-2xl font-bold">나의 푸드로그</div>
-      {/* {posts.map((post) => (
-		  <div key={post.id}>{post.store_name}</div>
-		))} */}
+    <div className="container mx-auto max-w-[1024px] mt-28">
+      <div className="text-center font-bold text-2xl">나의 푸드로그</div>
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[17px] mt-14">
+        {posts
+           .filter((post) => {
+               return post.user_id === user.id; 유저 정보 가져올 것
+             })
+
+          .map((post) => (
+            <StorePostCard key={post.id} post={post} />
+          ))}
+      </div> */}
     </div>
   );
 }
