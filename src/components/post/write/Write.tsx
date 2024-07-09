@@ -46,7 +46,6 @@ function WritePage() {
       user_nickname: '몰라',
       user_id: 'fa77e563-3245-4654-a240-b064703ab2ca',
     }
-    // console.log(postData)
     addMutation(postData)
   }
 
@@ -111,15 +110,15 @@ function WritePage() {
             />
             <label className="w-[10%] whitespace-nowrap mr-2">별점</label>
             <select className="w-[40%] p-2 rounded-md" ref={ratingRef}>
-              <option value="first">1</option>
-              <option value="second">1.5</option>
-              <option value="third">2</option>
-              <option value="fourth">2.5</option>
-              <option value="Fifth">3</option>
-              <option value="sixth">3.5</option>
-              <option value="seventh">4</option>
-              <option value="eighth">4.5</option>
-              <option value="ninth">5</option>
+              <option value="1">1</option>
+              <option value="1.5">1.5</option>
+              <option value="2">2</option>
+              <option value="2.5">2.5</option>
+              <option value="3">3</option>
+              <option value="3.5">3.5</option>
+              <option value="4">4</option>
+              <option value="4.5">4.5</option>
+              <option value="5">5</option>
             </select>
           </div>
 
