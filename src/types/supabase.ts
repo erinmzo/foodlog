@@ -5,6 +5,7 @@ export type Database = {
     Tables: {
       posts: {
         Row: {
+          address: string | null;
           category: string;
           content: string;
           created_at: string;
@@ -18,6 +19,7 @@ export type Database = {
           user_nickname: string;
         };
         Insert: {
+          address?: string | null;
           category: string;
           content: string;
           created_at?: string;
@@ -27,10 +29,11 @@ export type Database = {
           order_date: string;
           rating: string;
           store_name: string;
-          user_id: string;
-          user_nickname: string;
+          user_id?: string;
+          user_nickname?: string;
         };
         Update: {
+          address?: string | null;
           category?: string;
           content?: string;
           created_at?: string;
