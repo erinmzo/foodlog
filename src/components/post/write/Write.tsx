@@ -2,9 +2,7 @@
 
 import Button from "@/components/common/Button";
 import { Post } from "@/types/store";
-import { TablesInsert } from "@/types/supabase";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Error from "next/error";
 import { useRef } from "react";
 
 
@@ -19,20 +17,22 @@ function WritePage() {
   const imageRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLInputElement>(null);
 
-  const queryClient = useQueryClient();
 
   const addStoreList = async (data)=> {
     const response = await fetch("http://localhost:3000/api/store", {
       method: "POST",
-      body: JSON.stringify(data)
+      body: data
     })
+    console.log(data);
+    console.log(response);
+    
     return response.json();
+
+    
   }
 
-  const {mutate: addMutation} = useMutation<TablesInsert<"store">, Error, TablesInsert<"store">>({
-    mutationFn: (data)=>addStoreList(data),
-    onSuccess: () => queryClient.invalidateQueries({queryKey: ["store"]})
-  
+  const {mutate: addMutation} = useMutation<Post>({
+    mutationFn: (data)=>addStoreList(data)
   })
 
   const onSubmit = (e:React.FormEvent<HTMLFormElement>) => {
@@ -147,9 +147,7 @@ function WritePage() {
           </div>
 
           <div className="mt-5 text-right">
-            <button>
               <Button>작성하기</Button>
-            </button>
           </div>
         </form>
       </div>
