@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+"use client";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 
 interface Food {
   id: number;
@@ -9,17 +10,17 @@ interface Food {
 
 // API에서 랜덤 음식 데이터를 가져오는 함수
 const fetchRandomFood = async (): Promise<Food> => {
-  const response = await fetch('/api/recommend');
+  const response = await fetch("/api/recommend");
   if (!response.ok) {
-    throw new Error('Failed to fetch random food');
+    throw new Error("Failed to fetch random food");
   }
   return response.json();
 };
 
 const Random = () => {
   const { data: random, refetch } = useQuery<Food>({
-    queryKey: ['getRandomFood'], 
-    queryFn: fetchRandomFood,   
+    queryKey: ["getRandomFood"],
+    queryFn: fetchRandomFood,
   });
 
   const handleClick = () => {
@@ -41,7 +42,7 @@ const Random = () => {
       {random && (
         <div className="flex flex-col items-center mt-8">
           <h2 className="text-5xl font-bold text-[#24CAFF]">{random.menu}</h2>
-          <img src={random.img_url} alt={random.menu}/>
+          <img src={random.img_url} alt={random.menu} />
         </div>
       )}
     </div>
