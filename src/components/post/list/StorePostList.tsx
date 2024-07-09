@@ -1,8 +1,8 @@
 "use client";
 import { Post } from "@/types/store";
 import { useQuery } from "@tanstack/react-query";
-import StorePostCard from "./StorePostCard";
 import Link from "next/link";
+import StorePostCard from "./StorePostCard";
 
 function StorePostList() {
   const getStoreData = async () => {
@@ -13,11 +13,7 @@ function StorePostList() {
     return data;
   };
 
-  const {
-    data: posts,
-    isPending,
-    error,
-  } = useQuery<Post[]>({ queryKey: ["store"], queryFn: getStoreData });
+  const { data: posts, isPending, error } = useQuery<Post[]>({ queryKey: ["store"], queryFn: getStoreData });
   if (isPending) return <div>Loading...</div>;
   if (error) {
     alert("데이터를 가져오는데 실패했습니다");
@@ -28,8 +24,8 @@ function StorePostList() {
     <div className="container mx-auto max-w-[1024px]">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[17px]">
         {posts.map((post) => (
-          <Link href={`post/read/${post.id}`}>
-            <StorePostCard key={post.id} post={post} />
+          <Link key={post.id} href={`post/read/${post.id}`}>
+            <StorePostCard post={post} />
           </Link>
         ))}
       </div>
