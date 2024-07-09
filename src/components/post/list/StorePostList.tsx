@@ -24,8 +24,8 @@ function StorePostList() {
     <div className="container mx-auto max-w-[1024px]">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[17px]">
         {posts.map((post) => (
-          <Link href={`post/read/${post.id}`}>
-            <StorePostCard key={post.id} post={post} />
+          <Link key={post.id} href={`post/read/${post.id}`}>
+            <StorePostCard post={post} />
           </Link>
         ))}
       </div>
