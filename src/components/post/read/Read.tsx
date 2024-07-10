@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 
 import ReadHeader from "./ReadHeader";
@@ -12,7 +12,8 @@ import { Post } from "@/types/store";
 
 export default function Read() {
   const { id } = useParams();
-  console.log("id =>", id);
+  const queryClient = useQueryClient();
+
   const getPostsData = async () => {
     const response = await fetch("http://localhost:3000/api/store");
     if (!response.ok) {
@@ -28,12 +29,23 @@ export default function Read() {
     enabled: !!id,
   });
 
-  console.log("data", data);
+  const deletePost = async (postId: string) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/store?id=${postId}`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      queryClient.invalidateQueries({ queryKey: ["supabase", id] });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   if (isLoading) return <div>Loading...</div>;
   if (error) {
     console.error(error);
-
     return <div>Error: {error.message}</div>;
   }
 
@@ -41,7 +53,7 @@ export default function Read() {
     <div className="min-h-screen flex flex-col items-center justify-center py-2">
       <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-4xl">
         <ReadHeader />
-        <div className="grid grid-cols-1 gap-4 justify-items-center">
+        <div className="flex flex-col ">
           {data?.map((posts) => (
             <div key={posts.id} className="border-b border-gray-200 py-2 my-2">
               <div className="flex space-x-4 whitespace-nowrap">
@@ -73,13 +85,13 @@ export default function Read() {
                   <ReadInfo label="별점" value={posts.rating} />
                 </div>
               </div>
-              <ReadImage />
+
+              <ReadImage img_url={posts.img_url ?? ""} />
               <Description posts={posts} />
+              <ReadButton />
             </div>
           ))}
         </div>
-
-        <ReadButton />
       </div>
     </div>
   );

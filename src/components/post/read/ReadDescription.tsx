@@ -7,7 +7,11 @@ interface DescriptionProps {
 }
 
 const Description: React.FC<DescriptionProps> = ({ posts }) => {
-  return <ReadInfo label="리뷰" value={posts.content} />;
+  return (
+    <div className="flex flex-col mt-10">
+      <ReadInfo label="리뷰" value={posts.content} />
+    </div>
+  );
 };
 
 export default Description;
