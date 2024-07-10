@@ -3,38 +3,59 @@
 import Button from "@/components/common/Button";
 import { Post } from "@/types/store";
 import { useMutation } from "@tanstack/react-query";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { ProductsImage } from "./ProductsImage";
+import { uuid } from "uuidv4";
+import { createClient } from "@/supabase/client";
+import { useAuthStore } from "@/zustand/auth";
+import { useRouter} from "next/navigation"
 
 function WritePage() {
-  const categoryRef = useRef<HTMLInputElement>(null);
+  const categoryRef = useRef<HTMLSelectElement>(null);
   const storeRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLInputElement>(null);
   const orderDateRef = useRef<HTMLInputElement>(null);
   const userRef = useRef<HTMLInputElement>(null);
   const addressRef = useRef<HTMLInputElement>(null);
-  const ratingRef = useRef<HTMLInputElement>(null);
-  const imageRef = useRef<HTMLInputElement>(null);
-  const contentRef = useRef<HTMLInputElement>(null);
+  const ratingRef = useRef<HTMLSelectElement>(null);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
+  const [file, setFile] = useState<File>();
 
-  const addStoreList = async (data) => {
+  const user = useAuthStore(state => state.user);
+  console.log(user?.user_metadata.sub);
+
+  const router = useRouter();
+  interface PostData {
+    category: string;
+    store_name: string;
+    menu_name: string;
+    order_date: string;
+    address: string;
+    rating: string;
+    content: string;
+    img_url: string;
+    user_nickname: string;
+    user_id: string;
+  }
+
+  const addStoreList = async (data: PostData): Promise<Post> => {
     const response = await fetch("http://localhost:3000/api/store", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    console.log(1, data);
-    console.log(2, response);
-
     return response.json();
   };
 
-  const { mutate: addMutation } = useMutation<Post>({
-    mutationFn: (data) => addStoreList(data),
+  const { mutate: addMutation } = useMutation<Post, unknown, PostData>({
+    mutationFn: (data: PostData) => addStoreList(data),
   });
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const postData = {
+    const img_url = await uploadImg() || "";
+    const postData: PostData = {
       category: categoryRef.current?.value || "",
       store_name: storeRef.current?.value || "",
       menu_name: menuRef.current?.value || "",
@@ -42,12 +63,47 @@ function WritePage() {
       address: addressRef.current?.value || "",
       rating: ratingRef.current?.value || "",
       content: contentRef.current?.value || "",
-      img_url: imageRef.current?.value || "",
-      user_nickname: "몰라",
-      user_id: "fa77e563-3245-4654-a240-b064703ab2ca",
+      img_url: img_url,
+      user_nickname: user?.user_metadata.display_name || "",
+      user_id: user?.user_metadata.sub,
     };
+    if (
+      !postData.category ||
+      !postData.store_name ||
+      !postData.menu_name ||
+      !postData.order_date ||
+      !postData.address ||
+      !postData.rating ||
+      !postData.content ||
+      !postData.img_url
+    ) {
+      alert("빈칸을 채워주세요.");
+      return;
+    }
+
     addMutation(postData);
+    router.push("/");
   };
+
+  const uploadImg = async () => {
+    if(!file) {
+      return null;
+    }
+    const newFileName = uuid();
+    const supabase = createClient();
+    const { data, error } = await supabase.storage
+      .from("post")
+      .upload(`${newFileName}`, file);
+    if (error) {
+      console.log("파일이 업로드 되지 않습니다.", error);
+      return;
+    }
+    const res = await supabase.storage.from("post").getPublicUrl(data.path);
+    console.log(data.path);
+    
+    console.log(res);
+    return res.data.publicUrl;
+  }
 
   return (
     <>
@@ -55,12 +111,12 @@ function WritePage() {
         <h1 className="text-center mt-10 mb-3 text-2xl font-bold">오늘의 식당 기록</h1>
         <h3 className="text-center mb-10 text-lg">식당과 메뉴를 공유해주세요!</h3>
 
-        <form className="bg-blue-100 w-full p-20 rounded-xl shadow-lg shadow-gray-500/20" onSubmit={onSubmit}>
+        <form className="bg-blue-50 w-full p-20 rounded-xl shadow-lg shadow-gray-500/20" onSubmit={onSubmit}>
           <div className="flex w-full mt-5 items-center">
             <label className="w-[10%] whitespace-nowrap">유형</label>
             <select className="w-[10%] p-2 border rounded-md" ref={categoryRef}>
-              <option value="visited">방문</option>
-              <option value="delivery">배달</option>
+              <option value="방문">방문</option>
+              <option value="배달">배달</option>
             </select>
           </div>
 
@@ -75,7 +131,12 @@ function WritePage() {
             <label className="w-[10%] whitespace-nowrap mr-2">주문날짜</label>
             <input className="w-[40%] p-2 border rounded-md mr-10" type="date" ref={orderDateRef} />
             <label className="w-[10%] whitespace-nowrap mr-2">작성자</label>
-            <input className="w-[40%] p-2 border rounded-md" type="text" ref={userRef} />
+            <input 
+              className="w-[40%] p-2 border rounded-md"
+              type="text"
+              ref={userRef}
+              defaultValue={user?.user_metadata.display_name}
+            />
           </div>
 
           <div className="flex mt-5 items-center">
@@ -94,12 +155,7 @@ function WritePage() {
               <option value="5">5</option>
             </select>
           </div>
-
-          <div className="flex mt-5 items-center">
-            <label className="w-[10%] whitespace-nowrap">이미지</label>
-            <input className="w-[90%] bg-white p-2 rounded-md" type="file" ref={imageRef} />
-          </div>
-
+          <ProductsImage setFile={setFile}/>
           <div className="mt-5">
             <textarea
               className="w-full h-[400px] p-2 border rounded-md resize-none"
