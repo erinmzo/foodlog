@@ -98,7 +98,7 @@ function WritePage() {
         <h1 className="text-center mt-10 mb-3 text-2xl font-bold">오늘의 식당 기록</h1>
         <h3 className="text-center mb-10 text-lg">식당과 메뉴를 공유해주세요!</h3>
 
-        <form className="bg-blue-100 w-full p-20 rounded-xl shadow-lg shadow-gray-500/20" onSubmit={onSubmit}>
+        <form className="bg-blue-50 w-full p-20 rounded-xl shadow-lg shadow-gray-500/20" onSubmit={onSubmit}>
           <div className="flex w-full mt-5 items-center">
             <label className="w-[10%] whitespace-nowrap">유형</label>
             <select className="w-[10%] p-2 border rounded-md" ref={categoryRef}>
