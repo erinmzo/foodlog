@@ -1,14 +1,14 @@
 "use client";
 
 import Button from "@/components/common/Button";
-import { Post } from "@/types/store";
-import { useMutation } from "@tanstack/react-query";
-import { useRef, useState } from "react";
-import { ProductsImage } from "./ProductsImage";
-import { uuid } from "uuidv4";
 import { createClient } from "@/supabase/client";
+import { Post } from "@/types/store";
 import { useAuthStore } from "@/zustand/auth";
+import { useMutation } from "@tanstack/react-query";
 import { useRouter} from "next/navigation"
+import { useRef, useState } from "react";
+import { uuid } from "uuidv4";
+import { ProductsImage } from "./ProductsImage";
 interface PostData {
   category: string;
   store_name: string;
@@ -33,7 +33,7 @@ function WritePage() {
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const [file, setFile] = useState<File>();
 
-  const user = useAuthStore(state => state.user);
+  const user = useAuthStore((state) => state.user);
   console.log(user?.user_metadata.sub);
 
   const router = useRouter();
@@ -51,10 +51,27 @@ function WritePage() {
     mutationFn: (data: PostData) => addStoreList(data),
   });
 
+  const uploadImg = async () => {
+    if (!file) {
+      return null;
+    }
+    const newFileName = uuid();
+    const supabase = createClient();
+    const { data, error } = await supabase.storage.from("post").upload(`${newFileName}`, file);
+    if (error) {
+      console.log("파일이 업로드 되지 않습니다.", error);
+      return;
+    }
+    const res = await supabase.storage.from("post").getPublicUrl(data.path);
+    console.log(data.path);
+
+    console.log(res);
+    return res.data.publicUrl;
+  };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const img_url = await uploadImg() || "";
+    const img_url = (await uploadImg()) || "";
     const postData: PostData = {
       category: categoryRef.current?.value || "",
       store_name: storeRef.current?.value || "",
@@ -85,26 +102,6 @@ function WritePage() {
     router.push("/");
   };
 
-  const uploadImg = async () => {
-    if(!file) {
-      return null;
-    }
-    const newFileName = uuid();
-    const supabase = createClient();
-    const { data, error } = await supabase.storage
-      .from("post")
-      .upload(`${newFileName}`, file);
-    if (error) {
-      console.log("파일이 업로드 되지 않습니다.", error);
-      return;
-    }
-    const res = await supabase.storage.from("post").getPublicUrl(data.path);
-    console.log(data.path);
-    
-    console.log(res);
-    return res.data.publicUrl;
-  }
-
   return (
     <>
       <div className="max-w-[1024px] min-w-[1000px] h-auto mx-auto my-20 bg-white rounded-xl p-15 px-20">
@@ -131,7 +128,7 @@ function WritePage() {
             <label className="w-[10%] whitespace-nowrap mr-2">주문날짜</label>
             <input className="w-[40%] p-2 border rounded-md mr-10" type="date" ref={orderDateRef} />
             <label className="w-[10%] whitespace-nowrap mr-2">작성자</label>
-            <input 
+            <input
               className="w-[40%] p-2 border rounded-md"
               type="text"
               ref={userRef}
@@ -155,7 +152,7 @@ function WritePage() {
               <option value="5">5</option>
             </select>
           </div>
-          <ProductsImage setFile={setFile}/>
+          <ProductsImage setFile={setFile} />
           <div className="mt-5">
             <textarea
               className="w-full h-[400px] p-2 border rounded-md resize-none"

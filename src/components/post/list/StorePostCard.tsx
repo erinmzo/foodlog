@@ -28,7 +28,7 @@ function StorePostCard({ post }: StorePostCardProps) {
         <div className="mt-2 truncate">{post.content}</div>
         <div className="flex justify-between mt-6 text-[13px] text-[#878787]">
           <div>by. {post.user_nickname}</div>
-          <div>{post.rating}/5</div>
+          <div>⭐️ {post.rating}/5</div>
         </div>
       </div>
     </div>
