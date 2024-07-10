@@ -25,7 +25,6 @@ function WritePage() {
   console.log(user?.user_metadata.sub);
 
   const router = useRouter();
-  
   interface PostData {
     category: string;
     store_name: string;
@@ -68,6 +67,20 @@ function WritePage() {
       user_nickname: user?.user_metadata.display_name || "",
       user_id: user?.user_metadata.sub,
     };
+    if (
+      !postData.category ||
+      !postData.store_name ||
+      !postData.menu_name ||
+      !postData.order_date ||
+      !postData.address ||
+      !postData.rating ||
+      !postData.content ||
+      !postData.img_url
+    ) {
+      alert("빈칸을 채워주세요.");
+      return;
+    }
+
     addMutation(postData);
     router.push("/");
   };
