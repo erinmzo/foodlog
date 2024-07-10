@@ -3,7 +3,11 @@
 import Button from "@/components/common/Button";
 import { Post } from "@/types/store";
 import { useMutation } from "@tanstack/react-query";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { ProductsImage } from "./ProductsImage";
+import { uuid } from "uuidv4";
+import { createClient } from "@/supabase/client";
+
 
 function WritePage() {
   const categoryRef = useRef<HTMLSelectElement>(null);
@@ -13,8 +17,10 @@ function WritePage() {
   const userRef = useRef<HTMLInputElement>(null);
   const addressRef = useRef<HTMLInputElement>(null);
   const ratingRef = useRef<HTMLSelectElement>(null);
-  const imageRef = useRef<HTMLInputElement>(null);
+  // const imageRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
+  const [uploadedFileUrl, setUploadFileUrl] = useState<string>("");
+  const [file, setFile] = useState<File>();
 
   interface PostData {
     category: string;
@@ -42,8 +48,10 @@ function WritePage() {
     mutationFn: (data: PostData) => addStoreList(data),
   });
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+    const img_url = await uploadImg() || "";
     const postData: PostData = {
       category: categoryRef.current?.value || "",
       store_name: storeRef.current?.value || "",
@@ -52,12 +60,33 @@ function WritePage() {
       address: addressRef.current?.value || "",
       rating: ratingRef.current?.value || "",
       content: contentRef.current?.value || "",
-      img_url: imageRef.current?.value || "",
+      img_url: img_url,
       user_nickname: "몰라",
       user_id: "fa77e563-3245-4654-a240-b064703ab2ca",
     };
     addMutation(postData);
+
   };
+
+  const uploadImg = async () => {
+    if(!file) {
+      return null;
+    }
+    const newFileName = uuid();
+    const supabase = createClient();
+    const { data, error } = await supabase.storage
+      .from('post')
+      .upload(`${newFileName}`, file);
+    if (error) {
+      console.log('파일이 업로드 되지 않습니다.', error);
+      return;
+    }
+    const res = await supabase.storage.from('post').getPublicUrl(data.path);
+    console.log(data.path);
+    
+    console.log(res);
+    return res.data.publicUrl;
+  }
 
   return (
     <>
@@ -132,14 +161,17 @@ function WritePage() {
             </select>
           </div>
 
-          <div className="flex mt-5 items-center">
-            <label className="w-[10%] whitespace-nowrap">이미지</label>
-            <input
+          
+          <ProductsImage setFile={setFile}/>
+          {/* <div className="flex mt-5 items-center"> */}
+            {/* <label className="w-[10%] whitespace-nowrap">이미지</label> */}
+            {/* <input
               className="w-[90%] bg-white p-2 rounded-md"
               type="file"
               ref={imageRef}
-            />
-          </div>
+            /> */}
+            
+          {/* </div> */}
 
           <div className="mt-5">
             <textarea
