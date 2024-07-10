@@ -6,17 +6,13 @@ import StorePostCard from "./StorePostCard";
 
 function StorePostList() {
   const getStoreData = async () => {
-    const response = await fetch("http://localhost:3000/api/store");
+    const response = await fetch("http://localhost:3000/api/post");
     const data = await response.json();
     return data;
   };
 
-  const {
-    data: posts,
-    isPending,
-    error,
-  } = useQuery<Post[]>({ queryKey: ["store"], queryFn: getStoreData });
-  if (isPending) return <div>Loading...</div>;
+  const { data: posts, isPending, error } = useQuery<Post[]>({ queryKey: ["posts"], queryFn: getStoreData });
+  if (isPending) return <div className="h-screen flex items-center justify-center">Loading...</div>;
   if (error) {
     alert("데이터를 가져오는데 실패했습니다");
     return null;

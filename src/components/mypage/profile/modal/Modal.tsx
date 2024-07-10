@@ -1,7 +1,7 @@
 "use client";
 
 import { createClient } from "@/supabase/client";
-import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
@@ -24,28 +24,21 @@ const Modal = (props: Props) => {
   //   return result;
   // };
   const getProfileData = async () => {
-    const data = await supabase
-      .from("profile")
-      .select("*")
-      .eq("id", id)
-      .maybeSingle();
+    const data = await supabase.from("profile").select("*").eq("id", id).maybeSingle();
 
     return data;
   };
 
-  const {
-    data: profile,
-    isPending,
-    error,
-  } = useQuery({ queryKey: ["profile"], queryFn: getProfileData });
-  if (isPending) return <div>Loading...</div>;
+  const { data: profile, isPending, error } = useQuery({ queryKey: ["profile"], queryFn: getProfileData });
+
+  if (isPending) return <div className="h-screen flex items-center justify-center">Loading...</div>;
+
   if (error) {
     alert("데이터를 가져오는데 실패했습니다");
     return null;
   }
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
-    setNickName(e.target.value);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => setNickName(e.target.value);
 
   const submitChange = async () => {
     // const response = await updateProfileWithSupabase(
@@ -70,21 +63,20 @@ const Modal = (props: Props) => {
       >
         <h1 className="text-2xl font-bold">프로필 수정</h1>
         <input
-          className="border-2 border-[#D2D2D2] w-[184px] h-[45px] rounded-[10px] flex items-center text-center mt-5 "
+          className="border border-[#D2D2D2] py-[12px] px-[14px] rounded-[10px] flex items-center text-center mt-5 "
           type="text"
           placeholder="변경할 닉네임"
           onChange={handleChange}
         />
-        <div className="mt-5">
+        <div className="mt-5 flex gap-[15px]">
           <button
-            className="rounded py-2 px-4 bg-[#24CAFF] border-[#00BBF7] text-center text-white font-bold"
+            className="rounded py-2 px-4 bg-[#d1d1d1] border border-[#c9c9c9] text-center text-white font-bold"
             onClick={clickModal}
           >
             뒤로가기
           </button>
-          &nbsp;&nbsp;
           <button
-            className="rounded py-2 px-4 bg-[#24CAFF] border-[#00BBF7] text-center text-white font-bold"
+            className="rounded py-2 px-4 bg-[#24CAFF] border border-[#00BBF7] text-center text-white font-bold"
             onClick={submitChange}
           >
             변경하기
