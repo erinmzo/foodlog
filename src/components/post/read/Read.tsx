@@ -38,25 +38,47 @@ export default function Read() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center py-2 ">
+    <div className="min-h-screen flex flex-col items-center justify-center py-2">
       <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-4xl">
         <ReadHeader />
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 gap-4 justify-items-center">
           {data?.map((posts) => (
-            <div key={posts.id}>
-              <ReadInfo label="방문/배달" value={posts.category} />
-              <ReadInfo label="식당 이름" value={posts.store_name} />
-              <ReadInfo label="메뉴 이름" value={posts.menu_name} />
-              <ReadInfo label="주문한 날짜" value={posts.order_date} />
-              <ReadInfo label="작성자" value={posts.user_nickname} />
-              <ReadInfo label="주소" value={posts.address ?? ""} />
-              <ReadInfo label="별점" value={posts.rating} />
-              <ReadInfo label="리뷰" value={posts.content} />
+            <div key={posts.id} className="border-b border-gray-200 py-2 my-2">
+              <div className="flex space-x-4 whitespace-nowrap">
+                <div className="w-1/2">
+                  <ReadInfo label="방문/배달" value={posts.category} />
+                </div>
+              </div>
+              <div className="flex mt-5 space-x-4 items-center">
+                <div className="w-1/2 whitespace-nowrap">
+                  <ReadInfo label="식당 이름" value={posts.store_name} />
+                </div>
+                <div className="w-1/2 whitespace-nowrap">
+                  <ReadInfo label="메뉴 이름" value={posts.menu_name} />
+                </div>
+              </div>
+              <div className="flex mt-5 space-x-4 items-center">
+                <div className="w-1/2 whitespace-nowrap">
+                  <ReadInfo label="주문한 날짜" value={posts.order_date} />
+                </div>
+                <div className="w-1/2 whitespace-nowrap">
+                  <ReadInfo label="작성자" value={posts.user_nickname} />
+                </div>
+              </div>
+              <div className="flex mt-5 space-x-4 items-center">
+                <div className="w-1/2 whitespace-nowrap">
+                  <ReadInfo label="주소" value={posts.address ?? ""} />
+                </div>
+                <div className="w-1/2 whitespace-nowrap">
+                  <ReadInfo label="별점" value={posts.rating} />
+                </div>
+              </div>
+              <ReadImage />
+              <Description posts={posts} />
             </div>
           ))}
         </div>
-        <ReadImage />
-        <Description />
+
         <ReadButton />
       </div>
     </div>
