@@ -51,9 +51,9 @@ function MyPageList() {
           ))
         ) : (
           <>
-            <div></div>
-            <div className="text-center text-2xl">작성된 게시물이 없습니다</div>
-            <div></div>
+            <div className="h-screen flex items-center justify-center text-center text-2xl">
+              작성된 게시물이 없습니다
+            </div>
           </>
         )}
       </div>
