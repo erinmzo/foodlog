@@ -54,7 +54,7 @@ function MyPageList() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[17px] mt-16">
         {filterdPost && filterdPost.length ? (
           filterdPost.map((post) => (
-            <Link key={post.id} href={`post/read/${post.id}`}>
+            <Link key={post.id} href={`/post/read/${post.id}`}>
               <StorePostCard post={post} />
             </Link>
           ))
