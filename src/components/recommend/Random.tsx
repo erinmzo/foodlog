@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface Food {
   id: number;
@@ -12,7 +12,7 @@ interface Food {
 const fetchRandomFood = async (): Promise<Food> => {
   const response = await fetch("/api/recommend");
   if (!response.ok) {
-    throw new Error("Failed to fetch random food");
+    alert("음식 추천에 오류가 있습니다");
   }
   return response.json();
 };
@@ -31,31 +31,20 @@ const Random = () => {
     setShowFood(true);
   };
   return (
-    <div className="w-2/3 flex flex-col items-center mx-auto">
+    <div className="w-2/3 flex flex-col items-center mx-auto mb-[80px]">
       <h3 className="text-2xl font-bold">오늘 뭐 먹지?</h3>
-      <p className="text-[16px] text-[#878787] mt-2 mb-4">
-        클릭해보세요 메뉴를 추천해드립니다
-      </p>
+      <p className="text-[16px] text-[#878787] mt-2 mb-4">클릭해보세요 메뉴를 추천해드립니다</p>
       <div className="w-full flex flex-col items-center">
         {!showFood && (
-          <button
-            className="w-1/2 py-8 text-2xl font-bold text-[#24CAFF] border rounded-md mb-8"
-            onClick={handleClick}
-          >
+          <button className="w-1/2 py-8 text-2xl font-bold text-[#24CAFF] border rounded-md" onClick={handleClick}>
             Click!!
           </button>
         )}
         {showFood && random && (
           <div className="w-full h-full flex flex-col items-center mt-8">
-            <h2 className="text-5xl font-bold text-[#24CAFF] mb-4">
-              {random.menu}
-            </h2>
+            <h2 className="text-5xl font-bold text-[#24CAFF] mb-4">{random.menu}</h2>
             <div className="w-1/2 max-h-[200px] flex items-center justify-center overflow-hidden rounded-lg">
-              <img
-                src={random.img_url}
-                alt={random.menu}
-                className="w-full h-full object-cover"
-              />
+              <img src={random.img_url} alt={random.menu} className="w-full h-full object-cover" />
             </div>
             <button
               className="w-1/2 py-2 text-2xl font-bold text-[#24CAFF] border rounded-md my-6"
