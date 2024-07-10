@@ -1,9 +1,9 @@
 "use client";
+import StorePostCard from "@/components/post/list/StorePostCard";
+import { createClient } from "@/supabase/client";
 import { Post } from "@/types/store";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import StorePostCard from "@/components/post/list/StorePostCard";
-import { createClient } from "@/supabase/client";
 import { useParams } from "next/navigation";
 
 function MyPageList() {
@@ -11,11 +11,7 @@ function MyPageList() {
   const id = params.id;
   const getProfileData = async () => {
     const supabase = createClient();
-    const data = await supabase
-      .from("profile")
-      .select("*")
-      .eq("id", id)
-      .maybeSingle();
+    const data = await supabase.from("profile").select("*").eq("id", id).maybeSingle();
 
     return data;
   };
@@ -33,11 +29,7 @@ function MyPageList() {
     return data;
   };
 
-  const {
-    data: posts,
-    isPending,
-    error,
-  } = useQuery<Post[]>({ queryKey: ["store"], queryFn: getStoreData });
+  const { data: posts, isPending, error } = useQuery<Post[]>({ queryKey: ["store"], queryFn: getStoreData });
   if (isPending) return <div>Loading...</div>;
   if (error) {
     alert("데이터를 가져오는데 실패했습니다");
