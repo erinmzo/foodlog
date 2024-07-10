@@ -6,12 +6,19 @@ interface StorePostCardProps {
 }
 
 function StorePostCard({ post }: StorePostCardProps) {
-  console.log(post.img_url);
   return (
     <div className="flex flex-col rounded-[15px] overflow-hidden border border-[#f5f5f5]">
       <div className="relative aspect-video">
         {post.img_url && (
-          <Image src={post.img_url} alt={post.menu_name} fill sizes="328px" className="object-cover" priority />
+          <Image
+            src={post.img_url}
+            alt={post.menu_name}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
+            priority={true}
+            quality={75}
+          />
         )}
       </div>
       <div className="p-[12px] bg-[#fdfdfd]">
