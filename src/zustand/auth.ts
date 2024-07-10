@@ -3,7 +3,7 @@ import { create } from "zustand";
 
 interface userState {
   user: User | null;
-  saveUser: (info: User) => void;
+  saveUser: (info: User | null) => void;
 }
 
 export const useAuthStore = create<userState>((set) => ({
