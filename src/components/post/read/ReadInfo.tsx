@@ -8,9 +8,9 @@ export default function ReadInfo({
   value: string;
 }) {
   return (
-    <div className="flex justify-between mb-2 ">
+    <div className="flex mb-2  w-full">
       <span className="font-bold w-1/4 mr-8">{label}</span>
-      <span className="w-3/4">{value}</span>
+      <span className="w-2/3">{value}</span>
     </div>
   );
 }
