@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 
-// 음식 데이터 (이름과 이미지 URL)
 interface Food {
   id: number;
   name: string;
@@ -37,23 +36,18 @@ const FoodWorldCup = () => {
     setWinners((prevWinners) => [...prevWinners, selectedWinner]);
 
     if (currentPair[1] + 2 < currentRound.length) {
-      // 다음 경기 쌍 설정 (2씩 증가)
       setCurrentPair([currentPair[0] + 2, currentPair[1] + 2]);
     } else {
-      // 다음 라운드로 이동
       if (currentRound.length === 2) {
-        // 최종 우승자 결정 (최종 2강)
         alert(`최종 우승: ${selectedWinner.name}`);
       } else {
-        // 다음 라운드의 데이터 수는 현재 라운드의 절반으로 설정
         setCurrentRound(winners);
-        setCurrentPair([0, 1]); // 다음 라운드의 첫 번째 경기 쌍으로 초기화
-        setWinners([]); // 승자 배열 초기화
+        setCurrentPair([0, 1]); 
+        setWinners([]); 
       }
     }
   };
 
-  // 현재 라운드의 경기 쌍 배열 설정
   let currentRoundPairs: Food[] = [];
   if (currentPair[0] < currentRound.length) {
     currentRoundPairs = [currentRound[currentPair[0]], currentRound[currentPair[1]]];
