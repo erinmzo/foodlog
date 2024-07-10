@@ -95,17 +95,10 @@ function WritePage() {
   return (
     <>
       <div className="max-w-[1024px] min-w-[1000px] h-auto mx-auto my-20 bg-white rounded-xl p-15 px-20">
-        <h1 className="text-center mt-10 mb-3 text-2xl font-bold">
-          오늘의 식당 기록
-        </h1>
-        <h3 className="text-center mb-10 text-lg">
-          식당과 메뉴를 공유해주세요!
-        </h3>
+        <h1 className="text-center mt-10 mb-3 text-2xl font-bold">오늘의 식당 기록</h1>
+        <h3 className="text-center mb-10 text-lg">식당과 메뉴를 공유해주세요!</h3>
 
-        <form
-          className="bg-blue-100 w-full p-20 rounded-xl shadow-lg shadow-gray-500/20"
-          onSubmit={onSubmit}
-        >
+        <form className="bg-blue-100 w-full p-20 rounded-xl shadow-lg shadow-gray-500/20" onSubmit={onSubmit}>
           <div className="flex w-full mt-5 items-center">
             <label className="w-[10%] whitespace-nowrap">유형</label>
             <select className="w-[10%] p-2 border rounded-md" ref={categoryRef}>
@@ -116,26 +109,14 @@ function WritePage() {
 
           <div className="flex mt-5 items-center">
             <label className="w-[10%] whitespace-nowrap mr-2">식당이름</label>
-            <input
-              className="w-[40%] p-2 border rounded-md mr-10"
-              type="text"
-              ref={storeRef}
-            />
+            <input className="w-[40%] p-2 border rounded-md mr-10" type="text" ref={storeRef} />
             <label className="w-[10%] whitespace-nowrap mr-2">메뉴이름</label>
-            <input
-              className="w-[40%] p-2 border rounded-md"
-              type="text"
-              ref={menuRef}
-            />
+            <input className="w-[40%] p-2 border rounded-md" type="text" ref={menuRef} />
           </div>
 
           <div className="flex mt-5 items-center">
             <label className="w-[10%] whitespace-nowrap mr-2">주문날짜</label>
-            <input
-              className="w-[40%] p-2 border rounded-md mr-10"
-              type="date"
-              ref={orderDateRef}
-            />
+            <input className="w-[40%] p-2 border rounded-md mr-10" type="date" ref={orderDateRef} />
             <label className="w-[10%] whitespace-nowrap mr-2">작성자</label>
             <input 
               className="w-[40%] p-2 border rounded-md"
@@ -147,11 +128,7 @@ function WritePage() {
 
           <div className="flex mt-5 items-center">
             <label className="w-[10%] whitespace-nowrap mr-2">주소</label>
-            <input
-              className="w-[40%] p-2 border rounded-md mr-10"
-              type="text"
-              ref={addressRef}
-            />
+            <input className="w-[40%] p-2 border rounded-md mr-10" type="text" ref={addressRef} />
             <label className="w-[10%] whitespace-nowrap mr-2">별점</label>
             <select className="w-[40%] p-2 rounded-md" ref={ratingRef}>
               <option value="1">1</option>
