@@ -3,8 +3,10 @@ import { useState } from "react";
 import Button from "../common/Button";
 import InputField from "./InputField";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/zustand/auth";
 
 function LoginForm() {
+  const saveUser = useAuthStore((state) => state.saveUser);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const loginData = { email, password };
@@ -24,14 +26,16 @@ function LoginForm() {
       method: "POST",
       body: JSON.stringify(loginData),
     });
+
     if (response.status !== 200) {
       const errorData = await response.json();
       return alert(
         `아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.`
       );
     }
+    const data = await response.json();
+    saveUser(data);
     router.push("/");
-    // console.log(response);
   };
 
   return (
