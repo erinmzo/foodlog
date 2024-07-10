@@ -14,7 +14,6 @@ const MyPageProfile = () => {
       .select("*")
       .eq("id", id)
       .maybeSingle();
-    console.log(data);
 
     return data;
   };
