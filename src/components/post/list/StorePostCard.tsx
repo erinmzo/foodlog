@@ -7,7 +7,7 @@ interface StorePostCardProps {
 
 function StorePostCard({ post }: StorePostCardProps) {
   return (
-    <div className="flex flex-col rounded-[15px] overflow-hidden border border-[#f5f5f5]">
+    <div className="flex flex-col rounded-[15px] overflow-hidden border border-[#f5f5f5] hover:shadow-lg">
       <div className="relative aspect-video">
         {post.img_url && (
           <Image

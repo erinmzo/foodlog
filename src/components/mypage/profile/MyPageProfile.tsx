@@ -9,33 +9,23 @@ const MyPageProfile = () => {
   const id = params.id;
   const getProfileData = async () => {
     const supabase = createClient();
-    const data = await supabase
-      .from("profile")
-      .select("*")
-      .eq("id", id)
-      .maybeSingle();
+    const data = await supabase.from("profile").select("*").eq("id", id).maybeSingle();
 
     return data;
   };
 
-  const {
-    data: profile,
-    isPending,
-    error,
-  } = useQuery({ queryKey: ["profile"], queryFn: getProfileData });
-  if (isPending) return <div>Loading...</div>;
+  const { data: profile, isPending, error } = useQuery({ queryKey: ["profile"], queryFn: getProfileData });
+  if (isPending) return <div className="h-screen flex items-center justify-center">Loading...</div>;
   if (error) {
     alert("데이터를 가져오는데 실패했습니다");
     return null;
   }
 
   return (
-    <div className="flex flex-col my-auto items-center mx-3 ">
-      <div className="text-5xl mt-24">
-        <span className="text-sky-500 text-5xl font-bold">
-          {profile.data?.nickname}
-        </span>
-        님 반갑습니다.
+    <div className="flex flex-col items-center justify-center">
+      <div className="text-[24px] sm:text-[48px] px-[15px] lg:px-0">
+        <span className="text-[#24CAFF] text-[24px] sm:text-[48px] font-bold">{profile.data?.nickname}</span>님
+        반갑습니다.
       </div>
     </div>
   );
