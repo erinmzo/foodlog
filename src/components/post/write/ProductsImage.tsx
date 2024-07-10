@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 interface Props {
   setFile: React.Dispatch<React.SetStateAction<File | undefined>>;

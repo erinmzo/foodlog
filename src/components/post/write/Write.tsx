@@ -79,13 +79,13 @@ function WritePage() {
     const newFileName = uuid();
     const supabase = createClient();
     const { data, error } = await supabase.storage
-      .from('post')
+      .from("post")
       .upload(`${newFileName}`, file);
     if (error) {
-      console.log('파일이 업로드 되지 않습니다.', error);
+      console.log("파일이 업로드 되지 않습니다.", error);
       return;
     }
-    const res = await supabase.storage.from('post').getPublicUrl(data.path);
+    const res = await supabase.storage.from("post").getPublicUrl(data.path);
     console.log(data.path);
     
     console.log(res);
