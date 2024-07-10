@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 
+// 음식 데이터 (이름과 이미지 URL)
 interface Food {
   id: number;
   name: string;
@@ -28,35 +29,43 @@ const foodData: Food[] = [
 
 const FoodWorldCup = () => {
   const [currentRound, setCurrentRound] = useState<Food[]>(foodData);
-  const [currentPair, setCurrentPair] = useState<[number, number]>([0, 1]);
+  const [currentPair, setCurrentPair] = useState<number>(0);
   const [winners, setWinners] = useState<Food[]>([]);
 
   const handleSelect = (winnerIndex: number) => {
-    const selectedWinner = currentRound[currentPair[winnerIndex]];
+    const selectedWinner = currentRound[currentPair + winnerIndex];
     setWinners((prevWinners) => [...prevWinners, selectedWinner]);
 
-    if (currentPair[1] + 2 < currentRound.length) {
-      setCurrentPair([currentPair[0] + 2, currentPair[1] + 2]);
+    if (currentPair + 2 < currentRound.length) {
+      // 다음 경기 쌍 설정
+      setCurrentPair(currentPair + 2);
     } else {
+      // 다음 라운드로 이동
       if (currentRound.length === 2) {
+        // 최종 우승자 결정 (최종 2강)
         alert(`최종 우승: ${selectedWinner.name}`);
       } else {
-        setCurrentRound(winners);
-        setCurrentPair([0, 1]); 
-        setWinners([]); 
+        // 다음 라운드의 데이터 수는 현재 라운드의 절반으로 설정
+        setCurrentRound([...winners, selectedWinner]); // 승자 배열에 마지막 승자 추가하여 다음 라운드 설정
+        setCurrentPair(0); // 다음 라운드의 첫 번째 경기 쌍 인덱스 초기화
+        setWinners([]); // 승자 배열 초기화
       }
     }
   };
 
+  // 현재 라운드의 경기 쌍 배열 설정
   let currentRoundPairs: Food[] = [];
-  if (currentPair[0] < currentRound.length) {
-    currentRoundPairs = [currentRound[currentPair[0]], currentRound[currentPair[1]]];
+  if (currentPair < currentRound.length) {
+    currentRoundPairs = [
+      currentRound[currentPair],
+      currentRound[currentPair + 1],
+    ];
   }
 
   return (
     <div>
       <h1>음식 월드컵 {currentRound.length}강</h1>
-      {currentPair[0] < currentRound.length && (
+      {currentPair < currentRound.length && (
         <div>
           <div onClick={() => handleSelect(0)}>
             <button>{currentRoundPairs[0]?.name}</button>
