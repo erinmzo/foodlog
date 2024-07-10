@@ -63,12 +63,12 @@ const FoodWorldCup = () => {
   }
 
   return (
-    <div className="w-full flex flex-col items-center text-center p-6">
+    <div className="w-full flex flex-col items-center text-center">
       <div className="w-3/5 mx-auto">
-        <h1 className="text-xl font-bold">{currentRound.length}강</h1>
+        <h1 className="text-xl font-bold mt-8">{currentRound.length === 2 ? "결승" :  `${currentRound.length}강`}</h1>
         <h1 className="text-[16px] text-[#878787]">메뉴를 추천해드립니다</h1>
         {currentPair < currentRound.length && (
-          <div className="flex">
+          <div className="flex mb-8">
             <div className="flex-1 m-4 py-6 text-xl font-semibold bg-[#8bdffc] border hover:bg-[#00BBF7]" onClick={() => handleSelect(0)}>
               <button className="w-full h-auto text-white">{currentRoundPairs[0]?.name}</button>
             </div>

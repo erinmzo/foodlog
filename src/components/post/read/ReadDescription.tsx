@@ -1,14 +1,13 @@
 import { Post } from "@/types/store";
-import React from "react";
 import ReadInfo from "./ReadInfo";
 
 interface DescriptionProps {
   posts: Post;
 }
 
-const Description: React.FC<DescriptionProps> = ({ posts }) => {
+const Description = ({ posts }: DescriptionProps) => {
   return (
-    <div className="flex flex-col mt-10 ">
+    <div className="w-full grid grid-cols-1 mt-[50px]">
       <ReadInfo label="리뷰" value={posts.content} />
     </div>
   );
