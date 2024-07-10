@@ -19,8 +19,6 @@ function JoinForm() {
       return;
     }
 
-    const user = useAuthStore((state) => state);
-
     const response = await fetch("/api/auth/join", {
       method: "POST",
       headers: {

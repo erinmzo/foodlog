@@ -1,9 +1,9 @@
 "use client";
+import { useAuthStore } from "@/zustand/auth";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Button from "../common/Button";
 import InputField from "./InputField";
-import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/zustand/auth";
 
 function LoginForm() {
   const saveUser = useAuthStore((state) => state.saveUser);
@@ -34,7 +34,7 @@ function LoginForm() {
       );
     }
     const data = await response.json();
-    saveUser(data);
+    saveUser(data.user);
     router.push("/");
   };
 
