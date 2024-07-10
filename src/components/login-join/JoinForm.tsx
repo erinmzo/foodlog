@@ -2,21 +2,33 @@
 import React, { useState } from "react";
 import InputField from "./InputField";
 import Button from "../common/Button";
-import { useAuthStore } from "@/zustand/auth";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/supabase/client";
 
 function JoinForm() {
-  const [nickname, setNickname] = useState("");
+  const supabase = createClient();
+  const [nickname, setNickname] = useState<string>("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const joinData = { nickname, email, password };
+  const router = useRouter();
 
   const handleSubmitJoin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const { data: userNickname } = await supabase
+      .from("profile")
+      .select()
+      .eq("nickname", nickname);
+
+    if (userNickname?.find((userName) => nickname === userName.nickname)) {
+      return alert("이미 사용중인 닉네임 입니다.");
+    }
+
+    // const { data: userEmail, error };
     if (password !== checkPassword) {
-      alert("비밀번호가 일치하지 않습니다.");
-      return;
+      return alert("비밀번호가 일치하지 않습니다.");
     }
 
     const response = await fetch("/api/auth/join", {
@@ -31,8 +43,10 @@ function JoinForm() {
       alert("회원가입이 성공적으로 완료되었습니다.");
     } else {
       const data = await response.json();
-      alert(`회원가입에 실패하였습니다: ${data.message}`);
+      return alert(`회원가입에 실패하였습니다: ${data.message}`);
     }
+
+    router.push("/login");
   };
 
   const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
