@@ -10,16 +10,16 @@ const ModalButton = () => {
   const clickModal = () => setShowModal(!showModal);
 
   return (
-    <>
-      <div
-        className="flex flex-col my-auto items-center mt-5"
+    <div className="flex flex-col my-auto justify-center items-center">
+      <button
+        className=" rounded py-2 px-4 bg-[#24CAFF] border-[#00BBF7] text-center text-white font-bold mt-5"
         onClick={clickModal}
       >
         닉네임 변경
-      </div>
+      </button>
 
       {showModal && <Modal clickModal={clickModal} />}
-    </>
+    </div>
   );
 };
 
