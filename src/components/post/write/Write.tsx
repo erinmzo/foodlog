@@ -1,53 +1,63 @@
-'use client'
+"use client";
 
-import Button from '@/components/common/Button'
-import { Post } from '@/types/store'
-import { useMutation } from '@tanstack/react-query'
-import { useRef } from 'react'
+import Button from "@/components/common/Button";
+import { Post } from "@/types/store";
+import { useMutation } from "@tanstack/react-query";
+import { useRef } from "react";
 
 function WritePage() {
-  const categoryRef = useRef<HTMLInputElement>(null)
-  const storeRef = useRef<HTMLInputElement>(null)
-  const menuRef = useRef<HTMLInputElement>(null)
-  const orderDateRef = useRef<HTMLInputElement>(null)
-  const userRef = useRef<HTMLInputElement>(null)
-  const addressRef = useRef<HTMLInputElement>(null)
-  const ratingRef = useRef<HTMLInputElement>(null)
-  const imageRef = useRef<HTMLInputElement>(null)
-  const contentRef = useRef<HTMLInputElement>(null)
+  const categoryRef = useRef<HTMLSelectElement>(null);
+  const storeRef = useRef<HTMLInputElement>(null);
+  const menuRef = useRef<HTMLInputElement>(null);
+  const orderDateRef = useRef<HTMLInputElement>(null);
+  const userRef = useRef<HTMLInputElement>(null);
+  const addressRef = useRef<HTMLInputElement>(null);
+  const ratingRef = useRef<HTMLSelectElement>(null);
+  const imageRef = useRef<HTMLInputElement>(null);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
 
-  const addStoreList = async (data) => {
-    const response = await fetch('http://localhost:3000/api/store', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+  interface PostData {
+    category: string;
+    store_name: string;
+    menu_name: string;
+    order_date: string;
+    address: string;
+    rating: string;
+    content: string;
+    img_url: string;
+    user_nickname: string;
+    user_id: string;
+  }
+
+  const addStoreList = async (data: PostData): Promise<Post> => {
+    const response = await fetch("http://localhost:3000/api/store", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
-    })
-    console.log(1, data)
-    console.log(2, response)
+    });
+    return response.json();
+  };
 
-    return response.json()
-  }
+  const { mutate: addMutation } = useMutation<Post, unknown, PostData>({
+    mutationFn: (data: PostData) => addStoreList(data),
+  });
 
-  const { mutate: addMutation } = useMutation<Post>({
-    mutationFn: (data) => addStoreList(data),
-  })
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const postData = {
-      category: categoryRef.current?.value || '',
-      store_name: storeRef.current?.value || '',
-      menu_name: menuRef.current?.value || '',
-      order_date: orderDateRef.current?.value || '',
-      address: addressRef.current?.value || '',
-      rating: ratingRef.current?.value || '',
-      content: contentRef.current?.value || '',
-      img_url: imageRef.current?.value || '',
-      user_nickname: '몰라',
-      user_id: 'fa77e563-3245-4654-a240-b064703ab2ca',
-    }
-    addMutation(postData)
-  }
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    const postData: PostData = {
+      category: categoryRef.current?.value || "",
+      store_name: storeRef.current?.value || "",
+      menu_name: menuRef.current?.value || "",
+      order_date: orderDateRef.current?.value || "",
+      address: addressRef.current?.value || "",
+      rating: ratingRef.current?.value || "",
+      content: contentRef.current?.value || "",
+      img_url: imageRef.current?.value || "",
+      user_nickname: "몰라",
+      user_id: "fa77e563-3245-4654-a240-b064703ab2ca",
+    };
+    addMutation(postData);
+  };
 
   return (
     <>
@@ -146,7 +156,7 @@ function WritePage() {
         </form>
       </div>
     </>
-  )
+  );
 }
 
-export default WritePage
+export default WritePage;
