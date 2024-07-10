@@ -8,6 +8,7 @@ function JoinForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
+  const joinData = { nickname, email, password };
 
   const handleSubmitJoin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -17,7 +18,20 @@ function JoinForm() {
       return;
     }
 
-    const response = await fetch("/api/auth/join", {});
+    const response = await fetch("/api/auth/join", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(joinData),
+    });
+
+    if (response.ok) {
+      alert("회원가입이 성공적으로 완료되었습니다.");
+    } else {
+      const data = await response.json();
+      alert(`회원가입에 실패하였습니다: ${data.message}`);
+    }
   };
 
   const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +51,10 @@ function JoinForm() {
   };
 
   return (
-    <form className="flex flex-col items-center justify-center mb-[350px]">
+    <form
+      onSubmit={handleSubmitJoin}
+      className="flex flex-col items-center justify-center mb-[350px]"
+    >
       <div className="flex flex-col gap-y-5 mb-[25px] px-[35px] py-[40px] border-[1px] border-[#F5F5F5] rounded-[30px]">
         <InputField
           name="닉네임"
