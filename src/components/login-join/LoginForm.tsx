@@ -44,12 +44,21 @@ function LoginForm() {
       className="flex flex-col items-center justify-center mb-[475px]"
     >
       <div className="flex flex-col gap-y-5 mb-[25px] px-[35px] py-[53px] border-[1px] border-[#F5F5F5] rounded-[30px]">
-        <InputField name="이메일" value={email} onChangeValue={onChangeEmail} />
+        <InputField
+          name="이메일"
+          value={email}
+          type={"email"}
+          minLength={5}
+          maxLength={254}
+          onChangeValue={onChangeEmail}
+        />
         <InputField
           name="비밀번호"
+          type={"password"}
           value={password}
+          minLength={6}
+          maxLength={20}
           onChangeValue={onChangePassword}
-          password
         />
       </div>
       <Button>로그인하기</Button>

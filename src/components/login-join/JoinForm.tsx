@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import InputField from "./InputField";
 import Button from "../common/Button";
+import { useAuthStore } from "@/zustand/auth";
 
 function JoinForm() {
   const [nickname, setNickname] = useState("");
@@ -17,6 +18,8 @@ function JoinForm() {
       alert("비밀번호가 일치하지 않습니다.");
       return;
     }
+
+    const user = useAuthStore((state) => state);
 
     const response = await fetch("/api/auth/join", {
       method: "POST",
@@ -58,29 +61,39 @@ function JoinForm() {
       <div className="flex flex-col gap-y-5 mb-[25px] px-[35px] py-[40px] border-[1px] border-[#F5F5F5] rounded-[30px]">
         <InputField
           name="닉네임"
+          type={"text"}
           value={nickname}
+          minLength={2}
+          maxLength={10}
           onChangeValue={onChangeNickname}
           required
         />
         <InputField
           name="이메일"
+          type={"email"}
           value={email}
+          minLength={5}
+          maxLength={254}
           onChangeValue={onChangeEmail}
           required
         />
         <InputField
           name="비밀번호"
+          type={"password"}
           value={password}
+          minLength={6}
+          maxLength={20}
           onChangeValue={onChangePassword}
           required
-          password
         />
         <InputField
           name="비밀번호 확인"
+          type={"password"}
           value={checkPassword}
+          minLength={6}
+          maxLength={20}
           onChangeValue={onChangeCheckPassword}
           required
-          password
         />
       </div>
       <Button>가입하기</Button>
