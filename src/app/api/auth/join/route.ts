@@ -16,7 +16,13 @@ export async function POST(request: NextRequest) {
   });
   console.log(user.user?.id);
   if (error) {
-    console.log("Error signUp", error.message);
+    console.log("Error signUp", error);
+    if (error.status == 422) {
+      return Response.json(
+        { message: "이미 존재하는 이메일 입니다." },
+        { status: error.status }
+      );
+    }
     return Response.json({ message: error.message }, { status: 401 });
   }
 
@@ -25,7 +31,7 @@ export async function POST(request: NextRequest) {
     .insert([{ id: user.user?.id, nickname }]);
 
   if (profileError) {
-    console.log("Error profile", profileError.message);
+    console.log("Error profile", profileError);
     return NextResponse.json(
       { message: profileError.message },
       { status: 401 }
