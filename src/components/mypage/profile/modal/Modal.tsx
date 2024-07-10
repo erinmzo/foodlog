@@ -25,7 +25,7 @@ const Modal = (props: Props) => {
       >
         <h1 className="text-2xl font-bold">프로필 수정</h1>
         <input
-          className="border-2 border-[#D2D2D2] w-[184px] h-[45px] rounded-lg flex items-center text-center mt-5 "
+          className="border-2 border-[#D2D2D2] w-[184px] h-[45px] rounded-[10px] flex items-center text-center mt-5 "
           type="text"
           placeholder="변경할 닉네임"
           onChange={handleChange}
