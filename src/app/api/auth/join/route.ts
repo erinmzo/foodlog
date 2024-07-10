@@ -14,11 +14,25 @@ export async function POST(request: NextRequest) {
       },
     },
   });
-
+  console.log(user.user?.id);
   if (error) {
     console.log("Error signUp", error.message);
     return Response.json({ message: error.message }, { status: 401 });
   }
 
-  return NextResponse.json("");
+  const { error: profileError } = await supabase
+    .from("profile")
+    .insert([{ id: user.user?.id, nickname }]);
+
+  if (profileError) {
+    console.log("Error profile", profileError.message);
+    return NextResponse.json(
+      { message: profileError.message },
+      { status: 401 }
+    );
+  }
+
+  return NextResponse.json({
+    message: "회원가입이 성공적으로 완료되었습니다.",
+  });
 }
