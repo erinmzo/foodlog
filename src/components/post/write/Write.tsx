@@ -7,7 +7,8 @@ import { useRef, useState } from "react";
 import { ProductsImage } from "./ProductsImage";
 import { uuid } from "uuidv4";
 import { createClient } from "@/supabase/client";
-
+import { useAuthStore } from "@/zustand/auth";
+import { useRouter} from "next/navigation"
 
 function WritePage() {
   const categoryRef = useRef<HTMLSelectElement>(null);
@@ -17,11 +18,14 @@ function WritePage() {
   const userRef = useRef<HTMLInputElement>(null);
   const addressRef = useRef<HTMLInputElement>(null);
   const ratingRef = useRef<HTMLSelectElement>(null);
-  // const imageRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const [uploadedFileUrl, setUploadFileUrl] = useState<string>("");
   const [file, setFile] = useState<File>();
 
+  const user = useAuthStore(state => state.user);
+  console.log(user?.user_metadata.sub);
+
+  const router = useRouter();
+  
   interface PostData {
     category: string;
     store_name: string;
@@ -49,7 +53,7 @@ function WritePage() {
   });
 
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>): void => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const img_url = await uploadImg() || "";
     const postData: PostData = {
@@ -61,11 +65,11 @@ function WritePage() {
       rating: ratingRef.current?.value || "",
       content: contentRef.current?.value || "",
       img_url: img_url,
-      user_nickname: "몰라",
-      user_id: "fa77e563-3245-4654-a240-b064703ab2ca",
+      user_nickname: user?.user_metadata.display_name || "",
+      user_id: user?.user_metadata.sub,
     };
     addMutation(postData);
-
+    router.push("/");
   };
 
   const uploadImg = async () => {
@@ -105,8 +109,8 @@ function WritePage() {
           <div className="flex w-full mt-5 items-center">
             <label className="w-[10%] whitespace-nowrap">유형</label>
             <select className="w-[10%] p-2 border rounded-md" ref={categoryRef}>
-              <option value="visited">방문</option>
-              <option value="delivery">배달</option>
+              <option value="방문">방문</option>
+              <option value="배달">배달</option>
             </select>
           </div>
 
@@ -133,10 +137,11 @@ function WritePage() {
               ref={orderDateRef}
             />
             <label className="w-[10%] whitespace-nowrap mr-2">작성자</label>
-            <input
+            <input 
               className="w-[40%] p-2 border rounded-md"
               type="text"
               ref={userRef}
+              defaultValue={user?.user_metadata.display_name}
             />
           </div>
 
@@ -160,19 +165,7 @@ function WritePage() {
               <option value="5">5</option>
             </select>
           </div>
-
-          
           <ProductsImage setFile={setFile}/>
-          {/* <div className="flex mt-5 items-center"> */}
-            {/* <label className="w-[10%] whitespace-nowrap">이미지</label> */}
-            {/* <input
-              className="w-[90%] bg-white p-2 rounded-md"
-              type="file"
-              ref={imageRef}
-            /> */}
-            
-          {/* </div> */}
-
           <div className="mt-5">
             <textarea
               className="w-full h-[400px] p-2 border rounded-md resize-none"
