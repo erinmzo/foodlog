@@ -1,9 +1,8 @@
-import React from 'react'
+import FoodWorldCup from "@/components/recommend/FoodWorldCup";
+import React from "react";
 
 const WorldCupPage = () => {
-  return (
-    <div>WorldCupPage</div>
-  )
-}
+  return <FoodWorldCup/>;
+};
 
-export default WorldCupPage
+export default WorldCupPage;
