@@ -22,6 +22,9 @@ function Header() {
           <Image src="/img/logo-symbol.png" alt="FOOD LOG 로고" width={40} height={40} />
           <h1 className="text-[24px] font-bold ml-2">FOOD LOG</h1>
         </Link>
+        <Link href="/worldcup" className="flex items-center">
+          <h1 className="text-[24px] font-bold ml-2">푸드 월드컵</h1>
+        </Link>
         {!user ? (
           <ul className="flex items-center justify-end text-[#252525]">
             <li className="px-4">
