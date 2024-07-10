@@ -5,8 +5,6 @@ interface Props {
 }
 
 export const ProductsImage = ({ setFile }: Props) => {
-
-
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
     if (fileList) {

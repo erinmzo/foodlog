@@ -9,6 +9,18 @@ import { uuid } from "uuidv4";
 import { createClient } from "@/supabase/client";
 import { useAuthStore } from "@/zustand/auth";
 import { useRouter} from "next/navigation"
+interface PostData {
+  category: string;
+  store_name: string;
+  menu_name: string;
+  order_date: string;
+  address: string;
+  rating: string;
+  content: string;
+  img_url: string;
+  user_nickname: string;
+  user_id: string;
+}
 
 function WritePage() {
   const categoryRef = useRef<HTMLSelectElement>(null);
@@ -25,18 +37,6 @@ function WritePage() {
   console.log(user?.user_metadata.sub);
 
   const router = useRouter();
-  interface PostData {
-    category: string;
-    store_name: string;
-    menu_name: string;
-    order_date: string;
-    address: string;
-    rating: string;
-    content: string;
-    img_url: string;
-    user_nickname: string;
-    user_id: string;
-  }
 
   const addStoreList = async (data: PostData): Promise<Post> => {
     const response = await fetch("http://localhost:3000/api/store", {
