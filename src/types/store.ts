@@ -4,4 +4,4 @@ export type Post = Tables<"posts">;
 
 export type Profile = Tables<"profile">;
 
-export type Recommend = Tables<"recommend">; 
+export type Comments = Tables<"comments">;
