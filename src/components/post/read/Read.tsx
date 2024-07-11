@@ -55,8 +55,8 @@ export default function Read() {
       <div className="border border-[#f5f5f5] bg-white rounded-lg w-full max-w-[1024px]">
         <div className="flex flex-col px-[15px] items-center lg:px-[140px] py-[72px]">
           {data?.map((posts) => (
-            <>
-              <div key={posts.id} className="w-full grid grid-cols-1 sm:grid-cols-2 gap-y-8">
+            <div key={posts.id}>
+              <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-y-8">
                 <ReadInfo label="방문/배달" value={posts.category} />
                 <ReadInfo label="별점" value={posts.rating} />
                 <ReadInfo label="식당 이름" value={posts.store_name} />
@@ -70,7 +70,7 @@ export default function Read() {
               </div>
               <Description posts={posts} />
               <ReadButton posts={posts}/>
-            </>
+            </div>
           ))}
         </div>
       </div>
