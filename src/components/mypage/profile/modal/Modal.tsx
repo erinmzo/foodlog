@@ -36,8 +36,7 @@ const Modal = (props: Props) => {
     const response = await updateProfileWithSupabase(nickName, profile.data?.id);
     queryClient.invalidateQueries({ queryKey: ["profile"] });
     alert("프로필 변경이 성공적으로 완료되었습니다!");
-
-    console.log(nickName);
+    clickModal();
   };
   return (
     <div
