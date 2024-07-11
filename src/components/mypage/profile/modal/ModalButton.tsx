@@ -7,7 +7,9 @@ const ModalButton = () => {
   const [showModal, setShowModal] = useState(false);
 
   // 버튼 클릭시 모달 버튼 클릭 유무를 설정하는 state 함수
-  const clickModal = () => setShowModal(!showModal);
+  const clickModal = () => {
+    setShowModal(!showModal);
+  };
 
   return (
     <div className="flex flex-col my-auto justify-center items-center">
