@@ -69,7 +69,7 @@ export default function Read() {
                 <ReadImage imgUrl={posts.img_url} />
               </div>
               <Description posts={posts} />
-              <ReadButton id={id} />
+              <ReadButton posts={posts}/>
             </>
           ))}
         </div>

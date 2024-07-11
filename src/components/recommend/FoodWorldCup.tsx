@@ -1,38 +1,26 @@
 "use client";
-
+import { Recommend } from "@/types/store";
 import { Report } from "notiflix";
-import { useState } from "react";
-
-// 음식 데이터 (이름과 이미지 URL)
-interface Food {
-  id: number;
-  name: string;
-}
-
-const foodData: Food[] = [
-  { id: 1, name: "짜장면" },
-  { id: 2, name: "순두부찌개" },
-  { id: 3, name: "김치찌개" },
-  { id: 4, name: "비빔밥" },
-  { id: 5, name: "불고기" },
-  { id: 6, name: "갈비탕" },
-  { id: 7, name: "떡볶이" },
-  { id: 8, name: "라면" },
-  { id: 9, name: "삼겹살" },
-  { id: 10, name: "갈비" },
-  { id: 11, name: "냉면" },
-  { id: 12, name: "만두" },
-  { id: 13, name: "쌀국수" },
-  { id: 14, name: "카레" },
-  { id: 15, name: "파스타" },
-  { id: 16, name: "피자" },
-];
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getAllFood } from "@/app/api/recommend/route";
 
 const FoodWorldCup = () => {
-  const [currentRound, setCurrentRound] = useState<Food[]>(foodData);
+  const { data: food } = useQuery<Recommend[]>({
+    queryKey: ["getAllFood"],
+    queryFn: getAllFood,
+  });
+
+  const [currentRound, setCurrentRound] = useState<Recommend[]>([]);
   const [currentPair, setCurrentPair] = useState<number>(0);
-  const [winners, setWinners] = useState<Food[]>([]);
+  const [winners, setWinners] = useState<Recommend[]>([]);
   const [_, setSelectedMenuIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (food) {
+      setCurrentRound(food);
+    }
+  }, [food]);
 
   const handleSelect = (winnerIndex: number) => {
     const selectedWinner = currentRound[currentPair + winnerIndex];
@@ -46,7 +34,7 @@ const FoodWorldCup = () => {
       // 다음 라운드로 이동
       if (currentRound.length === 2) {
         // 최종 우승자 결정 (최종 2강)
-        Report.success(`최종 우승: ${selectedWinner.name}`, "", "확인");
+        Report.success(`최종 우승: ${selectedWinner.menu}`, "", "확인");
       } else {
         // 다음 라운드의 데이터 수는 현재 라운드의 절반으로 설정
         setCurrentRound([...winners, selectedWinner]); // 승자 배열에 마지막 승자 추가하여 다음 라운드 설정
@@ -57,7 +45,7 @@ const FoodWorldCup = () => {
   };
 
   // 현재 라운드의 경기 쌍 배열 설정
-  let currentRoundPairs: Food[] = [];
+  let currentRoundPairs: Recommend[] = [];
   if (currentPair < currentRound.length) {
     currentRoundPairs = [
       currentRound[currentPair],
@@ -66,7 +54,7 @@ const FoodWorldCup = () => {
   }
 
   const handleReset = () => {
-    setCurrentRound(foodData); // 초기 음식 데이터로 설정
+    setCurrentRound(food || []); // 초기 음식 데이터로 설정
     setCurrentPair(0); // 첫 번째 경기 쌍 인덱스로 설정
     setWinners([]); // 승자 배열 초기화
     setSelectedMenuIndex(null); // 선택한 메뉴 인덱스 초기화
@@ -86,7 +74,12 @@ const FoodWorldCup = () => {
               onClick={() => handleSelect(0)}
             >
               <button className="w-full text-white">
-                {currentRoundPairs[0]?.name}
+                {currentRoundPairs[0]?.menu}
+                <img
+                  src={currentRoundPairs[0]?.img_url}
+                  alt={currentRoundPairs[0]?.menu}
+                  className="w-full h-auto object-cover"
+                />
               </button>
             </div>
             <div
@@ -94,13 +87,23 @@ const FoodWorldCup = () => {
               onClick={() => handleSelect(1)}
             >
               <button className="w-full text-white">
-                {currentRoundPairs[1]?.name}
+                {currentRoundPairs[1]?.menu}
+                <img
+                  src={currentRoundPairs[1]?.img_url}
+                  alt={currentRoundPairs[1]?.menu}
+                  className="w-full h-auto object-cover"
+                />
               </button>
             </div>
           </div>
         )}
       </div>
-      <button className="w-1/4 p-4 text-2xl font-bold text-[#24CAFF] border rounded-md" onClick={handleReset}>다시하기</button>
+      <button
+        className="w-1/4 p-4 text-2xl font-bold text-[#24CAFF] border rounded-md"
+        onClick={handleReset}
+      >
+        다시하기
+      </button>
     </div>
   );
 };
