@@ -16,10 +16,8 @@ export async function POST(request: NextRequest) {
   });
 
   if (error) {
-    console.error("Error login", error.message);
     return Response.json({ message: error.message }, { status: 401 });
   }
 
-  console.log("Login successful:", user);
   return NextResponse.json(user);
 }
