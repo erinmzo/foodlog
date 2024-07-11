@@ -4,13 +4,13 @@ import Button from "@/components/common/Button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 interface ReadButtonProps {
-  id: string;
+  postsId: string;
 }
 
-const ReadButton: React.FC<ReadButtonProps> = ({ id }) => {
+const ReadButton: React.FC<ReadButtonProps> = ({ postsId }) => {
   const router = useRouter();
 
-  const deleteContents = async (data: { id: string }) => {
+  const deleteContents = async (data: { postsId: string }) => {
     const response = await fetch("http://localhost:3000/api/post", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
@@ -26,7 +26,7 @@ const ReadButton: React.FC<ReadButtonProps> = ({ id }) => {
   const handleDelete = async () => {
     alert("정말 삭제하시겠습니까?")
     try {
-      await deleteContents({ id });
+      await deleteContents({ postsId });
       router.push("/"); // Redirect to the home page after deletion
     } catch (error) {
       console.error("Failed to delete the post:", error);
@@ -36,7 +36,7 @@ const ReadButton: React.FC<ReadButtonProps> = ({ id }) => {
   return (
     <div className="w-full flex justify-end mt-[70px] gap-4">
       <Button>
-        <Link href={`/post/write/${id}`}>수정하기</Link>
+        <Link href={`/post/write/${postsId}`}>수정하기</Link>
       </Button>
       <button
         className="rounded py-2 px-4 bg-red-400 text-white font-bold"
