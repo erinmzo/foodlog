@@ -1,5 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
+import { Report } from "notiflix";
 import { useState } from "react";
 
 interface Food {
@@ -12,7 +13,7 @@ interface Food {
 const fetchRandomFood = async (): Promise<Food> => {
   const response = await fetch("/api/recommend");
   if (!response.ok) {
-    alert("음식 추천에 오류가 있습니다");
+    Report.failure("음식 추천에 오류가 있습니다", "잠시 후 다시 시도해주세요.", "확인");
   }
   return response.json();
 };
