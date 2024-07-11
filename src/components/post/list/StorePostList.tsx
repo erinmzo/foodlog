@@ -13,7 +13,9 @@ function StorePostList() {
   };
 
   const { data: posts, isPending, error } = useQuery<Post[]>({ queryKey: ["posts"], queryFn: getStoreData });
-  if (isPending) return <div className="h-screen flex items-center justify-center">Loading...</div>;
+  if (isPending) {
+    return <div className="h-screen flex items-center justify-center">Loading...</div>;
+  }
   if (error) {
     Report.failure("데이터를 가져오는데 실패했습니다", "", "확인");
     return null;
