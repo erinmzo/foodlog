@@ -48,7 +48,12 @@ const Modal = (props: Props) => {
     );
 
   if (error) {
-    return Report.failure("데이터 로딩 실패", "데이터를 가져오는데 실패했습니다", "확인");
+    Report.failure(
+      "데이터 로딩 실패",
+      "데이터를 가져오는데 실패했습니다",
+      "확인"
+    );
+    return null;
   }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
