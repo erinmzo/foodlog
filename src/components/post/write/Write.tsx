@@ -5,10 +5,7 @@ import { createClient } from "@/supabase/client";
 import { Post } from "@/types/store";
 import { useAuthStore } from "@/zustand/auth";
 import { useMutation } from "@tanstack/react-query";
-<<<<<<< HEAD
 import Link from "next/link";
-=======
->>>>>>> de06b66011e498e4e0fd287319f59a2591963492
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { uuid } from "uuidv4";
@@ -90,12 +87,8 @@ function WritePage() {
   };
 
   const { mutate: addMutation } = useMutation<Post, unknown, PostData>({
-<<<<<<< HEAD
-    mutationFn: (data: PostData) => (id === "new" ? addStoreList(data) : editStoreList(data)),
-=======
     mutationFn: (data: PostData) =>
       id === "new" ? addStoreList(data) : editStoreList(data),
->>>>>>> de06b66011e498e4e0fd287319f59a2591963492
   });
 
   const uploadImg = async (): Promise<string | null> => {
@@ -163,13 +156,7 @@ function WritePage() {
         >
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-y-8">
             <div className="flex items-center">
-<<<<<<< HEAD
               <label className="w-[80px] sm:w-[120px] font-bold">유형</label>
-=======
-              <label className="w-[80px] sm:w-[120px] h-10 font-bold">
-                유형
-              </label>
->>>>>>> de06b66011e498e4e0fd287319f59a2591963492
               <select className="p-2 border rounded-md" ref={categoryRef}>
                 <option value="방문">방문</option>
                 <option value="배달">배달</option>
