@@ -13,6 +13,7 @@ export type Database = {
           content: string;
           created_at: string;
           id: string;
+          post_id: string | null;
           user_id: string;
           user_name: string;
         };
@@ -20,6 +21,7 @@ export type Database = {
           content: string;
           created_at?: string;
           id?: string;
+          post_id?: string | null;
           user_id: string;
           user_name: string;
         };
@@ -27,10 +29,33 @@ export type Database = {
           content?: string;
           created_at?: string;
           id?: string;
+          post_id?: string | null;
           user_id?: string;
           user_name?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "comments_post_id_fkey";
+            columns: ["post_id"];
+            isOneToOne: false;
+            referencedRelation: "posts";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comments_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profile";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "comments_user_name_fkey";
+            columns: ["user_name"];
+            isOneToOne: false;
+            referencedRelation: "profile";
+            referencedColumns: ["nickname"];
+          }
+        ];
       };
       posts: {
         Row: {

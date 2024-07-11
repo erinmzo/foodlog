@@ -1,39 +1,49 @@
 "use client";
 
 import { Comments } from "@/types/store";
-import { useMutation } from "@tanstack/react-query";
+import { useAuthStore } from "@/zustand/auth";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 import { useRef } from "react";
+import GetComments from "./GetComments";
 
 export default function Comment() {
-  const user_nameRef = useRef<HTMLSelectElement>(null);
-  const user_idRef = useRef<HTMLSelectElement>(null);
-  const contentRef = useRef<HTMLSelectElement>(null);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
+  const queryClient = useQueryClient();
+  const params = useParams();
 
+  const user = useAuthStore((state) => state.user);
   interface CommentsData {
     user_name: string;
     user_id: string;
     content: string;
+    post_id: string;
   }
 
-  const addStoreList = async (data: CommentsData): Promise<Comments> => {
-    const response = await fetch("http://localhost:3000/api/post", {
+  const addStoreList = async (data: CommentsData) => {
+    const response = await fetch("http://localhost:3000/api/comments", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
     return response.json();
   };
 
   const { mutate: addMutation } = useMutation<Comments, unknown, CommentsData>({
     mutationFn: (data: CommentsData) => addStoreList(data),
+    // onSuccess: () => queryClient.invalidateQueries(["comment",params.id])
   });
 
-  const onSubmit = async (e: React.FocusEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const CommentsData: CommentsData = {
-      user_name: user_nameRef.current?.value || "",
-      user_id: user_idRef.current?.value || "",
+      user_name: user?.user_metadata.display_name || "",
+      user_id: user?.user_metadata.sub,
       content: contentRef.current?.value || "",
+      post_id: params.id as string,
     };
 
     addMutation(CommentsData);
@@ -45,34 +55,16 @@ export default function Comment() {
         <h2 className="text-2xl font-semibold mb-6">댓글</h2>
 
         <form onSubmit={onSubmit} className="mb-4">
-          <input
+          <textarea
+            ref={contentRef}
             className="w-[90%] p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             placeholder="Write a comment..."
-          ></input>
-          <button className="w-[10%]  bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+          ></textarea>
+          <button className="w-[10%] bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
             작성
           </button>
         </form>
-
-        <div className="space-y-4">
-          <div className="p-4 bg-gray-50 rounded-md shadow">
-            <div className="flex justify-between items-center mb-2  ">
-              <div>
-                <span className="font-semibold  ">동규 </span>
-                <span className="text-gray-600 text-sm  ">2시간 전</span>
-                <span className="mt-3 order-last">
-                  <button className="text-blue-500 hover:underline">
-                    수정
-                  </button>
-                  <button className="text-red-500 hover:underline ml-4">
-                    삭제
-                  </button>
-                </span>
-              </div>
-            </div>
-            <p className="text-gray-800">댓글 예시</p>
-          </div>
-        </div>
+        <GetComments />
       </div>
     </div>
   );

@@ -7,7 +7,6 @@ import { PropsWithChildren } from "react";
 async function MainLayout({ children }: PropsWithChildren) {
   const supabase = createClient();
   const { data: userSessionInfo } = await supabase.auth.getUser();
-  console.log(userSessionInfo);
   return (
     <>
       <div>
