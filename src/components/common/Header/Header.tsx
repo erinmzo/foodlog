@@ -13,7 +13,6 @@ function Header({ userSessionInfo }: { userSessionInfo: UserProps }) {
   const user = useAuthStore((state) => state.user);
   const saveUser = useAuthStore((state) => state.saveUser);
   const router = useRouter();
-  console.log(userSessionInfo);
 
   useEffect(() => {
     if (userSessionInfo) {
