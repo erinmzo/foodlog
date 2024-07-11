@@ -5,11 +5,11 @@ import { createClient } from "@/supabase/client";
 import { Post } from "@/types/store";
 import { useAuthStore } from "@/zustand/auth";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter} from "next/navigation"
-import { useRef, useState } from "react";
+import { useParams, useRouter} from "next/navigation"
+import { useEffect, useRef, useState } from "react";
 import { uuid } from "uuidv4";
 import { ProductsImage } from "./ProductsImage";
-interface PostData {
+export interface PostData {
   category: string;
   store_name: string;
   menu_name: string;
@@ -20,6 +20,7 @@ interface PostData {
   img_url: string;
   user_nickname: string;
   user_id: string;
+  id? : string;
 }
 
 function WritePage() {
@@ -32,10 +33,37 @@ function WritePage() {
   const ratingRef = useRef<HTMLSelectElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const [file, setFile] = useState<File>();
-
+  const [ imgUrl, setImgUrl ] = useState("");
   const user = useAuthStore((state) => state.user);
-
   const router = useRouter();
+  const { id } = useParams();
+
+  const getPostsData = async () => {
+    const response = await fetch("http://localhost:3000/api/post");
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data: Post[] = await response.json();
+    const post: Post | undefined = data.find((post) => post.id === id);
+    if(!post){
+      return
+    }
+    if(categoryRef.current) categoryRef.current.value = post.category
+    if(storeRef.current) storeRef.current.value = post.store_name
+    if(menuRef.current) menuRef.current.value = post.menu_name
+    if(orderDateRef.current) orderDateRef.current.value = post.order_date
+    if(userRef.current) userRef.current.value = post.user_nickname
+    if(addressRef.current) addressRef.current.value = post.address
+    if(ratingRef.current) ratingRef.current.value = post.rating
+    if(contentRef.current) contentRef.current.value = post.content
+    setImgUrl(post.img_url);
+  };
+
+  useEffect(()=>{
+    if(id !== "new") {
+      getPostsData();
+    }
+  },[id])
 
   const addStoreList = async (data: PostData): Promise<Post> => {
     const response = await fetch("http://localhost:3000/api/post", {
@@ -46,13 +74,23 @@ function WritePage() {
     return response.json();
   };
 
+  const editStoreList = async (data: PostData): Promise<Post> => {
+    data.id = id as string;
+    const response = await fetch("http://localhost:3000/api/post", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    return response.json();
+  };
+
   const { mutate: addMutation } = useMutation<Post, unknown, PostData>({
-    mutationFn: (data: PostData) => addStoreList(data),
+    mutationFn: (data: PostData) => id === "new"? addStoreList(data) : editStoreList(data),
   });
 
   const uploadImg = async () => {
     if (!file) {
-      return null;
+      return imgUrl;
     }
     const newFileName = uuid();
     const supabase = createClient();
@@ -94,7 +132,6 @@ function WritePage() {
       alert("빈칸을 채워주세요.");
       return;
     }
-
     addMutation(postData);
     router.push("/");
   };
@@ -116,7 +153,7 @@ function WritePage() {
             </div>
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">별점</label>
-              <select className="p-2 rounded-md border rounded-md" ref={ratingRef}>
+              <select className="p-2 rounded-md border" ref={ratingRef}>
                 <option value="1">1</option>
                 <option value="1.5">1.5</option>
                 <option value="2">2</option>
@@ -165,7 +202,7 @@ function WritePage() {
           </div>
 
           <div className="mt-5 text-right">
-            <Button>작성하기</Button>
+            <Button>{id === "new" ? "작성하기" : "수정완료"}</Button>
           </div>
         </form>
       </div>
