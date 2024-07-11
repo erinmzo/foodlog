@@ -32,7 +32,7 @@ function WritePage() {
   const addressRef = useRef<HTMLInputElement>(null);
   const ratingRef = useRef<HTMLSelectElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const [file, setFile] = useState<File>();
+  const [file, setFile] = useState<File | null>(null);
   const [ imgUrl, setImgUrl ] = useState("");
   const user = useAuthStore((state) => state.user);
   const router = useRouter();
@@ -88,7 +88,7 @@ function WritePage() {
     mutationFn: (data: PostData) => id === "new"? addStoreList(data) : editStoreList(data),
   });
 
-  const uploadImg = async () => {
+  const uploadImg = async (): Promise<string | null> => {
     if (!file) {
       return imgUrl;
     }
@@ -97,7 +97,7 @@ function WritePage() {
     const { data, error } = await supabase.storage.from("post").upload(`${newFileName}`, file);
     if (error) {
       alert(`파일이 업로드 되지 않습니다.${error}`);
-      return;
+      return null;
     }
     const res = await supabase.storage.from("post").getPublicUrl(data.path);
 
@@ -142,10 +142,10 @@ function WritePage() {
         <h1 className="text-center mt-10 mb-3 text-2xl font-bold">오늘의 식당 기록</h1>
         <h3 className="text-center mb-10 text-lg">식당과 메뉴를 공유해주세요!</h3>
 
-        <form className="w-full pt-[40px] pb-[100px] px-[15px] lg:px-[140px]" onSubmit={onSubmit}>
+        <form className="w-full pt-[40px] pb-[100px] px-[15px] lg:px-[140px] shadow-lg" onSubmit={onSubmit}>
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-y-8">
             <div className="flex items-center">
-              <label className="w-[80px] sm:w-[120px] font-bold">유형</label>
+              <label className="w-[80px] sm:w-[120px] h-10 font-bold">유형</label>
               <select className="p-2 border rounded-md" ref={categoryRef}>
                 <option value="방문">방문</option>
                 <option value="배달">배달</option>
@@ -209,5 +209,4 @@ function WritePage() {
     </>
   );
 }
-
 export default WritePage;
