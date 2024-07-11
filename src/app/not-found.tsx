@@ -46,7 +46,9 @@ export default function NotFound() {
           <span className="text-[25px] text-[#878787] tracking-[1px] mb-[30px]">
             페이지를 찾을 수 없어요 !
           </span>
-          <Button>Go Home</Button>
+          <Link href="/">
+            <Button>Go Home</Button>
+          </Link>
         </div>
       </div>
     </div>
