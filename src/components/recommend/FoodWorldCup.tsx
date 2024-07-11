@@ -32,10 +32,12 @@ const FoodWorldCup = () => {
   const [currentRound, setCurrentRound] = useState<Food[]>(foodData);
   const [currentPair, setCurrentPair] = useState<number>(0);
   const [winners, setWinners] = useState<Food[]>([]);
+  const [_, setSelectedMenuIndex] = useState<number | null>(null);
 
   const handleSelect = (winnerIndex: number) => {
     const selectedWinner = currentRound[currentPair + winnerIndex];
     setWinners((prevWinners) => [...prevWinners, selectedWinner]);
+    setSelectedMenuIndex(winnerIndex); // 선택한 메뉴 인덱스 저장
 
     if (currentPair + 2 < currentRound.length) {
       // 다음 경기 쌍 설정
@@ -62,6 +64,13 @@ const FoodWorldCup = () => {
       currentRound[currentPair + 1],
     ];
   }
+
+  const handleReset = () => {
+    setCurrentRound(foodData); // 초기 음식 데이터로 설정
+    setCurrentPair(0); // 첫 번째 경기 쌍 인덱스로 설정
+    setWinners([]); // 승자 배열 초기화
+    setSelectedMenuIndex(null); // 선택한 메뉴 인덱스 초기화
+  };
 
   return (
     <div className="w-full flex flex-col items-center text-center mt-[80px]">
@@ -91,6 +100,7 @@ const FoodWorldCup = () => {
           </div>
         )}
       </div>
+      <button className="w-1/2 p-4 border" onClick={handleReset}>다시하기</button>
     </div>
   );
 };
