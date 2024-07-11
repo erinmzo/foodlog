@@ -14,7 +14,7 @@ const ModalButton = () => {
   return (
     <div className="flex flex-col my-auto justify-center items-center">
       <button
-        className=" rounded py-2 px-4 bg-[#24CAFF] border-[#00BBF7] text-center text-white font-bold mt-5"
+        className="rounded py-2 px-4 bg-[#24CAFF] border-[#00BBF7] text-center text-white font-bold mt-5"
         onClick={clickModal}
       >
         닉네임 변경

@@ -1,56 +1,43 @@
 "use client";
-
 import { createClient } from "@/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { Report } from "notiflix";
 import { ChangeEvent, useState } from "react";
-
 type Props = {
   clickModal: () => void;
 };
-
-const Modal = ({ clickModal }: Props) => {
+const Modal = (props: Props) => {
+  const { clickModal } = props;
   const [nickName, setNickName] = useState("");
   const params = useParams();
   const id = params.id;
   const supabase = createClient();
   const queryClient = useQueryClient();
-  // const updateProfileWithSupabase = async (newName, id) => {
-  //   const { data: result } = await supabase
-  //     .from("profile")
-  //     .update(newName)
-  //     .eq("id", id);
-  //   return result;
-  // };
+  const updateProfileWithSupabase = async (newName: string, id: string) => {
+    const { data: result } = await supabase.from("profile").update({ nickname: newName }).eq("id", id);
+    return result;
+  };
   const getProfileData = async () => {
     const data = await supabase.from("profile").select("*").eq("id", id).maybeSingle();
-
     return data;
   };
-
   const { data: profile, isPending, error } = useQuery({ queryKey: ["profile"], queryFn: getProfileData });
-
   if (isPending) return <div className="h-screen flex items-center justify-center">Loading...</div>;
-
   if (error) {
-    return Report.failure("데이터 로딩 실패", "데이터를 가져오는데 실패했습니다", "확인");
+    Report.failure("데이터 로딩 실패", "데이터를 가져오는데 실패했습니다", "확인");
+    return null;
   }
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => setNickName(e.target.value);
-
   const submitChange = async () => {
-    // const response = await updateProfileWithSupabase(
-    //   nickName,
-    //   profile.data?.id
-    // );
-    // queryClient.invalidateQueries({ queryKey: ["profile"] });
-
-    // alert("프로필 변경이 성공적으로 완료되었습니다!");
-
+    if (!profile.data) {
+      return;
+    }
+    const response = await updateProfileWithSupabase(nickName, profile.data?.id);
+    queryClient.invalidateQueries({ queryKey: ["profile"] });
+    alert("프로필 변경이 성공적으로 완료되었습니다!");
     console.log(nickName);
   };
-
   return (
     <div
       className="fixed top-0 left-0 w-full h-full flex my-auto justify-center items-center z-40 bg-[#00000066]/40 "
@@ -69,7 +56,7 @@ const Modal = ({ clickModal }: Props) => {
         />
         <div className="mt-5 flex gap-[15px]">
           <button
-            className="rounded py-2 px-4 bg-[#d1d1d1] border border-[#c9c9c9] text-center text-white font-bold"
+            className="rounded py-2 px-4 bg-[#D1D1D1] border border-[#C9C9C9] text-center text-white font-bold"
             onClick={clickModal}
           >
             뒤로가기
@@ -85,5 +72,4 @@ const Modal = ({ clickModal }: Props) => {
     </div>
   );
 };
-
 export default Modal;
