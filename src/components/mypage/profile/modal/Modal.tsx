@@ -16,10 +16,10 @@ const Modal = (props: Props) => {
   const id = params.id;
   const supabase = createClient();
   const queryClient = useQueryClient();
-  const updateProfileWithSupabase = async (newName, id) => {
+  const updateProfileWithSupabase = async (newName: string, id: string) => {
     const { data: result } = await supabase
       .from("profile")
-      .update(newName)
+      .update({ nickname: newName })
       .eq("id", id);
     return result;
   };
@@ -55,6 +55,9 @@ const Modal = (props: Props) => {
     setNickName(e.target.value);
 
   const submitChange = async () => {
+    if (!profile.data) {
+      return;
+    }
     const response = await updateProfileWithSupabase(
       nickName,
       profile.data?.id
