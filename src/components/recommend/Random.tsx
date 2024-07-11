@@ -1,16 +1,11 @@
 "use client";
+import { Recommend } from "@/types/store";
 import { useQuery } from "@tanstack/react-query";
 import { Report } from "notiflix";
 import { useState } from "react";
 
-interface Food {
-  id: number;
-  menu: string;
-  img_url: string;
-}
-
 // API에서 랜덤 음식 데이터를 가져오는 함수
-const fetchRandomFood = async (): Promise<Food> => {
+export const fetchRandomFood = async (): Promise<Recommend> => {
   const response = await fetch("/api/recommend");
   if (!response.ok) {
     Report.failure("음식 추천에 오류가 있습니다", "잠시 후 다시 시도해주세요.", "확인");
@@ -19,7 +14,7 @@ const fetchRandomFood = async (): Promise<Food> => {
 };
 
 const Random = () => {
-  const { data: random, refetch } = useQuery<Food>({
+  const { data: random, refetch } = useQuery<Recommend>({
     queryKey: ["getRandomFood"],
     queryFn: fetchRandomFood,
     enabled: false,
