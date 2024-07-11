@@ -34,7 +34,7 @@ export default function Comment() {
 
   const { mutate: addMutation } = useMutation<Comments, unknown, CommentsData>({
     mutationFn: (data: CommentsData) => addStoreList(data),
-    // onSuccess: () => queryClient.invalidateQueries(["comment",params.id])
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["comment"] }),
   });
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -45,6 +45,9 @@ export default function Comment() {
       content: contentRef.current?.value || "",
       post_id: params.id as string,
     };
+    if (user === null) {
+      alert("로그인 시 댓글 작성 가능합니다.");
+    }
 
     addMutation(CommentsData);
   };
@@ -54,13 +57,13 @@ export default function Comment() {
       <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-6">댓글</h2>
 
-        <form onSubmit={onSubmit} className="mb-4">
+        <form onSubmit={onSubmit} className="mb-4 flex">
           <textarea
             ref={contentRef}
-            className="w-[90%] p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            className="w-[90%] p-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             placeholder="Write a comment..."
           ></textarea>
-          <button className="w-[10%] bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+          <button className="w-[10%] bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600">
             작성
           </button>
         </form>

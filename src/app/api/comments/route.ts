@@ -17,39 +17,43 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(data);
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ error: "게시물 등록에 실패했습니다." });
+    return NextResponse.json({ error: "댓글 등록에 실패했습니다." });
   }
 }
 
-// export async function GET(request: NextRequest) {
-//   try {
-//     // const { searchParams } = new URL(request.url);
-//     // const id = searchParams.get("id");
-//     const id = request.json();
-//     console.log("id", id);
+export async function PUT(request: NextRequest) {
+  try {
+    const info = await request.json();
+    console.log("info", info);
 
-//     if (!id) {
-//       return NextResponse.json(
-//         { error: "ID 값이 필요합니다." },
-//         { status: 400 }
-//       );
-//     }
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("comments")
+      .update({ content: info.content })
+      .eq("id", info.id);
 
-//     const supabase = createClient();
-//     const { data, error } = await supabase
-//       .from("comments")
-//       .select("*")
-//       .eq("post_id", id);
+    return NextResponse.json(data);
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ error: "수정에 실패했습니다." });
+  }
+}
 
-//     if (error) {
-//       throw new Error(error.message);
-//     }
+export async function DELETE(request: NextRequest) {
+  try {
+    const info = await request.json();
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("comments")
+      .delete()
+      .eq("id", info);
+    if (error) {
+      return alert(`${error.message}`);
+    }
+    return NextResponse.json(data);
+  } catch (error) {
+    console.log(error);
 
-//     return NextResponse.json(data);
-//   } catch (error) {
-//     return NextResponse.json(
-//       { error: "데이터를 가져오는 데 실패했습니다." },
-//       { status: 500 }
-//     );
-//   }
-// }
+    return NextResponse.json({ error: "삭제에 실패했습니다." });
+  }
+}
