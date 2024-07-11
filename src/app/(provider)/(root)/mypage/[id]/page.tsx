@@ -4,7 +4,7 @@ import MyPageProfile from "@/components/mypage/profile/MyPageProfile";
 
 function MyPage() {
   return (
-    <div>
+    <div className="pt-[70px] pb-[200px]">
       <MyPageProfile />
       <ModalButton />
       <MyPageList />

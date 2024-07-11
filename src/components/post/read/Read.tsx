@@ -1,21 +1,20 @@
 "use client";
 
+import { Post } from "@/types/store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-
-import ReadHeader from "./ReadHeader";
-import ReadInfo from "./ReadInfo";
-import ReadImage from "./ReadImage";
-import Description from "./ReadDescription";
 import ReadButton from "./ReadButton";
-import { Post } from "@/types/store";
+import Description from "./ReadDescription";
+import ReadHeader from "./ReadHeader";
+import ReadImage from "./ReadImage";
+import ReadInfo from "./ReadInfo";
 
 export default function Read() {
   const { id } = useParams();
   const queryClient = useQueryClient();
 
   const getPostsData = async () => {
-    const response = await fetch("http://localhost:3000/api/store");
+    const response = await fetch("http://localhost:3000/api/post");
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -31,9 +30,7 @@ export default function Read() {
 
   const deletePost = async (postId: string) => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/store?id=${postId}`
-      );
+      const response = await fetch(`http://localhost:3000/api/post?id=${postId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -43,53 +40,37 @@ export default function Read() {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div className="h-screen flex items-center justify-center">Loading...</div>;
+
   if (error) {
     console.error(error);
     return <div>Error: {error.message}</div>;
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center py-2">
-      <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-4xl">
+    <div className="min-h-screen flex flex-col items-center justify-center pb-[100px] px-[15px] lg:px-0">
+      <div className="mt-[80px] mb-[40px]">
         <ReadHeader />
-        <div className="flex flex-col ">
+      </div>
+      <div className="border border-[#f5f5f5] bg-white rounded-lg w-full max-w-[1024px]">
+        <div className="flex flex-col px-[15px] items-center lg:px-[140px] py-[72px]">
           {data?.map((posts) => (
-            <div key={posts.id} className="border-b border-gray-200 py-2 my-2">
-              <div className="flex space-x-4 whitespace-nowrap">
-                <div className="w-1/2">
-                  <ReadInfo label="방문/배달" value={posts.category} />
-                </div>
+            <>
+              <div key={posts.id} className="w-full grid grid-cols-1 sm:grid-cols-2 gap-y-8">
+                <ReadInfo label="방문/배달" value={posts.category} />
+                <ReadInfo label="별점" value={posts.rating} />
+                <ReadInfo label="식당 이름" value={posts.store_name} />
+                <ReadInfo label="메뉴 이름" value={posts.menu_name} />
+                <ReadInfo label="주문한 날짜" value={posts.order_date} />
+                <ReadInfo label="작성자" value={posts.user_nickname} />
+                <ReadInfo label="주소" value={posts.address || ""} />
               </div>
-              <div className="flex mt-5 space-x-4 items-center">
-                <div className="w-1/2 whitespace-nowrap">
-                  <ReadInfo label="식당 이름" value={posts.store_name} />
-                </div>
-                <div className="w-1/2 whitespace-nowrap">
-                  <ReadInfo label="메뉴 이름" value={posts.menu_name} />
-                </div>
+              <div className="mt-[50px]">
+                <ReadImage imgUrl={posts.img_url} />
               </div>
-              <div className="flex mt-5 space-x-4 items-center">
-                <div className="w-1/2 whitespace-nowrap">
-                  <ReadInfo label="주문한 날짜" value={posts.order_date} />
-                </div>
-                <div className="w-1/2 whitespace-nowrap">
-                  <ReadInfo label="작성자" value={posts.user_nickname} />
-                </div>
-              </div>
-              <div className="flex mt-5 space-x-4 items-center">
-                <div className="w-1/2 whitespace-nowrap">
-                  <ReadInfo label="주소" value={posts.address ?? ""} />
-                </div>
-                <div className="w-1/2 whitespace-nowrap">
-                  <ReadInfo label="별점" value={posts.rating} />
-                </div>
-              </div>
-
-              <ReadImage img_url={posts.img_url ?? ""} />
               <Description posts={posts} />
               <ReadButton />
-            </div>
+            </>
           ))}
         </div>
       </div>

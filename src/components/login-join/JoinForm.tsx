@@ -1,9 +1,9 @@
 "use client";
-import React, { useState } from "react";
-import InputField from "./InputField";
-import Button from "../common/Button";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/supabase/client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Button from "../common/Button";
+import InputField from "./InputField";
 
 function JoinForm() {
   const supabase = createClient();
@@ -17,16 +17,12 @@ function JoinForm() {
   const handleSubmitJoin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { data: userNickname } = await supabase
-      .from("profile")
-      .select()
-      .eq("nickname", nickname);
+    const { data: userNickname } = await supabase.from("profile").select().eq("nickname", nickname);
 
-    if (userNickname?.find((userName) => nickname === userName.nickname)) {
+    if (userNickname?.find((user) => nickname === user.nickname)) {
       return alert("이미 사용중인 닉네임 입니다.");
     }
 
-    // const { data: userEmail, error };
     if (password !== checkPassword) {
       return alert("비밀번호가 일치하지 않습니다.");
     }
@@ -66,10 +62,7 @@ function JoinForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmitJoin}
-      className="flex flex-col items-center justify-center mb-[350px]"
-    >
+    <form onSubmit={handleSubmitJoin} className="flex flex-col items-center justify-center mb-[350px]">
       <div className="flex flex-col gap-y-5 mb-[25px] px-[35px] py-[40px] border-[1px] border-[#F5F5F5] rounded-[30px]">
         <InputField
           name="닉네임"
