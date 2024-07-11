@@ -2,7 +2,11 @@ import FoodWorldCup from "@/components/recommend/FoodWorldCup";
 import React from "react";
 
 const WorldCupPage = () => {
-  return <FoodWorldCup/>;
+  return (
+    <div className="h-screen">
+      <FoodWorldCup />
+    </div>
+  );
 };
 
 export default WorldCupPage;

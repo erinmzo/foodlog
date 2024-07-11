@@ -5,11 +5,24 @@ import { createClient } from "@/supabase/client";
 import { Post } from "@/types/store";
 import { useAuthStore } from "@/zustand/auth";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { Report } from "notiflix";
-import { useRef, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { uuid } from "uuidv4";
 import { ProductsImage } from "./ProductsImage";
+import Link from "next/link";
+export interface PostData {
+  category: string;
+  store_name: string;
+  menu_name: string;
+  order_date: string;
+  address: string;
+  rating: string;
+  content: string;
+  img_url: string;
+  user_nickname: string;
+  user_id: string;
+  id?: string;
+}
 
 function WritePage() {
   const categoryRef = useRef<HTMLSelectElement>(null);
@@ -20,23 +33,38 @@ function WritePage() {
   const addressRef = useRef<HTMLInputElement>(null);
   const ratingRef = useRef<HTMLSelectElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const [file, setFile] = useState<File>();
-
+  const [file, setFile] = useState<File | null>(null);
+  const [imgUrl, setImgUrl] = useState<string | null>("");
   const user = useAuthStore((state) => state.user);
-
   const router = useRouter();
-  interface PostData {
-    category: string;
-    store_name: string;
-    menu_name: string;
-    order_date: string;
-    address: string;
-    rating: string;
-    content: string;
-    img_url: string;
-    user_nickname: string;
-    user_id: string;
-  }
+  const { id } = useParams();
+
+  const getPostsData = async () => {
+    const response = await fetch("http://localhost:3000/api/post");
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data: Post[] = await response.json();
+    const post: Post | undefined = data.find((post) => post.id === id);
+    if (!post) {
+      return;
+    }
+    if (categoryRef.current) categoryRef.current.value = post.category;
+    if (storeRef.current) storeRef.current.value = post.store_name;
+    if (menuRef.current) menuRef.current.value = post.menu_name;
+    if (orderDateRef.current) orderDateRef.current.value = post.order_date;
+    if (userRef.current) userRef.current.value = post.user_nickname;
+    if (addressRef.current) addressRef.current.value = post.address as string;
+    if (ratingRef.current) ratingRef.current.value = post.rating;
+    if (contentRef.current) contentRef.current.value = post.content;
+    setImgUrl(post.img_url);
+  };
+
+  useEffect(() => {
+    if (id !== "new") {
+      getPostsData();
+    }
+  }, [id]);
 
   const addStoreList = async (data: PostData): Promise<Post> => {
     const response = await fetch("http://localhost:3000/api/post", {
@@ -47,13 +75,24 @@ function WritePage() {
     return response.json();
   };
 
+  const editStoreList = async (data: PostData): Promise<Post> => {
+    data.id = id as string;
+    const response = await fetch("http://localhost:3000/api/post", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    return response.json();
+  };
+
   const { mutate: addMutation } = useMutation<Post, unknown, PostData>({
-    mutationFn: (data: PostData) => addStoreList(data),
+    mutationFn: (data: PostData) =>
+      id === "new" ? addStoreList(data) : editStoreList(data),
   });
 
-  const uploadImg = async () => {
+  const uploadImg = async (): Promise<string | null> => {
     if (!file) {
-      return null;
+      return imgUrl;
     }
     const newFileName = uuid();
     const supabase = createClient();
@@ -61,11 +100,10 @@ function WritePage() {
       .from("post")
       .upload(`${newFileName}`, file);
     if (error) {
-      Report.failure("파일이 업로드 되지 않습니다", `${error}`, "확인");
-      return;
+      alert(`파일이 업로드 되지 않습니다.${error}`);
+      return null;
     }
     const res = await supabase.storage.from("post").getPublicUrl(data.path);
-
     return res.data.publicUrl;
   };
 
@@ -94,10 +132,9 @@ function WritePage() {
       !postData.content ||
       !postData.img_url
     ) {
-      Report.failure("빈칸을 채워주세요.", "", "확인");
+      alert("빈칸을 채워주세요.");
       return;
     }
-
     addMutation(postData);
     router.push("/");
   };
@@ -113,26 +150,22 @@ function WritePage() {
         </h3>
 
         <form
-          className="w-full pt-[40px] pb-[100px] px-[15px] lg:px-[140px]"
+          className="w-full pt-[40px] pb-[100px] px-[15px] lg:px-[140px] shadow-lg"
           onSubmit={onSubmit}
         >
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-y-8">
             <div className="flex items-center">
-              <label className="w-[80px] sm:w-[120px] font-bold">유형</label>
-              <select
-                className="p-2 border rounded-md lg:w-[200px]"
-                ref={categoryRef}
-              >
+              <label className="w-[80px] sm:w-[120px] h-10 font-bold">
+                유형
+              </label>
+              <select className="p-2 border rounded-md" ref={categoryRef}>
                 <option value="방문">방문</option>
                 <option value="배달">배달</option>
               </select>
             </div>
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">별점</label>
-              <select
-                className="p-2 border rounded-md lg:w-[200px]"
-                ref={ratingRef}
-              >
+              <select className="p-2 rounded-md border" ref={ratingRef}>
                 <option value="1">1</option>
                 <option value="1.5">1.5</option>
                 <option value="2">2</option>
@@ -149,7 +182,7 @@ function WritePage() {
                 식당이름
               </label>
               <input
-                className="p-2 border rounded-md lg:w-[200px]"
+                className="p-2 border rounded-md"
                 type="text"
                 ref={storeRef}
               />
@@ -159,7 +192,7 @@ function WritePage() {
                 메뉴이름
               </label>
               <input
-                className="p-2 border rounded-md lg:w-[200px]"
+                className="p-2 border rounded-md"
                 type="text"
                 ref={menuRef}
               />
@@ -169,7 +202,7 @@ function WritePage() {
                 주문날짜
               </label>
               <input
-                className="p-2 border rounded-md lg:w-[200px]"
+                className="p-2 border rounded-md"
                 type="date"
                 ref={orderDateRef}
               />
@@ -177,7 +210,7 @@ function WritePage() {
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">작성자</label>
               <input
-                className="p-2 border rounded-md lg:w-[200px]"
+                className="p-2 border rounded-md"
                 type="text"
                 ref={userRef}
                 defaultValue={user?.user_metadata.display_name}
@@ -186,14 +219,14 @@ function WritePage() {
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">주소</label>
               <input
-                className="p-2 border rounded-md lg:w-[200px]"
+                className="p-2 border rounded-md"
                 type="text"
                 ref={addressRef}
               />
             </div>
           </div>
           <ProductsImage setFile={setFile} />
-          <div className="mt-8">
+          <div className="mt-5">
             <textarea
               className="w-full h-[400px] p-5 border rounded-md resize-none"
               name="text"
@@ -202,13 +235,15 @@ function WritePage() {
             ></textarea>
           </div>
 
-          <div className="mt-8 text-right">
-            <Button>작성하기</Button>
+          <div className="mt-5 text-right space-x-2">
+            <button className="rounded py-2 px-4 bg-gray-400 border-gray-400 text-center text-white font-bold">
+              <Link href={"/"}>뒤로가기</Link>
+            </button>
+            <Button>{id === "new" ? "작성하기" : "수정완료"}</Button>
           </div>
         </form>
       </div>
     </>
   );
 }
-
 export default WritePage;
