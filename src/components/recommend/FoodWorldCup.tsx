@@ -32,10 +32,12 @@ const FoodWorldCup = () => {
   const [currentRound, setCurrentRound] = useState<Food[]>(foodData);
   const [currentPair, setCurrentPair] = useState<number>(0);
   const [winners, setWinners] = useState<Food[]>([]);
+  const [_, setSelectedMenuIndex] = useState<number | null>(null);
 
   const handleSelect = (winnerIndex: number) => {
     const selectedWinner = currentRound[currentPair + winnerIndex];
     setWinners((prevWinners) => [...prevWinners, selectedWinner]);
+    setSelectedMenuIndex(winnerIndex); // 선택한 메뉴 인덱스 저장
 
     if (currentPair + 2 < currentRound.length) {
       // 다음 경기 쌍 설정
@@ -57,31 +59,48 @@ const FoodWorldCup = () => {
   // 현재 라운드의 경기 쌍 배열 설정
   let currentRoundPairs: Food[] = [];
   if (currentPair < currentRound.length) {
-    currentRoundPairs = [currentRound[currentPair], currentRound[currentPair + 1]];
+    currentRoundPairs = [
+      currentRound[currentPair],
+      currentRound[currentPair + 1],
+    ];
   }
 
+  const handleReset = () => {
+    setCurrentRound(foodData); // 초기 음식 데이터로 설정
+    setCurrentPair(0); // 첫 번째 경기 쌍 인덱스로 설정
+    setWinners([]); // 승자 배열 초기화
+    setSelectedMenuIndex(null); // 선택한 메뉴 인덱스 초기화
+  };
+
   return (
-    <div className="w-full flex flex-col items-center text-center">
+    <div className="w-full flex flex-col items-center text-center mt-[80px]">
       <div className="w-3/5 mx-auto">
-        <h1 className="text-xl font-bold mt-8">{currentRound.length === 2 ? "결승" : `${currentRound.length}강`}</h1>
-        <h1 className="text-[16px] text-[#878787]">메뉴를 추천해드립니다</h1>
+        <h1 className="text-xl font-bold">
+          {currentRound.length === 2 ? "결승" : `${currentRound.length}강`}
+        </h1>
+        <p className="mb-8 text-[16px] text-[#878787]">메뉴를 추천해드립니다</p>
         {currentPair < currentRound.length && (
           <div className="flex mb-8">
             <div
-              className="flex-1 m-4 py-6 text-xl font-semibold bg-[#8bdffc] border hover:bg-[#00BBF7]"
+              className="flex flex-1 m-4 text-2xl font-semibold bg-[#8bdffc] border hover:bg-[#00BBF7] aspect-square"
               onClick={() => handleSelect(0)}
             >
-              <button className="w-full h-auto text-white">{currentRoundPairs[0]?.name}</button>
+              <button className="w-full text-white">
+                {currentRoundPairs[0]?.name}
+              </button>
             </div>
             <div
-              className="flex-1 m-4 py-6 text-xl font-semibold bg-[#8bdffc] border hover:bg-[#00BBF7]"
+              className="flex flex-1 m-4 text-2xl font-semibold bg-[#8bdffc] border hover:bg-[#00BBF7] aspect-square"
               onClick={() => handleSelect(1)}
             >
-              <button className="w-full h-auto text-white">{currentRoundPairs[1]?.name}</button>
+              <button className="w-full text-white">
+                {currentRoundPairs[1]?.name}
+              </button>
             </div>
           </div>
         )}
       </div>
+      <button className="w-1/4 p-4 text-2xl font-bold text-[#24CAFF] border rounded-md" onClick={handleReset}>다시하기</button>
     </div>
   );
 };
