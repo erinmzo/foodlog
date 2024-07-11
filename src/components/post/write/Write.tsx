@@ -33,7 +33,7 @@ function WritePage() {
   const ratingRef = useRef<HTMLSelectElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const [file, setFile] = useState<File | null>(null);
-  const [ imgUrl, setImgUrl ] = useState("");
+  const [ imgUrl, setImgUrl ] = useState<string | null>("");
   const user = useAuthStore((state) => state.user);
   const router = useRouter();
   const { id } = useParams();
@@ -53,7 +53,7 @@ function WritePage() {
     if(menuRef.current) menuRef.current.value = post.menu_name
     if(orderDateRef.current) orderDateRef.current.value = post.order_date
     if(userRef.current) userRef.current.value = post.user_nickname
-    if(addressRef.current) addressRef.current.value = post.address
+    if(addressRef.current) addressRef.current.value = post.address as string
     if(ratingRef.current) ratingRef.current.value = post.rating
     if(contentRef.current) contentRef.current.value = post.content
     setImgUrl(post.img_url);
@@ -208,5 +208,6 @@ function WritePage() {
       </div>
     </>
   );
+
 }
 export default WritePage;
