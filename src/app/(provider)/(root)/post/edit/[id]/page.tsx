@@ -1,5 +1,8 @@
+import EditPage from "@/components/post/edit/Edit";
+
+
 function PostEditPage() {
-  return <div>PostEditPage</div>;
+  return <EditPage/>;
 }
 
 export default PostEditPage;
