@@ -4,7 +4,8 @@
 
 @font-face {
   font-family: "Pretendard-Regular";
-  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff") format("woff");
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
   font-weight: 400;
   font-style: normal;
 }
@@ -12,30 +13,69 @@
 *,
 body,
 pre {
-  font-family: "Pretendard Variable !important", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto,
-    "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+  font-family: "Pretendard Variable !important", Pretendard, -apple-system,
+    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 }
 
 @layer utilities {
   .speech-bubble {
     position: relative;
-    background: #24caff;
+    background: #00bbf7;
     border-radius: 12px;
     padding: 15px 20px;
+    width: 300px;
+    margin: 0 auto;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
   .speech-bubble:after {
     content: "";
     position: absolute;
-    bottom: 2px;
+    bottom: 3px;
     left: 50%;
     width: 0;
     height: 0;
     border: 17px solid transparent;
-    border-top-color: #24caff;
+    border-top-color: #00bbf7;
     border-bottom: 0;
     margin-left: -19px;
     margin-bottom: -19px;
+  }
+
+  @keyframes bounce {
+    100% {
+      top: -20px;
+    }
+  }
+
+  .bounce {
+    position: relative;
+    top: 20px;
+    display: inline-block;
+    animation: bounce 0.5s ease-in-out infinite alternate;
+  }
+
+  .bounce:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  .bounce:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .bounce:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+  .bounce:nth-child(5) {
+    animation-delay: 0.5s;
+  }
+
+  .text-shadow {
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .image-shadow {
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
   }
 }
