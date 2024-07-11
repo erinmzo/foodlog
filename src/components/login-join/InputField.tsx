@@ -4,13 +4,20 @@ interface InputFieldProps {
   name: string;
   required?: boolean;
   value: string;
-  password?: boolean;
   type: string;
   minLength: number;
   maxLength: number;
   onChangeValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
-function InputField({ name, required, value, onChangeValue, type, minLength, maxLength }: InputFieldProps) {
+function InputField({
+  name,
+  required,
+  value,
+  onChangeValue,
+  type,
+  minLength,
+  maxLength,
+}: InputFieldProps) {
   return (
     <div className="flex items-center justify-between">
       <div className="w-[127px]">

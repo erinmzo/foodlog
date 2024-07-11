@@ -16,38 +16,52 @@ const Modal = (props: Props) => {
   const id = params.id;
   const supabase = createClient();
   const queryClient = useQueryClient();
-  // const updateProfileWithSupabase = async (newName, id) => {
-  //   const { data: result } = await supabase
-  //     .from("profile")
-  //     .update(newName)
-  //     .eq("id", id);
-  //   return result;
-  // };
+  const updateProfileWithSupabase = async (newName, id) => {
+    const { data: result } = await supabase
+      .from("profile")
+      .update(newName)
+      .eq("id", id);
+    return result;
+  };
   const getProfileData = async () => {
-    const data = await supabase.from("profile").select("*").eq("id", id).maybeSingle();
+    const data = await supabase
+      .from("profile")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
 
     return data;
   };
 
-  const { data: profile, isPending, error } = useQuery({ queryKey: ["profile"], queryFn: getProfileData });
+  const {
+    data: profile,
+    isPending,
+    error,
+  } = useQuery({ queryKey: ["profile"], queryFn: getProfileData });
 
-  if (isPending) return <div className="h-screen flex items-center justify-center">Loading...</div>;
+  if (isPending)
+    return (
+      <div className="h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
 
   if (error) {
     alert("데이터를 가져오는데 실패했습니다");
     return null;
   }
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => setNickName(e.target.value);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setNickName(e.target.value);
 
   const submitChange = async () => {
-    // const response = await updateProfileWithSupabase(
-    //   nickName,
-    //   profile.data?.id
-    // );
-    // queryClient.invalidateQueries({ queryKey: ["profile"] });
+    const response = await updateProfileWithSupabase(
+      nickName,
+      profile.data?.id
+    );
+    queryClient.invalidateQueries({ queryKey: ["profile"] });
 
-    // alert("프로필 변경이 성공적으로 완료되었습니다!");
+    alert("프로필 변경이 성공적으로 완료되었습니다!");
 
     console.log(nickName);
   };
