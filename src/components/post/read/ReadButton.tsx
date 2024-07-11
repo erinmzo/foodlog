@@ -5,6 +5,7 @@ import { Post } from "@/types/store";
 import { useAuthStore } from "@/zustand/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Confirm, Notify } from "notiflix";
 interface ReadButtonProps {
   postsId: string;
 }
@@ -15,7 +16,7 @@ const ReadButton = ({ posts }: { posts: Post }) => {
   const user = useAuthStore((state) => state.user);
   const isWriter = user?.user_metadata.sub === user_id;
 
-  const deleteContents = async (data: { id: string }) => {
+  const deletePost = async (data: { id: string }) => {
     const response = await fetch("http://localhost:3000/api/post", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
@@ -27,16 +28,27 @@ const ReadButton = ({ posts }: { posts: Post }) => {
     }
     return response.json();
   };
+  
+  const handleDelete = () => {
+  Confirm.show(
+    "게시물 삭제",
+    "정말로 삭제하시겠습니까?",
+    'Yes',
+    'No',
+    async() => {
+      try {
+            await deletePost({ id });
+            router.push("/");
+          } catch (error) {
+            console.error("Failed to delete the post:", error);
+          }
 
-  const handleDelete = async () => {
-    alert("정말 삭제하시겠습니까?");
-    try {
-      await deleteContents({ id });
-      router.push("/");
-    } catch (error) {
-      console.error("Failed to delete the post:", error);
-    }
-  };
+          Notify.success("삭제되었습니다.");
+    },
+    () => {
+      Notify.info("삭제가 취소되었습니다.");
+    });
+  }
 
   return (
     <div>
