@@ -2,6 +2,7 @@
 import { useAuthStore } from "@/zustand/auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Report } from "notiflix";
 
 function WriteButton() {
   const user = useAuthStore((state) => state.user);
@@ -9,7 +10,7 @@ function WriteButton() {
 
   const handleWriteClick = () => {
     if (!user) {
-      alert("로그인되어야 게시글 작성이 가능합니다.");
+      Report.info("로그인되어야 게시글 작성이 가능합니다.", "", "확인");
       router.push("/login");
     } else {
       router.push("/post/write");

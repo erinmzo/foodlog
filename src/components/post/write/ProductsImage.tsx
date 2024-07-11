@@ -24,11 +24,11 @@ export const ProductsImage = ({ setFile }: Props) => {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row mt-5">
+    <div className="flex flex-col sm:flex-row mt-8 items-center">
       <label className="w-[120px] font-bold" htmlFor="file">
         이미지
       </label>
-      <input className="bg-white p-2 rounded-md border mt-3 sm:mt-0" type="file" onChange={handleFiles} />
+      <input className="bg-white p-2 rounded-md border mt-3 sm:mt-0 lg:w-[623px]" type="file" onChange={handleFiles} />
     </div>
   );
 };

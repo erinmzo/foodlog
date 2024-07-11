@@ -6,12 +6,9 @@ export const getRandomFood = async () => {
   const supabase = createClient();
 
   // supabase에서 'recommand' 테이블의 모든 데이터를 선택
-  const { data, error } = await supabase
-    .from('recommend')
-    .select('*');
+  const { data, error } = await supabase.from("recommend").select("*");
 
   if (error) {
-    console.error(error);
     return null;
   }
 
@@ -24,7 +21,7 @@ export async function GET() {
   // 랜덤 음식 데이터를 가져옴
   const randomFood = await getRandomFood();
   if (!randomFood) {
-    return NextResponse.json({ error: '데이터 가져오기 실패' }, { status: 404 });
-}
+    return NextResponse.json({ error: "데이터 가져오기 실패" }, { status: 404 });
+  }
   return NextResponse.json(randomFood);
 }

@@ -5,6 +5,7 @@ import { Post } from "@/types/store";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { Report } from "notiflix";
 
 function MyPageList() {
   const params = useParams();
@@ -21,7 +22,7 @@ function MyPageList() {
   });
 
   const getStoreData = async () => {
-    const response = await fetch("http://localhost:3000/api/post");
+    const response = await fetch("http://localhost:3000/api/post", { next: { revalidate: 60 } });
     const data = await response.json();
     return data;
   };
@@ -31,7 +32,7 @@ function MyPageList() {
   if (isPending) return <div className="h-screen flex items-center justify-center">Loading...</div>;
 
   if (error) {
-    alert("데이터를 가져오는데 실패했습니다");
+    Report.failure("데이터 로딩 실패", "데이터를 가져오는데 실패했습니다", "확인");
     return null;
   }
 
@@ -42,21 +43,17 @@ function MyPageList() {
   return (
     <div className="container mx-auto max-w-[1024px] border-t border-[#f5f5f5] pt-[70px] mt-[70px] px-[15px] lg:px-0">
       <h1 className="text-center text-[24px] font-bold">나의 푸드로그</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[17px] mt-16">
-        {filteredPost && filteredPost.length ? (
-          filteredPost.map((post) => (
+      {filteredPost && filteredPost.length ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[17px] mt-16">
+          {filteredPost.map((post) => (
             <Link key={post.id} href={`/post/read/${post.id}`}>
               <StorePostCard post={post} />
             </Link>
-          ))
-        ) : (
-          <>
-            <div className="h-screen flex items-center justify-center text-center text-2xl">
-              작성된 게시물이 없습니다
-            </div>
-          </>
-        )}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="h-[400px] flex items-center justify-center text-center text-2xl">작성된 게시물이 없습니다</div>
+      )}
     </div>
   );
 }

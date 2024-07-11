@@ -3,6 +3,7 @@
 import { createClient } from "@/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
+import { Report } from "notiflix";
 import { ChangeEvent, useState } from "react";
 
 type Props = {
@@ -34,8 +35,7 @@ const Modal = (props: Props) => {
   if (isPending) return <div className="h-screen flex items-center justify-center">Loading...</div>;
 
   if (error) {
-    alert("데이터를 가져오는데 실패했습니다");
-    return null;
+    return Report.failure("데이터 로딩 실패", "데이터를 가져오는데 실패했습니다", "확인");
   }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => setNickName(e.target.value);
