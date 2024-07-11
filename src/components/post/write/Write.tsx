@@ -88,7 +88,7 @@ function WritePage() {
   const { mutate: addMutation } = useMutation<Post, unknown, PostData>({
     mutationFn: (data: PostData) => id === "new"? addStoreList(data) : editStoreList(data),
   });
-
+  
   const uploadImg = async (): Promise<string | null> => {
     if (!file) {
       return imgUrl;
