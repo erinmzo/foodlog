@@ -87,14 +87,9 @@ function WritePage() {
     return response.json();
   };
 
-<<<<<<< HEAD
-  const { mutate: addMutation } = useMutation<Post, unknown, PostData>({
-    mutationFn: (data: PostData) =>
-      id === "new" ? addStoreList(data) : editStoreList(data),
-=======
   const { mutate: saveMutation } = useMutation<Post, unknown, PostData>({
-    mutationFn: (data: PostData) => (id === "new" ? savePost(data) : editPost(data)),
->>>>>>> 24cecdc1e2c8e08b5e7a42276130b860a136cd36
+    mutationFn: (data: PostData) =>
+      id === "new" ? savePost(data) : editPost(data),
   });
 
   const uploadImg = async (): Promise<string | null> => {
@@ -143,7 +138,7 @@ function WritePage() {
       return;
     }
     saveMutation(postData);
-    Notify.success("작성이 완료되었습니다.")
+    Notify.success("작성이 완료되었습니다.");
     router.push("/");
   };
 
@@ -157,14 +152,10 @@ function WritePage() {
           식당과 메뉴를 공유해주세요!
         </h3>
 
-<<<<<<< HEAD
         <form
           className="w-full pt-[40px] pb-[100px] px-[15px] lg:px-[140px] shadow-lg"
-          onSubmit={onSubmit}
+          onSubmit={handlePostSubmit}
         >
-=======
-        <form className="w-full pt-[40px] pb-[100px] px-[15px] lg:px-[140px] shadow-lg" onSubmit={handlePostSubmit}>
->>>>>>> 24cecdc1e2c8e08b5e7a42276130b860a136cd36
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-y-8">
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">유형</label>
