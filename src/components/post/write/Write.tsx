@@ -5,7 +5,10 @@ import { createClient } from "@/supabase/client";
 import { Post } from "@/types/store";
 import { useAuthStore } from "@/zustand/auth";
 import { useMutation } from "@tanstack/react-query";
+<<<<<<< HEAD
 import Link from "next/link";
+=======
+>>>>>>> de06b66011e498e4e0fd287319f59a2591963492
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { uuid } from "uuidv4";
@@ -87,7 +90,12 @@ function WritePage() {
   };
 
   const { mutate: addMutation } = useMutation<Post, unknown, PostData>({
+<<<<<<< HEAD
     mutationFn: (data: PostData) => (id === "new" ? addStoreList(data) : editStoreList(data)),
+=======
+    mutationFn: (data: PostData) =>
+      id === "new" ? addStoreList(data) : editStoreList(data),
+>>>>>>> de06b66011e498e4e0fd287319f59a2591963492
   });
 
   const uploadImg = async (): Promise<string | null> => {
@@ -96,13 +104,14 @@ function WritePage() {
     }
     const newFileName = uuid();
     const supabase = createClient();
-    const { data, error } = await supabase.storage.from("post").upload(`${newFileName}`, file);
+    const { data, error } = await supabase.storage
+      .from("post")
+      .upload(`${newFileName}`, file);
     if (error) {
       alert(`파일이 업로드 되지 않습니다.${error}`);
       return null;
     }
     const res = await supabase.storage.from("post").getPublicUrl(data.path);
-
     return res.data.publicUrl;
   };
 
@@ -141,13 +150,26 @@ function WritePage() {
   return (
     <>
       <div className="max-w-[1024px] mx-auto my-20">
-        <h1 className="text-center mt-10 mb-3 text-2xl font-bold">오늘의 식당 기록</h1>
-        <h3 className="text-center mb-10 text-lg">식당과 메뉴를 공유해주세요!</h3>
+        <h1 className="text-center mt-10 mb-3 text-2xl font-bold">
+          오늘의 식당 기록
+        </h1>
+        <h3 className="text-center mb-10 text-lg">
+          식당과 메뉴를 공유해주세요!
+        </h3>
 
-        <form className="w-full pt-[40px] pb-[100px] px-[15px] lg:px-[140px] shadow-lg" onSubmit={onSubmit}>
+        <form
+          className="w-full pt-[40px] pb-[100px] px-[15px] lg:px-[140px] shadow-lg"
+          onSubmit={onSubmit}
+        >
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-y-8">
             <div className="flex items-center">
+<<<<<<< HEAD
               <label className="w-[80px] sm:w-[120px] font-bold">유형</label>
+=======
+              <label className="w-[80px] sm:w-[120px] h-10 font-bold">
+                유형
+              </label>
+>>>>>>> de06b66011e498e4e0fd287319f59a2591963492
               <select className="p-2 border rounded-md" ref={categoryRef}>
                 <option value="방문">방문</option>
                 <option value="배달">배달</option>
@@ -168,16 +190,34 @@ function WritePage() {
               </select>
             </div>
             <div className="flex items-center">
-              <label className="w-[80px] sm:w-[120px] font-bold">식당이름</label>
-              <input className="p-2 border rounded-md" type="text" ref={storeRef} />
+              <label className="w-[80px] sm:w-[120px] font-bold">
+                식당이름
+              </label>
+              <input
+                className="p-2 border rounded-md"
+                type="text"
+                ref={storeRef}
+              />
             </div>
             <div className="flex items-center">
-              <label className="w-[80px] sm:w-[120px] font-bold">메뉴이름</label>
-              <input className="p-2 border rounded-md" type="text" ref={menuRef} />
+              <label className="w-[80px] sm:w-[120px] font-bold">
+                메뉴이름
+              </label>
+              <input
+                className="p-2 border rounded-md"
+                type="text"
+                ref={menuRef}
+              />
             </div>
             <div className="flex items-center">
-              <label className="w-[80px] sm:w-[120px] font-bold">주문날짜</label>
-              <input className="p-2 border rounded-md" type="date" ref={orderDateRef} />
+              <label className="w-[80px] sm:w-[120px] font-bold">
+                주문날짜
+              </label>
+              <input
+                className="p-2 border rounded-md"
+                type="date"
+                ref={orderDateRef}
+              />
             </div>
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">작성자</label>
@@ -190,7 +230,11 @@ function WritePage() {
             </div>
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">주소</label>
-              <input className="p-2 border rounded-md" type="text" ref={addressRef} />
+              <input
+                className="p-2 border rounded-md"
+                type="text"
+                ref={addressRef}
+              />
             </div>
           </div>
           <ProductsImage setFile={setFile} />
