@@ -4,19 +4,13 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   try {
     const info = await request.json();
-    console.log("info", info);
     const supabase = createClient();
-    const { data, error } = await supabase
-      .from("comments")
-      .insert(info)
-      .select();
+    const { data, error } = await supabase.from("comments").insert(info).select();
     if (error) {
-      console.log(error);
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
     return NextResponse.json(data);
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error: "게시물 등록에 실패했습니다." });
   }
 }
