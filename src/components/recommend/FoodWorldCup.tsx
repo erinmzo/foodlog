@@ -100,7 +100,7 @@ const FoodWorldCup = () => {
           </div>
         )}
       </div>
-      <button className="w-1/2 p-4 border" onClick={handleReset}>다시하기</button>
+      <button className="w-1/4 p-4 text-2xl font-bold text-[#24CAFF] border rounded-md" onClick={handleReset}>다시하기</button>
     </div>
   );
 };
