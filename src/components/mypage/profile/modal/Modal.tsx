@@ -6,7 +6,11 @@ import { useParams } from "next/navigation";
 import { Report } from "notiflix";
 import { ChangeEvent, useState } from "react";
 
-const Modal = ({ clickModal }: { clickModal: () => void }) => {
+type Props = {
+  clickModal: () => void;
+};
+
+const Modal = ({ clickModal }: Props) => {
   const [nickName, setNickName] = useState("");
   const params = useParams();
   const id = params.id;
