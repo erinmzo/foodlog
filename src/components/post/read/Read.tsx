@@ -30,7 +30,9 @@ export default function Read() {
 
   const deletePost = async (postId: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/post?id=${postId}`);
+      const response = await fetch(
+        `http://localhost:3000/api/post?id=${postId}`
+      );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -40,7 +42,12 @@ export default function Read() {
     }
   };
 
-  if (isLoading) return <div className="h-screen flex items-center justify-center">Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
 
   if (error) {
     console.error(error);
