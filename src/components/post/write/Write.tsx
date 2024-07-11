@@ -10,6 +10,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { uuid } from "uuidv4";
 import { ProductsImage } from "./ProductsImage";
+import { Notify } from "notiflix";
 
 export interface PostData {
   category: string;
@@ -40,7 +41,7 @@ function WritePage() {
   const router = useRouter();
   const { id } = useParams();
 
-  const getPostsData = async () => {
+  const getPostData = async () => {
     const response = await fetch("http://localhost:3000/api/post");
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -63,11 +64,11 @@ function WritePage() {
 
   useEffect(() => {
     if (id !== "new") {
-      getPostsData();
+      getPostData();
     }
   }, [id]);
 
-  const addStoreList = async (data: PostData): Promise<Post> => {
+  const savePost = async (data: PostData): Promise<Post> => {
     const response = await fetch("http://localhost:3000/api/post", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -76,7 +77,7 @@ function WritePage() {
     return response.json();
   };
 
-  const editStoreList = async (data: PostData): Promise<Post> => {
+  const editPost = async (data: PostData): Promise<Post> => {
     data.id = id as string;
     const response = await fetch("http://localhost:3000/api/post", {
       method: "PUT",
@@ -86,8 +87,8 @@ function WritePage() {
     return response.json();
   };
 
-  const { mutate: addMutation } = useMutation<Post, unknown, PostData>({
-    mutationFn: (data: PostData) => (id === "new" ? addStoreList(data) : editStoreList(data)),
+  const { mutate: saveMutation } = useMutation<Post, unknown, PostData>({
+    mutationFn: (data: PostData) => (id === "new" ? savePost(data) : editPost(data)),
   });
 
   const uploadImg = async (): Promise<string | null> => {
@@ -98,14 +99,14 @@ function WritePage() {
     const supabase = createClient();
     const { data, error } = await supabase.storage.from("post").upload(`${newFileName}`, file);
     if (error) {
-      alert(`파일이 업로드 되지 않습니다.${error}`);
+      Notify.failure(`파일이 업로드 되지 않습니다.${error}`);
       return null;
     }
     const res = await supabase.storage.from("post").getPublicUrl(data.path);
     return res.data.publicUrl;
   };
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handlePostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const img_url = (await uploadImg()) || "";
     const postData: PostData = {
@@ -130,10 +131,11 @@ function WritePage() {
       !postData.content ||
       !postData.img_url
     ) {
-      alert("빈칸을 채워주세요.");
+      Notify.warning("빈칸을 채워주세요!");
       return;
     }
-    addMutation(postData);
+    saveMutation(postData);
+    Notify.success("작성이 완료되었습니다.")
     router.push("/");
   };
 
@@ -143,7 +145,7 @@ function WritePage() {
         <h1 className="text-center mt-10 mb-3 text-2xl font-bold">오늘의 식당 기록</h1>
         <h3 className="text-center mb-10 text-lg">식당과 메뉴를 공유해주세요!</h3>
 
-        <form className="w-full pt-[40px] pb-[100px] px-[15px] lg:px-[140px] shadow-lg" onSubmit={onSubmit}>
+        <form className="w-full pt-[40px] pb-[100px] px-[15px] lg:px-[140px] shadow-lg" onSubmit={handlePostSubmit}>
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-y-8">
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">유형</label>
