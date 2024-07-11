@@ -9,6 +9,7 @@ import { useParams, useRouter} from "next/navigation"
 import { useEffect, useRef, useState } from "react";
 import { uuid } from "uuidv4";
 import { ProductsImage } from "./ProductsImage";
+import Link from "next/link";
 export interface PostData {
   category: string;
   store_name: string;
@@ -201,7 +202,8 @@ function WritePage() {
             ></textarea>
           </div>
 
-          <div className="mt-5 text-right">
+          <div className="mt-5 text-right space-x-2">
+            <button className="rounded py-2 px-4 bg-gray-400 border-gray-400 text-center text-white font-bold"><Link href={"/"}>뒤로가기</Link></button>
             <Button>{id === "new" ? "작성하기" : "수정완료"}</Button>
           </div>
         </form>

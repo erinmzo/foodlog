@@ -28,8 +28,6 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const info = await request.json()
-    console.log(info);
-    
     const supabase = createClient()
     const { data, error } = await supabase.from("posts").update(info).eq("id", info.id)
     if (error) {
@@ -38,7 +36,6 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json(data)
   } catch (error) {
     console.log(error)
-
     return NextResponse.json({ error: "게시물 등록에 실패했습니다." })
   }
 }
@@ -46,8 +43,6 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const info = await request.json()
-    console.log(info);
-    
     const supabase = createClient()
     const { data, error } = await supabase.from("posts").delete().eq("id", info.id)
     if (error) {
