@@ -13,7 +13,7 @@ function WriteButton() {
       Report.info("로그인되어야 게시글 작성이 가능합니다.", "", "확인");
       router.push("/login");
     } else {
-      router.push("/post/write");
+      router.push("/post/write/new");
     }
   };
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 interface Props {
-  setFile: React.Dispatch<React.SetStateAction<File | undefined>>;
+  setFile: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
 export const ProductsImage = ({ setFile }: Props) => {
