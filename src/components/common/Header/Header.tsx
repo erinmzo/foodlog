@@ -1,13 +1,27 @@
 "use client";
 import { useAuthStore } from "@/zustand/auth";
+import { User } from "@supabase/supabase-js";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-function Header() {
+interface UserProps {
+  user: User | null;
+}
+function Header({ userSessionInfo }: { userSessionInfo: UserProps }) {
   const user = useAuthStore((state) => state.user);
   const saveUser = useAuthStore((state) => state.saveUser);
   const router = useRouter();
+  console.log(userSessionInfo);
+
+  useEffect(() => {
+    if (userSessionInfo) {
+      saveUser(userSessionInfo.user);
+    } else {
+      saveUser(null);
+    }
+  }, []);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "DELETE" });

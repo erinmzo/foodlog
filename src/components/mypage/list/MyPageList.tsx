@@ -5,6 +5,7 @@ import { Post } from "@/types/store";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { Report } from "notiflix";
 
 function MyPageList() {
   const params = useParams();
@@ -21,7 +22,7 @@ function MyPageList() {
   });
 
   const getStoreData = async () => {
-    const response = await fetch("http://localhost:3000/api/post");
+    const response = await fetch("http://localhost:3000/api/post", { next: { revalidate: 60 } });
     const data = await response.json();
     return data;
   };
@@ -31,7 +32,7 @@ function MyPageList() {
   if (isPending) return <div className="h-screen flex items-center justify-center">Loading...</div>;
 
   if (error) {
-    alert("데이터를 가져오는데 실패했습니다");
+    Report.failure("데이터 로딩 실패", "데이터를 가져오는데 실패했습니다", "확인");
     return null;
   }
 

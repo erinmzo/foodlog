@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     const supabase = createClient();
     const { data, error } = await supabase.from("posts").insert(info).select();
     if (error) {
-      return alert(`${error.message}`);
+      return NextResponse.json(error);
     }
     return NextResponse.json(data);
   } catch (error) {

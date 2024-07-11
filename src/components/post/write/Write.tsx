@@ -6,6 +6,7 @@ import { Post } from "@/types/store";
 import { useAuthStore } from "@/zustand/auth";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { Report } from "notiflix";
 import { useRef, useState } from "react";
 import { uuid } from "uuidv4";
 import { ProductsImage } from "./ProductsImage";
@@ -58,7 +59,7 @@ function WritePage() {
     const supabase = createClient();
     const { data, error } = await supabase.storage.from("post").upload(`${newFileName}`, file);
     if (error) {
-      alert(`파일이 업로드 되지 않습니다.${error}`);
+      Report.failure("파일이 업로드 되지 않습니다", `${error}`, "확인");
       return;
     }
     const res = await supabase.storage.from("post").getPublicUrl(data.path);
@@ -91,7 +92,7 @@ function WritePage() {
       !postData.content ||
       !postData.img_url
     ) {
-      alert("빈칸을 채워주세요.");
+      Report.failure("빈칸을 채워주세요.", "", "확인");
       return;
     }
 

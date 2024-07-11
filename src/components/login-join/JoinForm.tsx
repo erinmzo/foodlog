@@ -1,6 +1,7 @@
 "use client";
 import { createClient } from "@/supabase/client";
 import { useRouter } from "next/navigation";
+import { Notify, Report } from "notiflix";
 import { useState } from "react";
 import Button from "../common/Button";
 import InputField from "./InputField";
@@ -20,11 +21,11 @@ function JoinForm() {
     const { data: userNickname } = await supabase.from("profile").select().eq("nickname", nickname);
 
     if (userNickname?.find((user) => nickname === user.nickname)) {
-      return alert("이미 사용중인 닉네임 입니다.");
+      return Report.failure("이미 사용중인 닉네임 입니다.", "", "확인");
     }
 
     if (password !== checkPassword) {
-      return alert("비밀번호가 일치하지 않습니다.");
+      return Report.failure("비밀번호가 일치하지 않습니다.", "", "확인");
     }
 
     const response = await fetch("/api/auth/join", {
@@ -36,10 +37,10 @@ function JoinForm() {
     });
 
     if (response.ok) {
-      alert("회원가입이 성공적으로 완료되었습니다.");
+      Notify.success("회원가입이 성공적으로 완료되었습니다.");
     } else {
       const data = await response.json();
-      return alert(`회원가입에 실패하였습니다: ${data.message}`);
+      return Notify.failure(`회원가입에 실패하였습니다: ${data.message}`);
     }
 
     router.push("/login");
