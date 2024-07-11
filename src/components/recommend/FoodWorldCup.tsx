@@ -4,8 +4,7 @@ import { Recommend } from "@/types/store";
 import { Report } from "notiflix";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-
-
+import Image from "next/image";
 
 const FoodWorldCup = () => {
   const getAllFood = async () => {
@@ -27,9 +26,7 @@ const FoodWorldCup = () => {
   const [currentRound, setCurrentRound] = useState<Recommend[]>([]);
   const [currentPair, setCurrentPair] = useState<number>(0);
   const [winners, setWinners] = useState<Recommend[]>([]);
-  const [_, setSelectedMenuIndex] = useState<number | null>(
-    null
-  );
+  const [_, setSelectedMenuIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (food) {
@@ -77,7 +74,7 @@ const FoodWorldCup = () => {
 
   return (
     <div className="w-full flex flex-col items-center text-center mt-[80px]">
-      <div className="w-3/5 mx-auto">
+      <div className="container max-w-[1024px] mx-auto">
         <h1 className="text-xl font-bold">
           {currentRound.length === 2 ? "결승" : `${currentRound.length}강`}
         </h1>
@@ -85,29 +82,35 @@ const FoodWorldCup = () => {
         {currentPair < currentRound.length && (
           <div className="flex mb-8">
             <div
-              className="flex flex-1 m-4 text-2xl font-semibold bg-[#8bdffc] border hover:bg-[#00BBF7] aspect-square"
+              className="flex flex-1 mx-[40px] text-2xl font-semibold transform hover:scale-105 transition-transform duration-300 aspect-square"
               onClick={() => handleSelect(0)}
             >
-              <button className="w-full text-white">
-                {currentRoundPairs[0]?.menu}
-                <img
+              <button className="w-full text-white relative">
+                <Image
                   src={currentRoundPairs[0]?.img_url}
                   alt={currentRoundPairs[0]?.menu}
-                  className="w-full h-auto object-cover"
+                  fill
+                  className="object-cover mx-auto"
                 />
+                <span className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white text-center py-2">
+                  {currentRoundPairs[0]?.menu}
+                </span>
               </button>
             </div>
             <div
-              className="flex flex-1 m-4 text-2xl font-semibold bg-[#8bdffc] border hover:bg-[#00BBF7] aspect-square"
+              className="flex flex-1 mx-[40px] text-2xl font-semibold hover:scale-105 transition-transform duration-300 aspect-square"
               onClick={() => handleSelect(1)}
             >
-              <button className="w-full text-white">
-                {currentRoundPairs[1]?.menu}
-                <img
+              <button className="w-full text-white relative">
+                <Image
                   src={currentRoundPairs[1]?.img_url}
                   alt={currentRoundPairs[1]?.menu}
-                  className="w-full h-auto object-cover"
+                  fill
+                  className="object-cover mx-auto"
                 />
+                <span className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white text-center py-2">
+                  {currentRoundPairs[1]?.menu}
+                </span>
               </button>
             </div>
           </div>
