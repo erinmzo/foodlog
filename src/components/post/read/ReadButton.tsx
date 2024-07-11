@@ -14,8 +14,6 @@ const ReadButton = ({ posts }:{posts: Post}) => {
   const router = useRouter();
   const user = useAuthStore(state => state.user);
   const isWriter = user?.user_metadata.sub === user_id;
-  // user?.user_metadata.sub
-  console.log(isWriter);
   
   const deleteContents = async (data: { id: string }) => {
     const response = await fetch("http://localhost:3000/api/post", {
@@ -34,7 +32,7 @@ const ReadButton = ({ posts }:{posts: Post}) => {
     alert("정말 삭제하시겠습니까?")
     try {
       await deleteContents({ id });
-      router.push("/"); // Redirect to the home page after deletion
+      router.push("/");
     } catch (error) {
       console.error("Failed to delete the post:", error);
     }

@@ -76,9 +76,6 @@ function WritePage() {
   };
 
   const editStoreList = async (data: PostData): Promise<Post> => {
-    if (!user?.user_metadata.sub){
-      alert("뿌앵");
-    } 
     data.id = id as string;
     const response = await fetch("http://localhost:3000/api/post", {
       method: "PUT",
