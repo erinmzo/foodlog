@@ -54,6 +54,7 @@ const Modal = (props: Props) => {
     if (!profile.data) {
       return;
     }
+    await updateProfileWithSupabase(nickName, profile.data?.id);
     const response = await updateProfileWithSupabase(
       nickName,
       profile.data?.id
