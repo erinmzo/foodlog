@@ -37,7 +37,6 @@ const Modal = (props: Props) => {
     queryClient.invalidateQueries({ queryKey: ["profile"] });
     alert("프로필 변경이 성공적으로 완료되었습니다!");
 
-    console.log(nickName);
   };
   return (
     <div
