@@ -1,11 +1,24 @@
 "use client";
+
 import { Recommend } from "@/types/store";
 import { Report } from "notiflix";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getAllFood } from "@/app/api/recommend/route";
+
+
 
 const FoodWorldCup = () => {
+  const getAllFood = async () => {
+    const response = await fetch("/api/worldcup");
+    if (!response.ok) {
+      Report.failure(
+        "음식 추천에 오류가 있습니다",
+        "잠시 후 다시 시도해주세요.",
+        "확인"
+      );
+    }
+    return response.json();
+  };
   const { data: food } = useQuery<Recommend[]>({
     queryKey: ["getAllFood"],
     queryFn: getAllFood,
@@ -14,7 +27,9 @@ const FoodWorldCup = () => {
   const [currentRound, setCurrentRound] = useState<Recommend[]>([]);
   const [currentPair, setCurrentPair] = useState<number>(0);
   const [winners, setWinners] = useState<Recommend[]>([]);
-  const [_, setSelectedMenuIndex] = useState<number | null>(null);
+  const [_, setSelectedMenuIndex] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     if (food) {
