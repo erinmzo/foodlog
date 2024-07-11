@@ -109,14 +109,14 @@ function WritePage() {
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-y-8">
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">유형</label>
-              <select className="p-2 border rounded-md" ref={categoryRef}>
+              <select className="p-2 border rounded-md lg:w-[200px]" ref={categoryRef}>
                 <option value="방문">방문</option>
                 <option value="배달">배달</option>
               </select>
             </div>
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">별점</label>
-              <select className="p-2 rounded-md border rounded-md" ref={ratingRef}>
+              <select className="p-2 rounded-md border rounded-md lg:w-[200px]" ref={ratingRef}>
                 <option value="1">1</option>
                 <option value="1.5">1.5</option>
                 <option value="2">2</option>
@@ -130,20 +130,20 @@ function WritePage() {
             </div>
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">식당이름</label>
-              <input className="p-2 border rounded-md" type="text" ref={storeRef} />
+              <input className="p-2 border rounded-md lg:w-[200px]" type="text" ref={storeRef} />
             </div>
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">메뉴이름</label>
-              <input className="p-2 border rounded-md" type="text" ref={menuRef} />
+              <input className="p-2 border rounded-md lg:w-[200px]" type="text" ref={menuRef} />
             </div>
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">주문날짜</label>
-              <input className="p-2 border rounded-md" type="date" ref={orderDateRef} />
+              <input className="p-2 border rounded-md lg:w-[200px]" type="date" ref={orderDateRef} />
             </div>
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">작성자</label>
               <input
-                className="p-2 border rounded-md"
+                className="p-2 border rounded-md lg:w-[200px]"
                 type="text"
                 ref={userRef}
                 defaultValue={user?.user_metadata.display_name}
@@ -151,11 +151,11 @@ function WritePage() {
             </div>
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">주소</label>
-              <input className="p-2 border rounded-md" type="text" ref={addressRef} />
+              <input className="p-2 border rounded-md lg:w-[200px]" type="text" ref={addressRef} />
             </div>
           </div>
           <ProductsImage setFile={setFile} />
-          <div className="mt-5">
+          <div className="mt-8">
             <textarea
               className="w-full h-[400px] p-5 border rounded-md resize-none"
               name="text"
@@ -164,7 +164,7 @@ function WritePage() {
             ></textarea>
           </div>
 
-          <div className="mt-5 text-right">
+          <div className="mt-8 text-right">
             <Button>작성하기</Button>
           </div>
         </form>
