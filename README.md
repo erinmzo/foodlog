@@ -9,21 +9,22 @@
 이 사이트는 사용자가 자신이 먹은 식당과 메뉴를 기록하고, 다른 사용자들과 공유하며 메뉴 추천도 받을 수 있는 플랫폼입니다.<br>
 
 다양한 사용자들의 후기를 참고하여 새로운 맛집을 찾거나, 그날의 메뉴를 정하는 데 도움을 받을 수 있습니다.
-
-- 팀원
+<br>
+<br>
+<br>
+## 팀원
 ![Frame 2](https://github.com/user-attachments/assets/a6ffdb3f-4c61-4370-83c2-615b129f1502)
 
-- 피피티
+## PPT
 이미지, url 연결
 
-- 시연영상
+## 시연영상
 메인페이지 캡쳐, url 연결
 
-- 페이지 구성
+## 페이지 구성
 
 
-
-- 기술환경 / 스택 및 부가 라이브러리
+## 기술환경 / 스택 및 부가 라이브러리
 
 <img
   src="https://github.com/erinmzo/foodlog/assets/119604616/39b4999b-e249-4b58-b070-c06e5d41b096"
@@ -31,6 +32,14 @@
   height="20%"
 />
   <br>
+
+<br>
+<br>
+<br>
+
+## 폴더 구조
+
+<br>
 
 ```
 // FOODLOG
@@ -125,6 +134,8 @@
 <br>
 
 
-- 트러블슈팅
+## 트러블슈팅
+
+
 copyright@1인자모였조
 ![footer](https://capsule-render.vercel.app/api?type=slice&color=62D9FF&&fontSize=70&rotate=13&fontAlign=75&fontAlignY=25&fontColor=272727&height=150&section=footer)
