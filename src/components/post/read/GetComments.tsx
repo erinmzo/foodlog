@@ -4,6 +4,7 @@ import { Comments } from "@/types/store";
 import { useAuthStore } from "@/zustand/auth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
+import { Confirm, Notify } from "notiflix";
 import { useState } from "react";
 
 interface CommentsData {
@@ -37,7 +38,13 @@ export default function GetComments() {
     }
   };
 
-  const updateComment = async ({ id, content }: { id: string; content: string }): Promise<CommentsData> => {
+  const updateComment = async ({
+    id,
+    content,
+  }: {
+    id: string;
+    content: string;
+  }): Promise<CommentsData> => {
     const response = await fetch("/api/comments", {
       method: "PUT",
       headers: {
@@ -71,14 +78,20 @@ export default function GetComments() {
     enabled: !!paramsId,
   });
 
-  const { mutate: updateMutation } = useMutation<CommentsData, Error, { id: string; content: string }>({
+  const { mutate: updateMutation } = useMutation<
+    CommentsData,
+    Error,
+    { id: string; content: string }
+  >({
     mutationFn: (editData) => updateComment(editData),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
   });
 
   const { mutate: deleteMutation } = useMutation<CommentsData, Error, string>({
     mutationFn: (id) => deleteComment(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
   });
 
   const handleEditClick = (comment: Comments) => {
@@ -92,12 +105,24 @@ export default function GetComments() {
   };
 
   const handleDelete = async (id: string) => {
-    alert("정말 삭제하시겠습니까?");
-    try {
-      deleteMutation(id);
-    } catch (error) {
-      console.error("Failed to delete the post:", error);
-    }
+    Confirm.show(
+      "댓글 삭제",
+      "정말로 삭제하시겠습니까?",
+      "예",
+      "아니오",
+      () => {
+        Notify.failure("삭제되었습니다");
+        try {
+          deleteMutation(id);
+        } catch (error) {
+          console.error("Failed to delete the post:", error);
+        }
+      },
+      () => {
+        Notify.failure("삭제가 되지 않았습니다.");
+      },
+      {}
+    );
   };
 
   if (isLoading) {
@@ -139,7 +164,9 @@ export default function GetComments() {
                   <div className="flex justify-between">
                     <div>
                       <span className="font-semibold ">{comment.nickname}</span>
-                      <span className="text-gray-600 text-sm ml-4">{comment.created_at.slice(0, 10)}</span>
+                      <span className="text-gray-600 text-sm ml-4">
+                        {comment.created_at.slice(0, 10)}
+                      </span>
                     </div>
                     {user && user.id === comment.user_id && (
                       <div className="flex space-x-4">
