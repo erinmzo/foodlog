@@ -15,20 +15,41 @@ const Modal = (props: Props) => {
   const supabase = createClient();
   const queryClient = useQueryClient();
   const updateProfileWithSupabase = async (newName: string, id: string) => {
-    const { data: result } = await supabase.from("profile").update({ nickname: newName }).eq("id", id);
+    const { data: result } = await supabase
+      .from("profile")
+      .update({ nickname: newName })
+      .eq("id", id);
     return result;
   };
   const getProfileData = async () => {
-    const data = await supabase.from("profile").select("*").eq("id", id).maybeSingle();
+    const data = await supabase
+      .from("profile")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
     return data;
   };
-  const { data: profile, isPending, error } = useQuery({ queryKey: ["profile"], queryFn: getProfileData });
-  if (isPending) return <div className="h-screen flex items-center justify-center">Loading...</div>;
+  const {
+    data: profile,
+    isPending,
+    error,
+  } = useQuery({ queryKey: ["profile"], queryFn: getProfileData });
+  if (isPending)
+    return (
+      <div className="h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
   if (error) {
-    Report.failure("데이터 로딩 실패", "데이터를 가져오는데 실패했습니다", "확인");
+    Report.failure(
+      "데이터 로딩 실패",
+      "데이터를 가져오는데 실패했습니다",
+      "확인"
+    );
     return null;
   }
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => setNickName(e.target.value);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setNickName(e.target.value);
   const submitChange = async () => {
     if (!profile.data) {
       return;

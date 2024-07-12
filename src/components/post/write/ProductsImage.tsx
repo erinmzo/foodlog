@@ -7,7 +7,6 @@ export const ProductsImage = ({ setFile }: Props) => {
   const handleChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if(e.target.files !== null) {
     const imgFile = e.target.files[0];
-    console.log(imgFile);
     setFile(imgFile);
   }
   };
