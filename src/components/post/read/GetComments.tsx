@@ -38,13 +38,7 @@ export default function GetComments() {
     }
   };
 
-  const updateComment = async ({
-    id,
-    content,
-  }: {
-    id: string;
-    content: string;
-  }): Promise<CommentsData> => {
+  const updateComment = async ({ id, content }: { id: string; content: string }): Promise<CommentsData> => {
     const response = await fetch("/api/comments", {
       method: "PUT",
       headers: {
@@ -78,20 +72,14 @@ export default function GetComments() {
     enabled: !!paramsId,
   });
 
-  const { mutate: updateMutation } = useMutation<
-    CommentsData,
-    Error,
-    { id: string; content: string }
-  >({
+  const { mutate: updateMutation } = useMutation<CommentsData, Error, { id: string; content: string }>({
     mutationFn: (editData) => updateComment(editData),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
   });
 
   const { mutate: deleteMutation } = useMutation<CommentsData, Error, string>({
     mutationFn: (id) => deleteComment(id),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
   });
 
   const handleEditClick = (comment: Comments) => {
@@ -146,27 +134,27 @@ export default function GetComments() {
                     value={editContent}
                     onChange={(e) => setEditContent(e.target.value)}
                   />
-                  <button
-                    onClick={() => handleSaveClick(comment.id)}
-                    className="text-blue-400 hover:underline font-semibold"
-                  >
-                    저장
-                  </button>
-                  <button
-                    onClick={() => setEditingCommentId(null)}
-                    className="text-gray-400 hover:underline font-semibold"
-                  >
-                    취소
-                  </button>
+                  <div className="flex justify-end gap-2">
+                    <button
+                      onClick={() => handleSaveClick(comment.id)}
+                      className="text-blue-400 hover:underline font-semibold"
+                    >
+                      저장
+                    </button>
+                    <button
+                      onClick={() => setEditingCommentId(null)}
+                      className="text-gray-400 hover:underline font-semibold"
+                    >
+                      취소
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div>
                   <div className="flex justify-between">
                     <div>
                       <span className="font-semibold ">{comment.nickname}</span>
-                      <span className="text-gray-600 text-sm ml-4">
-                        {comment.created_at.slice(0, 10)}
-                      </span>
+                      <span className="text-gray-600 text-sm ml-4">{comment.created_at.slice(0, 10)}</span>
                     </div>
                     {user && user.id === comment.user_id && (
                       <div className="flex space-x-4">
