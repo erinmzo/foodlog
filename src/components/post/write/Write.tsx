@@ -2,29 +2,15 @@
 
 import Button from "@/components/common/Button";
 import { createClient } from "@/supabase/client";
-import { Post } from "@/types/store";
+import { Post, TPostData } from "@/types/type";
 import { useAuthStore } from "@/zustand/auth";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Notify } from "notiflix";
 import { useEffect, useRef, useState } from "react";
-import { uuid } from "uuidv4";
+import { v4 as uuidv4 } from "uuid";
 import { ProductsImage } from "./ProductsImage";
-
-export interface PostData {
-  category: string;
-  store_name: string;
-  menu_name: string;
-  order_date: string;
-  address: string;
-  rating: string;
-  content: string;
-  img_url: string;
-  user_nickname: string;
-  user_id: string;
-  id?: string;
-}
 
 function WritePage() {
   const categoryRef = useRef<HTMLSelectElement>(null);
@@ -80,7 +66,7 @@ function WritePage() {
     }
   }, [id]);
 
-  const savePost = async (data: PostData): Promise<Post> => {
+  const savePost = async (data: TPostData): Promise<Post> => {
     const response = await fetch("/api/post", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -89,8 +75,7 @@ function WritePage() {
     return response.json();
   };
 
-  const editPost = async (data: PostData): Promise<Post> => {
-    data.id = id as string;
+  const editPost = async (data: TPostData): Promise<Post> => {
     const response = await fetch("/api/post", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -99,15 +84,15 @@ function WritePage() {
     return response.json();
   };
 
-  const { mutate: saveMutation } = useMutation<Post, unknown, PostData>({
-    mutationFn: (data: PostData) => (id === "new" ? savePost(data) : editPost(data)),
+  const { mutate: saveMutation } = useMutation<Post, unknown, TPostData>({
+    mutationFn: (data: TPostData) => (id === "new" ? savePost(data) : editPost(data)),
   });
 
   const uploadImg = async (): Promise<string | null> => {
     if (!file) {
       return imgUrl;
     }
-    const newFileName = uuid();
+    const newFileName = uuidv4();
     const supabase = createClient();
     const { data, error } = await supabase.storage.from("post").upload(`${newFileName}`, file);
     if (error) {
@@ -121,7 +106,7 @@ function WritePage() {
   const handlePostSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const img_url = (await uploadImg()) || "";
-    const postData: PostData = {
+    const postData: TPostData = {
       category: categoryRef.current?.value || "",
       store_name: storeRef.current?.value || "",
       menu_name: menuRef.current?.value || "",
@@ -131,7 +116,7 @@ function WritePage() {
       content: contentRef.current?.value || "",
       img_url: img_url,
       user_nickname: profile?.data?.nickname || "",
-      user_id: user?.user_metadata.sub,
+      user_id: user?.id as string,
     };
 
     if (

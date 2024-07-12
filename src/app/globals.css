@@ -51,6 +51,53 @@ pre {
     }
   }
 
+  @media (max-width: 334px) and (max-height: 882px) {
+    @keyframes bounce {
+      100% {
+        top: -10px; /* 작은 화면에서 애니메이션 높이 감소 */
+      }
+    }
+
+    .bounce {
+      position: relative;
+      top: 20px;
+      display: inline-block;
+      animation: bounce 0.5s ease-in-out infinite alternate;
+    }
+
+    .text-shadow {
+      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .image-shadow {
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+    }
+  }
+
+  @media (max-width: 640px) {
+    @keyframes bounce {
+      100% {
+        top: -10px;
+      }
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 768px) {
+    @keyframes bounce {
+      100% {
+        top: -15px;
+      }
+    }
+  }
+
+  @media (min-width: 769px) {
+    @keyframes bounce {
+      100% {
+        top: -20px;
+      }
+    }
+  }
+
   .bounce {
     position: relative;
     top: 20px;
