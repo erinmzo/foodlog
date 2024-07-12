@@ -6,13 +6,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "genTypes": "supabase gen types typescript --project-id sybgijvhhrhlfggyxjvu --schema public > src/types/supabase.ts"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.4.0",
+    "@supabase/supabase-js": "^2.44.3",
     "@tanstack/react-query": "^5.50.1",
+    "@types/uuid": "^10.0.0",
     "next": "14.2.4",
+    "notiflix": "^3.2.7",
     "react": "^18",
     "react-dom": "^18",
+    "supabase": ">=1.8.1",
+    "uuidv4": "^6.2.13",
     "zustand": "^4.5.4"
   },
   "devDependencies": {
