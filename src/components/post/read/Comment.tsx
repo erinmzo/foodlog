@@ -7,7 +7,6 @@ import { useParams } from "next/navigation";
 import { useRef } from "react";
 import GetComments from "./GetComments";
 import { createClient } from "@/supabase/client";
-import { profile } from "console";
 
 type CommentsData = Omit<Comments, "id" | "created_at">;
 
