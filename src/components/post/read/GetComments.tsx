@@ -1,6 +1,6 @@
 "use client";
 
-import { Comments } from "@/types/store";
+import { Comments } from "@/types/type";
 import { useAuthStore } from "@/zustand/auth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
@@ -23,27 +23,18 @@ export default function GetComments() {
   const [editContent, setEditContent] = useState<string>("");
 
   const getComments = async (paramsId: string): Promise<Comments[]> => {
-    try {
-      const response = await fetch(`/api/comments/${paramsId}`, {
-        method: "GET",
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data: Comments[] = await response.json();
-      return data;
-    } catch (error) {
-      throw error;
+    const response = await fetch(`/api/comments/${paramsId}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+    const data: Comments[] = await response.json();
+    return data;
   };
 
   const updateComment = async ({ id, content }: { id: string; content: string }): Promise<CommentsData> => {
     const response = await fetch("/api/comments", {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ content, id }),
     });
 
@@ -54,7 +45,7 @@ export default function GetComments() {
   };
 
   const deleteComment = async (id: string) => {
-    const response = await fetch("http://localhost:3000/api/comments", {
+    const response = await fetch("/api/comments", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(id),
@@ -99,11 +90,11 @@ export default function GetComments() {
       "예",
       "아니오",
       () => {
-        Notify.failure("삭제되었습니다");
+        Notify.failure("삭제되었습니다.");
         try {
           deleteMutation(id);
         } catch (error) {
-          console.error("Failed to delete the post:", error);
+          console.error("삭제에 실패했습니다.", error);
         }
       },
       () => {

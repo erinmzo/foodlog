@@ -7,8 +7,6 @@ export async function POST(request: NextRequest) {
     const supabase = createClient();
     const { data, error } = await supabase.from("comments").insert(info).select();
     if (error) {
-      console.error("Supabase insert error:", error); // 에러 로그 출력
-
       return NextResponse.json({ error: error }, { status: 400 });
     }
     return NextResponse.json(data);
