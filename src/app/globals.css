@@ -54,7 +54,7 @@ pre {
   @media (max-width: 334px) and (max-height: 882px) {
     @keyframes bounce {
       100% {
-        top: -10px; /* 작은 화면에서 애니메이션 높이 감소 */
+        top: -10px;
       }
     }
 
