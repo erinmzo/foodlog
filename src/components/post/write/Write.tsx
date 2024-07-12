@@ -4,7 +4,7 @@ import Button from "@/components/common/Button";
 import { createClient } from "@/supabase/client";
 import { Post } from "@/types/store";
 import { useAuthStore } from "@/zustand/auth";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -41,6 +41,18 @@ function WritePage() {
   const router = useRouter();
   const { id } = useParams();
 
+  const getProfileDate = async () => {
+    if (user) {
+      const supabase = createClient();
+      const data = await supabase.from("profile").select("*").eq("id", user.id).maybeSingle();
+      return data;
+    }
+  };
+  const { data: profile } = useQuery({
+    queryKey: ["profile", user?.id],
+    queryFn: getProfileDate,
+  });
+
   const getPostData = async () => {
     const response = await fetch("http://localhost:3000/api/post");
     if (!response.ok) {
@@ -55,7 +67,7 @@ function WritePage() {
     if (storeRef.current) storeRef.current.value = post.store_name;
     if (menuRef.current) menuRef.current.value = post.menu_name;
     if (orderDateRef.current) orderDateRef.current.value = post.order_date;
-    if (userRef.current) userRef.current.value = post.user_nickname;
+    if (userRef.current) userRef.current.value = profile?.data?.nickname as string
     if (addressRef.current) addressRef.current.value = post.address as string;
     if (ratingRef.current) ratingRef.current.value = post.rating;
     if (contentRef.current) contentRef.current.value = post.content;
@@ -121,9 +133,10 @@ function WritePage() {
       rating: ratingRef.current?.value || "",
       content: contentRef.current?.value || "",
       img_url: img_url,
-      user_nickname: user?.user_metadata.display_name || "",
+      user_nickname: profile?.data?.nickname || "",
       user_id: user?.user_metadata.sub,
     };
+
     if (
       !postData.category ||
       !postData.store_name ||
@@ -214,16 +227,16 @@ function WritePage() {
                 className="p-2 border rounded-md"
                 type="text"
                 ref={userRef}
-                defaultValue={user?.user_metadata.display_name}
+                defaultValue={profile?.data?.nickname}
               />
             </div>
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">주소</label>
-              <input
-                className="p-2 border rounded-md"
-                type="text"
-                ref={addressRef}
-              />
+              <input 
+              className="p-2 border rounded-md"
+              placeholder="OO시 OO구 OO동"
+              type="text" 
+              ref={addressRef} />
             </div>
           </div>
           <ProductsImage setFile={setFile} />

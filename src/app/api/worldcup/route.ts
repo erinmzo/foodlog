@@ -2,7 +2,6 @@ import { createClient } from "@/supabase/server";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  // 모든 음식 데이터를 가져옴
   const supabase = createClient();
   const { data: allFood , error } = await supabase.from("recommend").select("*");
   if (!allFood) {
