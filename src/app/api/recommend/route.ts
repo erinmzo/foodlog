@@ -9,8 +9,10 @@ export async function GET() {
   }
   const randomIndex = Math.floor(Math.random() * data.length);
 
-  if (!data[randomIndex]) {
+  const randomData = data[randomIndex];
+
+  if (!randomData) {
     return NextResponse.json({ error: "데이터 가져오기 실패" }, { status: 404 });
   }
-  return NextResponse.json(data[randomIndex]);
+  return NextResponse.json(randomData);
 }
