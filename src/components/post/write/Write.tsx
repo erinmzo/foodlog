@@ -66,7 +66,7 @@ function WritePage() {
     }
   }, [id]);
 
-  const savePost = async (data: TPostData): Promise<Post> => {
+  const savePost = async (data: TPostData) => {
     const response = await fetch("/api/post", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -75,7 +75,7 @@ function WritePage() {
     return response.json();
   };
 
-  const editPost = async (data: TPostData): Promise<Post> => {
+  const editPost = async (data: TPostData) => {
     const response = await fetch("/api/post", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -117,6 +117,7 @@ function WritePage() {
       img_url: img_url,
       user_nickname: profile?.data?.nickname || "",
       user_id: user?.id as string,
+      id: id as string,
     };
 
     if (

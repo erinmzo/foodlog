@@ -8,4 +8,4 @@ export type Comments = Tables<"comments">;
 
 export type Recommend = Tables<"recommend">;
 
-export type TPostData = Omit<Post, "created_at" | "id">;
+export type TPostData = Omit<Post, "created_at">;
