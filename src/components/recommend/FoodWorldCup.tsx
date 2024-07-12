@@ -37,26 +37,22 @@ const FoodWorldCup = () => {
   const handleSelect = (winnerIndex: number) => {
     const selectedWinner = currentRound[currentPair + winnerIndex];
     setWinners((prevWinners) => [...prevWinners, selectedWinner]);
-    setSelectedMenuIndex(winnerIndex); // 선택한 메뉴 인덱스 저장
+    setSelectedMenuIndex(winnerIndex);
 
     if (currentPair + 2 < currentRound.length) {
       // 다음 경기 쌍 설정
       setCurrentPair(currentPair + 2);
     } else {
-      // 다음 라운드로 이동
       if (currentRound.length === 2) {
-        // 최종 우승자 결정 (최종 2강)
         Report.success(`최종 우승: ${selectedWinner.menu}`, "", "확인");
       } else {
-        // 다음 라운드의 데이터 수는 현재 라운드의 절반으로 설정
-        setCurrentRound([...winners, selectedWinner]); // 승자 배열에 마지막 승자 추가하여 다음 라운드 설정
-        setCurrentPair(0); // 다음 라운드의 첫 번째 경기 쌍 인덱스 초기화
-        setWinners([]); // 승자 배열 초기화
+        setCurrentRound([...winners, selectedWinner]);
+        setCurrentPair(0); 
+        setWinners([]);
       }
     }
   };
 
-  // 현재 라운드의 경기 쌍 배열 설정
   let currentRoundPairs: Recommend[] = [];
   if (currentPair < currentRound.length) {
     currentRoundPairs = [
@@ -66,10 +62,10 @@ const FoodWorldCup = () => {
   }
 
   const handleReset = () => {
-    setCurrentRound(food || []); // 초기 음식 데이터로 설정
-    setCurrentPair(0); // 첫 번째 경기 쌍 인덱스로 설정
-    setWinners([]); // 승자 배열 초기화
-    setSelectedMenuIndex(null); // 선택한 메뉴 인덱스 초기화
+    setCurrentRound(food || []); 
+    setCurrentPair(0); 
+    setWinners([]);
+    setSelectedMenuIndex(null);
   };
 
   return (
