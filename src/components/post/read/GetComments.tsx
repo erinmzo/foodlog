@@ -4,6 +4,7 @@ import { Comments } from "@/types/store";
 import { useAuthStore } from "@/zustand/auth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
+import { Confirm, Notify } from "notiflix";
 import { useState } from "react";
 
 interface CommentsData {
@@ -92,12 +93,24 @@ export default function GetComments() {
   };
 
   const handleDelete = async (id: string) => {
-    alert("정말 삭제하시겠습니까?");
-    try {
-      deleteMutation(id);
-    } catch (error) {
-      console.error("Failed to delete the post:", error);
-    }
+    Confirm.show(
+      "댓글 삭제",
+      "정말로 삭제하시겠습니까?",
+      "예",
+      "아니오",
+      () => {
+        Notify.failure("삭제되었습니다");
+        try {
+          deleteMutation(id);
+        } catch (error) {
+          console.error("Failed to delete the post:", error);
+        }
+      },
+      () => {
+        Notify.failure("삭제가 되지 않았습니다.");
+      },
+      {}
+    );
   };
 
   if (isLoading) {
@@ -121,18 +134,20 @@ export default function GetComments() {
                     value={editContent}
                     onChange={(e) => setEditContent(e.target.value)}
                   />
-                  <button
-                    onClick={() => handleSaveClick(comment.id)}
-                    className="text-blue-400 hover:underline font-semibold"
-                  >
-                    저장
-                  </button>
-                  <button
-                    onClick={() => setEditingCommentId(null)}
-                    className="text-gray-400 hover:underline font-semibold"
-                  >
-                    취소
-                  </button>
+                  <div className="flex justify-end gap-2">
+                    <button
+                      onClick={() => handleSaveClick(comment.id)}
+                      className="text-blue-400 hover:underline font-semibold"
+                    >
+                      저장
+                    </button>
+                    <button
+                      onClick={() => setEditingCommentId(null)}
+                      className="text-gray-400 hover:underline font-semibold"
+                    >
+                      취소
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div>

@@ -8,8 +8,12 @@ import Description from "./ReadDescription";
 import ReadHeader from "./ReadHeader";
 import ReadImage from "./ReadImage";
 import ReadInfo from "./ReadInfo";
+import { createClient } from "@/supabase/client";
+import { useAuthStore } from "@/zustand/auth";
 
 export default function Read() {
+  const user = useAuthStore((state) => state.user);
+
   const { id } = useParams();
   const queryClient = useQueryClient();
 
@@ -76,7 +80,7 @@ export default function Read() {
                 <ReadImage imgUrl={posts.img_url} />
               </div>
               <Description posts={posts} />
-              <ReadButton posts={posts}/>
+              <ReadButton posts={posts} />
             </div>
           ))}
         </div>

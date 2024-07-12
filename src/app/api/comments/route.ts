@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   try {
     const info = await request.json();
-    console.log("info", info);
     const supabase = createClient();
     const { data, error } = await supabase.from("comments").insert(info).select();
     if (error) {
