@@ -6,6 +6,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useRef } from "react";
 import GetComments from "./GetComments";
+import { createClient } from "@/supabase/client";
+import { profile } from "console";
+
+type CommentsData = Omit<Comments, "id" | "created_at">;
 
 export default function Comment() {
   const contentRef = useRef<HTMLTextAreaElement>(null);
@@ -13,11 +17,27 @@ export default function Comment() {
   const params = useParams();
 
   const user = useAuthStore((state) => state.user);
-  interface CommentsData {
-    user_name: string;
-    user_id: string;
-    content: string;
-    post_id: string;
+
+  if (user) {
+    const getProfileData = async (id: string) => {
+      const supabase = createClient();
+      const data = await supabase
+        .from("profile")
+        .select("*")
+        .eq("id", id)
+        .maybeSingle();
+
+      return data;
+    };
+
+    const {
+      data: profile,
+      isPending,
+      error,
+    } = useQuery({
+      queryKey: ["profile"],
+      queryFn: () => getProfileData(user?.id),
+    });
   }
 
   const addStoreList = async (data: CommentsData) => {
@@ -39,17 +59,18 @@ export default function Comment() {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const CommentsData: CommentsData = {
-      user_name: user?.user_metadata.display_name || "",
+    if (user === null && profile === undefined) {
+      alert("로그인 시 댓글 작성 가능합니다.");
+    }
+
+    const commentsData: CommentsData = {
+      nickname: profile?.data?.nickname || "",
       user_id: user?.user_metadata.sub,
       content: contentRef.current?.value || "",
       post_id: params.id as string,
     };
-    if (user === null) {
-      alert("로그인 시 댓글 작성 가능합니다.");
-    }
 
-    addMutation(CommentsData);
+    addMutation(commentsData);
   };
 
   return (
