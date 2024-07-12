@@ -88,7 +88,8 @@ function WritePage() {
   };
 
   const { mutate: saveMutation } = useMutation<Post, unknown, PostData>({
-    mutationFn: (data: PostData) => (id === "new" ? savePost(data) : editPost(data)),
+    mutationFn: (data: PostData) =>
+      id === "new" ? savePost(data) : editPost(data),
   });
 
   const uploadImg = async (): Promise<string | null> => {
@@ -97,7 +98,9 @@ function WritePage() {
     }
     const newFileName = uuid();
     const supabase = createClient();
-    const { data, error } = await supabase.storage.from("post").upload(`${newFileName}`, file);
+    const { data, error } = await supabase.storage
+      .from("post")
+      .upload(`${newFileName}`, file);
     if (error) {
       Notify.failure(`파일이 업로드 되지 않습니다.${error}`);
       return null;
@@ -135,17 +138,24 @@ function WritePage() {
       return;
     }
     saveMutation(postData);
-    Notify.success("작성이 완료되었습니다.")
+    Notify.success("작성이 완료되었습니다.");
     router.push("/");
   };
 
   return (
     <>
       <div className="max-w-[1024px] mx-auto my-20">
-        <h1 className="text-center mt-10 mb-3 text-2xl font-bold">오늘의 식당 기록</h1>
-        <h3 className="text-center mb-10 text-lg">식당과 메뉴를 공유해주세요!</h3>
+        <h1 className="text-center mt-10 mb-3 text-2xl font-bold">
+          오늘의 식당 기록
+        </h1>
+        <h3 className="text-center mb-10 text-lg">
+          식당과 메뉴를 공유해주세요!
+        </h3>
 
-        <form className="w-full pt-[40px] pb-[100px] px-[15px] lg:px-[140px] shadow-lg" onSubmit={handlePostSubmit}>
+        <form
+          className="w-full pt-[40px] pb-[100px] px-[15px] lg:px-[140px] shadow-lg"
+          onSubmit={handlePostSubmit}
+        >
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-y-8">
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">유형</label>
@@ -169,16 +179,34 @@ function WritePage() {
               </select>
             </div>
             <div className="flex items-center">
-              <label className="w-[80px] sm:w-[120px] font-bold">식당이름</label>
-              <input className="p-2 border rounded-md" type="text" ref={storeRef} />
+              <label className="w-[80px] sm:w-[120px] font-bold">
+                식당이름
+              </label>
+              <input
+                className="p-2 border rounded-md"
+                type="text"
+                ref={storeRef}
+              />
             </div>
             <div className="flex items-center">
-              <label className="w-[80px] sm:w-[120px] font-bold">메뉴이름</label>
-              <input className="p-2 border rounded-md" type="text" ref={menuRef} />
+              <label className="w-[80px] sm:w-[120px] font-bold">
+                메뉴이름
+              </label>
+              <input
+                className="p-2 border rounded-md"
+                type="text"
+                ref={menuRef}
+              />
             </div>
             <div className="flex items-center">
-              <label className="w-[80px] sm:w-[120px] font-bold">주문날짜</label>
-              <input className="p-2 border rounded-md" type="date" ref={orderDateRef} />
+              <label className="w-[80px] sm:w-[120px] font-bold">
+                주문날짜
+              </label>
+              <input
+                className="p-2 border rounded-md"
+                type="date"
+                ref={orderDateRef}
+              />
             </div>
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">작성자</label>
@@ -191,7 +219,11 @@ function WritePage() {
             </div>
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">주소</label>
-              <input className="p-2 border rounded-md" type="text" ref={addressRef} />
+              <input
+                className="p-2 border rounded-md"
+                type="text"
+                ref={addressRef}
+              />
             </div>
           </div>
           <ProductsImage setFile={setFile} />

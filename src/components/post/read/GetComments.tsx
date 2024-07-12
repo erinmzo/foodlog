@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 
 interface CommentsData {
-  user_name: string;
+  nickname: string;
   user_id: string;
   content: string;
   post_id: string;
@@ -97,14 +97,8 @@ export default function GetComments() {
   });
 
   const handleEditClick = (comment: Comments) => {
-    if (user === null) {
-      alert("로그인 시 가능합니다.");
-    } else if (user.id !== comment.user_id) {
-      alert("본인만 수정 가능합니다.");
-    } else {
-      setEditingCommentId(comment.id);
-      setEditContent(comment.content);
-    }
+    setEditingCommentId(comment.id);
+    setEditContent(comment.content);
   };
 
   const handleSaveClick = (id: string) => {
@@ -159,27 +153,27 @@ export default function GetComments() {
                 <div>
                   <div className="flex justify-between">
                     <div>
-                      <span className="font-semibold ">
-                        {comment.user_name}
-                      </span>
+                      <span className="font-semibold ">{comment.nickname}</span>
                       <span className="text-gray-600 text-sm ml-4">
                         {comment.created_at.slice(0, 10)}
                       </span>
                     </div>
-                    <div className="flex space-x-4">
-                      <button
-                        onClick={() => handleEditClick(comment)}
-                        className="text-blue-400 hover:underline font-semibold"
-                      >
-                        수정
-                      </button>
-                      <button
-                        onClick={() => handleDelete(comment.id)}
-                        className="text-red-400 hover:underline font-semibold "
-                      >
-                        삭제
-                      </button>
-                    </div>
+                    {user && user.id === comment.user_id && (
+                      <div className="flex space-x-4">
+                        <button
+                          onClick={() => handleEditClick(comment)}
+                          className="text-blue-400 hover:underline font-semibold"
+                        >
+                          수정
+                        </button>
+                        <button
+                          onClick={() => handleDelete(comment.id)}
+                          className="text-red-400 hover:underline font-semibold "
+                        >
+                          삭제
+                        </button>
+                      </div>
+                    )}
                   </div>
                   <p className="text-gray-800 mt-2 mb-4">{comment.content}</p>
                 </div>
