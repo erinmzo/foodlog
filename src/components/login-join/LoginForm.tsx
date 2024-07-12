@@ -29,7 +29,11 @@ function LoginForm() {
     });
 
     if (response.status !== 200) {
-      return Report.failure("로그인에 실패했습니다.", "아이디와 비밀번호를 정확히 입력해 주세요.", "확인");
+      return Report.failure(
+        "로그인에 실패했습니다.",
+        "아이디와 비밀번호를 정확히 입력해 주세요.",
+        "확인"
+      );
     }
     const data = await response.json();
     saveUser(data.user);
@@ -38,7 +42,10 @@ function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmitLogin} className="flex flex-col items-center justify-center mb-[475px]">
+    <form
+      onSubmit={handleSubmitLogin}
+      className="flex flex-col items-center justify-center "
+    >
       <div className="flex flex-col gap-y-5 mb-[25px] px-[35px] py-[53px] border-[1px] border-[#F5F5F5] rounded-[30px]">
         <InputField
           name="이메일"
