@@ -78,6 +78,7 @@ const FoodWorldCup = () => {
                   src={currentRoundPairs[0]?.img_url}
                   alt={currentRoundPairs[0]?.menu}
                   fill
+                  priority
                   className="object-cover mx-auto"
                 />
                 <span className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white text-center py-2">
@@ -94,6 +95,7 @@ const FoodWorldCup = () => {
                   src={currentRoundPairs[1]?.img_url}
                   alt={currentRoundPairs[1]?.menu}
                   fill
+                  priority
                   className="object-cover mx-auto"
                 />
                 <span className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white text-center py-2">
