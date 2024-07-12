@@ -1,12 +1,12 @@
 import { createClient } from "@/supabase/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: NextRequest): Promise<Response> {
   const supabase = createClient();
   const { data, error } = await supabase.from("recommend").select("*");
-  if (error) {
-    return null;
-  }
+
+  if (error) throw error;
+
   const randomIndex = Math.floor(Math.random() * data.length);
 
   const randomData = data[randomIndex];
