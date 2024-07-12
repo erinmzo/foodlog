@@ -1,10 +1,11 @@
 ![header](https://capsule-render.vercel.app/api?type=slice&color=62D9FF&text=FOODLOG&fontSize=70&rotate=13&fontAlign=75&fontAlignY=25&fontColor=272727&height=200)
+<img src="https://github.com/user-attachments/assets/6a0a2691-507e-4a54-96aa-6472614d4a78" width="800"/>
 
-<img src="https://github.com/user-attachments/assets/130b0b00-42ee-4e48-a84a-246789118eb0" width="800"/>
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Ferinmzo%2Ffoodlog&count_bg=%2300BBF7&title_bg=%23908E8E&icon=&icon_color=%23E7E7E7&title=Total&edge_flat=true)](https://hits.seeyoufarm.com)
+<br>
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Nanum+Gothic&weight=800&size=35&letterSpacing=&duration=6000&pause=2000&color=000000&random=false&width=1200&height=80&lines=%F0%9F%8D%BD%EF%B8%8F+%EC%98%A4%EB%8A%98+%EB%A8%B9%EC%9D%80+%EC%8B%9D%EB%8B%B9%EA%B3%BC+%EB%A9%94%EB%89%B4%EB%A5%BC+%EA%B8%B0%EB%A1%9D%ED%95%98%EA%B3%A0+%EB%A9%94%EB%89%B4+%EC%B6%94%EC%B2%9C%EC%9D%84+%EB%B0%9B%EC%95%84%EB%B3%B4%EC%84%B8%EC%9A%94~!)](https://git.io/typing-svg)
-
+<br>
 이 사이트는 사용자가 자신이 먹은 식당과 메뉴를 기록하고, 다른 사용자들과 공유하며 메뉴 추천도 받을 수 있는 플랫폼입니다.<br>
 
 다양한 사용자들의 후기를 참고하여 새로운 맛집을 찾거나, 그날의 메뉴를 정하는 데 도움을 받을 수 있습니다.
