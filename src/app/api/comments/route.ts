@@ -6,10 +6,7 @@ export async function POST(request: NextRequest) {
     const info = await request.json();
     console.log("info", info);
     const supabase = createClient();
-    const { data, error } = await supabase
-      .from("comments")
-      .insert(info)
-      .select();
+    const { data, error } = await supabase.from("comments").insert(info).select();
     if (error) {
       console.error("Supabase insert error:", error); // 에러 로그 출력
 
@@ -26,10 +23,7 @@ export async function PUT(request: NextRequest) {
     const info = await request.json();
 
     const supabase = createClient();
-    const { data, error } = await supabase
-      .from("comments")
-      .update({ content: info.content })
-      .eq("id", info.id);
+    const { data, error } = await supabase.from("comments").update({ content: info.content }).eq("id", info.id);
 
     return NextResponse.json(data);
   } catch (error) {
@@ -41,10 +35,7 @@ export async function DELETE(request: NextRequest) {
   try {
     const info = await request.json();
     const supabase = createClient();
-    const { data, error } = await supabase
-      .from("comments")
-      .delete()
-      .eq("id", info);
+    const { data, error } = await supabase.from("comments").delete().eq("id", info);
     if (error) {
       return alert(`${error.message}`);
     }
