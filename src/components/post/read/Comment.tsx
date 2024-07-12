@@ -1,46 +1,37 @@
 "use client";
 
+import { createClient } from "@/supabase/client";
 import { Comments } from "@/types/store";
 import { useAuthStore } from "@/zustand/auth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useRef } from "react";
 import GetComments from "./GetComments";
-import { createClient } from "@/supabase/client";
 
 type CommentsData = Omit<Comments, "id" | "created_at">;
 
 export default function Comment() {
-  const contentRef = useRef<HTMLTextAreaElement>(null);
-  const queryClient = useQueryClient();
-  const params = useParams();
-
   const user = useAuthStore((state) => state.user);
+  const params = useParams();
+  const queryClient = useQueryClient();
+  const contentRef = useRef<HTMLTextAreaElement>(null);
 
-  if (user) {
-    const getProfileData = async (id: string) => {
+  const getProfileDate = async () => {
+    if (user) {
       const supabase = createClient();
-      const data = await supabase
-        .from("profile")
-        .select("*")
-        .eq("id", id)
-        .maybeSingle();
+      const data = await supabase.from("profile").select("*").eq("id", user.id).maybeSingle();
 
       return data;
-    };
+    }
+  };
 
-    const {
-      data: profile,
-      isPending,
-      error,
-    } = useQuery({
-      queryKey: ["profile"],
-      queryFn: () => getProfileData(user?.id),
-    });
-  }
+  const { data: profile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfileDate,
+  });
 
-  const addStoreList = async (data: CommentsData) => {
-    const response = await fetch("http://localhost:3000/api/comments", {
+  const saveComment = async (data: CommentsData) => {
+    const response = await fetch("/api/comments", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -52,24 +43,24 @@ export default function Comment() {
   };
 
   const { mutate: addMutation } = useMutation<Comments, unknown, CommentsData>({
-    mutationFn: (data: CommentsData) => addStoreList(data),
+    mutationFn: (data: CommentsData) => saveComment(data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["comment"] }),
   });
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (user === null && profile === undefined) {
+    if (user === null) {
       alert("로그인 시 댓글 작성 가능합니다.");
     }
-
-    const commentsData: CommentsData = {
-      nickname: profile?.data?.nickname || "",
-      user_id: user?.user_metadata.sub,
-      content: contentRef.current?.value || "",
-      post_id: params.id as string,
-    };
-
-    addMutation(commentsData);
+    if (profile !== undefined) {
+      const commentsData: CommentsData = {
+        nickname: profile?.data?.nickname as string,
+        user_id: user?.user_metadata.sub,
+        content: contentRef.current?.value || "",
+        post_id: params.id as string,
+      };
+      addMutation(commentsData);
+    }
   };
 
   return (
@@ -83,9 +74,7 @@ export default function Comment() {
             className="w-[90%] p-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             placeholder="Write a comment..."
           ></textarea>
-          <button className="w-[10%] bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600">
-            작성
-          </button>
+          <button className="w-[10%] bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600">작성</button>
         </form>
         <GetComments />
       </div>
