@@ -21,7 +21,6 @@ export default function Comment() {
     if (user) {
       const supabase = createClient();
       const data = await supabase.from("profile").select("*").eq("id", user.id).maybeSingle();
-
       return data;
     }
   };
@@ -95,7 +94,9 @@ export default function Comment() {
             placeholder="Write a comment..."
             onKeyDown={onKeyDown}
           ></textarea>
-          <button className="w-[10%] bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600">작성</button>
+          <button className="w-[10%] min-w-[80px] bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600">
+            작성
+          </button>
         </form>
         <GetComments />
       </div>

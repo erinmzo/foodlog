@@ -8,9 +8,7 @@ export default function NotFound() {
       <div>
         <div>
           <div className="speech-bubble">
-            <h2 className="text-[30px] text-center font-bold tracking-[2px] text-white">
-              404 ERROR
-            </h2>
+            <h2 className="text-[30px] text-center font-bold tracking-[2px] text-white">404 ERROR</h2>
           </div>
         </div>
         <div className="flex flex-row gap-[7px] mt-[40px]">
@@ -31,21 +29,13 @@ export default function NotFound() {
             />
           </div>
           <div className="flex items-end gap-[6px]">
-            <span className="text-[150px] font-bold leading-none bounce text-shadow">
-              p
-            </span>
-            <span className="text-[150px] font-bold leading-none bounce text-shadow">
-              s
-            </span>
-            <span className="text-[150px] font-bold leading-none bounce text-shadow">
-              !
-            </span>
+            <span className="text-[150px] font-bold leading-none bounce text-shadow">p</span>
+            <span className="text-[150px] font-bold leading-none bounce text-shadow">s</span>
+            <span className="text-[150px] font-bold leading-none bounce text-shadow">!</span>
           </div>
         </div>
         <div className="flex flex-col items-center mt-[50px]">
-          <span className="text-[25px] text-[#878787] tracking-[1px] mb-[30px]">
-            페이지를 찾을 수 없어요 !
-          </span>
+          <span className="text-[25px] text-[#878787] tracking-[1px] mb-[30px]">페이지를 찾을 수 없어요 !</span>
           <Link href="/">
             <Button>Go Home</Button>
           </Link>
