@@ -1,6 +1,7 @@
 "use client";
 
 import { Post } from "@/types/store";
+import { useAuthStore } from "@/zustand/auth";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import ReadButton from "./ReadButton";
@@ -8,8 +9,6 @@ import Description from "./ReadDescription";
 import ReadHeader from "./ReadHeader";
 import ReadImage from "./ReadImage";
 import ReadInfo from "./ReadInfo";
-import { createClient } from "@/supabase/client";
-import { useAuthStore } from "@/zustand/auth";
 
 export default function Read() {
   const user = useAuthStore((state) => state.user);
@@ -18,7 +17,7 @@ export default function Read() {
   const queryClient = useQueryClient();
 
   const getPostsData = async () => {
-    const response = await fetch("http://localhost:3000/api/post");
+    const response = await fetch("/api/post");
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -34,9 +33,7 @@ export default function Read() {
 
   const deletePost = async (postId: string) => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/post?id=${postId}`
-      );
+      const response = await fetch(`/api/post?id=${postId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -46,12 +43,7 @@ export default function Read() {
     }
   };
 
-  if (isLoading)
-    return (
-      <div className="h-screen flex items-center justify-center">
-        Loading...
-      </div>
-    );
+  if (isLoading) return <div className="h-screen flex items-center justify-center">Loading...</div>;
 
   if (error) {
     console.error(error);

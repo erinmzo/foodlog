@@ -17,7 +17,7 @@ const ReadButton = ({ posts }: { posts: Post }) => {
   const isWriter = user?.user_metadata.sub === user_id;
 
   const deletePost = async (data: { id: string }) => {
-    const response = await fetch("http://localhost:3000/api/post", {
+    const response = await fetch("/api/post", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -28,27 +28,28 @@ const ReadButton = ({ posts }: { posts: Post }) => {
     }
     return response.json();
   };
-  
-  const handleDelete = () => {
-  Confirm.show(
-    "게시물 삭제",
-    "정말로 삭제하시겠습니까?",
-    'Yes',
-    'No',
-    async() => {
-      try {
-            await deletePost({ id });
-            router.push("/");
-          } catch (error) {
-            console.error("Failed to delete the post:", error);
-          }
 
-          Notify.success("삭제되었습니다.");
-    },
-    () => {
-      Notify.info("삭제가 취소되었습니다.");
-    });
-  }
+  const handleDelete = () => {
+    Confirm.show(
+      "게시물 삭제",
+      "정말로 삭제하시겠습니까?",
+      "Yes",
+      "No",
+      async () => {
+        try {
+          await deletePost({ id });
+          router.push("/");
+        } catch (error) {
+          console.error("Failed to delete the post:", error);
+        }
+
+        Notify.success("삭제되었습니다.");
+      },
+      () => {
+        Notify.info("삭제가 취소되었습니다.");
+      }
+    );
+  };
 
   return (
     <div>
