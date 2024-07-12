@@ -2,7 +2,7 @@
 
 import { Comments } from "@/types/store";
 import { useAuthStore } from "@/zustand/auth";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
@@ -14,22 +14,19 @@ interface CommentsData {
 }
 
 export default function GetComments() {
-  const params = useParams();
-  const paramsId = params.id as string;
   const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.user);
-
+  const params = useParams();
+  const paramsId = params.id as string;
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editContent, setEditContent] = useState<string>("");
 
   const getComments = async (paramsId: string): Promise<Comments[]> => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/comments/${paramsId}`,
-        {
-          method: "GET",
-        }
-      );
+      const response = await fetch(`/api/comments/${paramsId}`, {
+        method: "GET",
+      });
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -40,14 +37,8 @@ export default function GetComments() {
     }
   };
 
-  const updateComment = async ({
-    id,
-    content,
-  }: {
-    id: string;
-    content: string;
-  }): Promise<CommentsData> => {
-    const response = await fetch("http://localhost:3000/api/comments", {
+  const updateComment = async ({ id, content }: { id: string; content: string }): Promise<CommentsData> => {
+    const response = await fetch("/api/comments", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -80,20 +71,14 @@ export default function GetComments() {
     enabled: !!paramsId,
   });
 
-  const { mutate: updateMutation } = useMutation<
-    CommentsData,
-    Error,
-    { id: string; content: string }
-  >({
+  const { mutate: updateMutation } = useMutation<CommentsData, Error, { id: string; content: string }>({
     mutationFn: (editData) => updateComment(editData),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
   });
 
   const { mutate: deleteMutation } = useMutation<CommentsData, Error, string>({
     mutationFn: (id) => deleteComment(id),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
   });
 
   const handleEditClick = (comment: Comments) => {
@@ -154,9 +139,7 @@ export default function GetComments() {
                   <div className="flex justify-between">
                     <div>
                       <span className="font-semibold ">{comment.nickname}</span>
-                      <span className="text-gray-600 text-sm ml-4">
-                        {comment.created_at.slice(0, 10)}
-                      </span>
+                      <span className="text-gray-600 text-sm ml-4">{comment.created_at.slice(0, 10)}</span>
                     </div>
                     {user && user.id === comment.user_id && (
                       <div className="flex space-x-4">
