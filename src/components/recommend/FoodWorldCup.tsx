@@ -73,12 +73,13 @@ const FoodWorldCup = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center text-center mt-[80px]">
+    <div className="w-full min-h-screen flex flex-col items-center justify-center text-center">
+      <h1 className="text-5xl font-bold mb-14">푸드 월드컵</h1>
       <div className="container max-w-[1024px] mx-auto">
-        <h1 className="text-xl font-bold">
+        <h2 className="text-xl font-bold">
           {currentRound.length === 2 ? "결승" : `${currentRound.length}강`}
-        </h1>
-        <p className="mb-8 text-[16px] text-[#878787]">메뉴를 추천해드립니다</p>
+        </h2>
+        <p className="mb-14 text-[16px] text-[#878787]">메뉴를 추천해드립니다</p>
         {currentPair < currentRound.length && (
           <div className="flex mb-8">
             <div
@@ -117,7 +118,7 @@ const FoodWorldCup = () => {
         )}
       </div>
       <button
-        className="w-1/4 p-4 text-2xl font-bold text-[#24CAFF] border rounded-md"
+        className="w-1/4 p-4 mt-6 text-2xl font-semibold text-[#24CAFF] border rounded-md"
         onClick={handleReset}
       >
         다시하기
