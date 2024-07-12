@@ -117,7 +117,7 @@ function WritePage() {
       img_url: img_url,
       user_nickname: profile?.data?.nickname || "",
       user_id: user?.id as string,
-      id: id as string,
+      id: id === "new" ? uuidv4() : (id as string),
     };
 
     if (
