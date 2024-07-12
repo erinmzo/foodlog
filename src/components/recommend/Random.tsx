@@ -1,6 +1,7 @@
 "use client";
 import { Recommend } from "@/types/store";
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import { Report } from "notiflix";
 import { useState } from "react";
 
@@ -40,7 +41,7 @@ const Random = () => {
           <div className="w-full h-full flex flex-col items-center mt-8">
             <h2 className="text-5xl font-bold text-[#24CAFF] mb-4">{random.menu}</h2>
             <div className="w-1/2 max-h-[200px] flex items-center justify-center overflow-hidden rounded-lg">
-              <img src={random.img_url} alt={random.menu} className="w-full h-full object-cover" />
+              <Image src={random.img_url} alt={random.menu} className="w-full h-full object-cover" />
             </div>
             <button
               className="w-1/2 py-2 text-2xl font-bold text-[#24CAFF] border rounded-md my-6"
