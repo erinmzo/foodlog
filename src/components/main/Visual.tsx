@@ -6,11 +6,11 @@ function Visual() {
     <div className="flex items-center justify-center pt-[50px] pb-[100px] bg-[#CEF3FF]">
       <div className="flex flex-row gap-[7px] mt-[40px]">
         <div className="flex items-end gap-[6px]">
-          <span className="text-[150px] font-bold leading-none bounce text-shadow">
+          <span className="text-[80px] font-bold leading-none bounce text-shadow sm:text-[150px]">
             F
           </span>
           <Image
-            className="mt-[auto] rotate-[-12deg] bounce image-shadow"
+            className=" rotate-[-12deg] bounce image-shadow"
             src="/img/logo-symbol.png"
             alt="로고이미지"
             width={150}
