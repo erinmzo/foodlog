@@ -12,7 +12,11 @@ function MyPageList() {
   const id = params.id;
   const getProfileData = async () => {
     const supabase = createClient();
-    const data = await supabase.from("profile").select("*").eq("id", id).maybeSingle();
+    const data = await supabase
+      .from("profile")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
     return data;
   };
 
@@ -22,17 +26,30 @@ function MyPageList() {
   });
 
   const getStoreData = async () => {
-    const response = await fetch("http://localhost:3000/api/post", { next: { revalidate: 60 } });
+    const response = await fetch("/api/post", { next: { revalidate: 60 } });
     const data = await response.json();
     return data;
   };
 
-  const { data: posts, isPending, error } = useQuery<Post[]>({ queryKey: ["posts", id], queryFn: getStoreData });
+  const {
+    data: posts,
+    isPending,
+    error,
+  } = useQuery<Post[]>({ queryKey: ["posts", id], queryFn: getStoreData });
 
-  if (isPending) return <div className="h-screen flex items-center justify-center">Loading...</div>;
+  if (isPending)
+    return (
+      <div className="h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
 
   if (error) {
-    Report.failure("데이터 로딩 실패", "데이터를 가져오는데 실패했습니다", "확인");
+    Report.failure(
+      "데이터 로딩 실패",
+      "데이터를 가져오는데 실패했습니다",
+      "확인"
+    );
     return null;
   }
 
@@ -52,7 +69,9 @@ function MyPageList() {
           ))}
         </div>
       ) : (
-        <div className="h-[400px] flex items-center justify-center text-center text-2xl">작성된 게시물이 없습니다</div>
+        <div className="h-[400px] flex items-center justify-center text-center text-2xl">
+          작성된 게시물이 없습니다.
+        </div>
       )}
     </div>
   );
