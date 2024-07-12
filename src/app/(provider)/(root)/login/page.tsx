@@ -10,7 +10,7 @@ async function LoginPage() {
       <div className="flex items-center justify-center mb-[475px]">
         <span className="mt-[40px] pt-[20px] px-[65px] border-t-[1px] border-[#F5F5F5]">
           아직 회원이 아니신가요?
-          <Link className="ml-[5px] text-[#00BBF7]" href="/join">
+          <Link className="ml-[5px] text-[#00BBF7] hover:underline" href="/join">
             회원가입
           </Link>
           하러 가기

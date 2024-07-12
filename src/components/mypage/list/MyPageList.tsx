@@ -1,7 +1,7 @@
 "use client";
 import StorePostCard from "@/components/post/list/StorePostCard";
-import { createClient } from "@/supabase/client";
-import { Post } from "@/types/store";
+import { Post } from "@/types/type";
+import { useAuthStore } from "@/zustand/auth";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -10,20 +10,7 @@ import { Report } from "notiflix";
 function MyPageList() {
   const params = useParams();
   const id = params.id;
-  const getProfileData = async () => {
-    const supabase = createClient();
-    const data = await supabase
-      .from("profile")
-      .select("*")
-      .eq("id", id)
-      .maybeSingle();
-    return data;
-  };
-
-  const { data: profile } = useQuery({
-    queryKey: ["profile", id],
-    queryFn: getProfileData,
-  });
+  const user = useAuthStore((state) => state.user);
 
   const getStoreData = async () => {
     const response = await fetch("/api/post", { next: { revalidate: 60 } });
@@ -31,30 +18,17 @@ function MyPageList() {
     return data;
   };
 
-  const {
-    data: posts,
-    isPending,
-    error,
-  } = useQuery<Post[]>({ queryKey: ["posts", id], queryFn: getStoreData });
+  const { data: posts, isPending, error } = useQuery<Post[]>({ queryKey: ["posts", id], queryFn: getStoreData });
 
-  if (isPending)
-    return (
-      <div className="h-screen flex items-center justify-center">
-        Loading...
-      </div>
-    );
+  if (isPending) return <div className="h-screen flex items-center justify-center">Loading...</div>;
 
   if (error) {
-    Report.failure(
-      "데이터 로딩 실패",
-      "데이터를 가져오는데 실패했습니다",
-      "확인"
-    );
+    Report.failure("데이터 로딩 실패", "데이터를 가져오는데 실패했습니다", "확인");
     return null;
   }
 
   const filteredPost = posts.filter((post) => {
-    return post.user_id === profile?.data?.id;
+    return post.user_id === user?.id;
   });
 
   return (
@@ -69,9 +43,7 @@ function MyPageList() {
           ))}
         </div>
       ) : (
-        <div className="h-[400px] flex items-center justify-center text-center text-2xl">
-          작성된 게시물이 없습니다.
-        </div>
+        <div className="h-[400px] flex items-center justify-center text-center text-2xl">작성된 게시물이 없습니다.</div>
       )}
     </div>
   );

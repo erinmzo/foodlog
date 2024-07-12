@@ -1,4 +1,4 @@
-import { Post } from "@/types/store";
+import { Post } from "@/types/type";
 import ReadInfo from "./ReadInfo";
 
 interface DescriptionProps {
