@@ -3,42 +3,55 @@ import React from "react";
 
 function Visual() {
   return (
-    <div className="flex items-center justify-center pt-[50px] pb-[100px] bg-[#CEF3FF]">
-      <div className="flex flex-row gap-[7px] mt-[40px]">
-        <div className="flex items-end gap-[6px]">
-          <span className="text-[80px] font-bold leading-none bounce text-shadow sm:text-[150px]">
+    <div className="flex items-center justify-center pt-12 pb-24 bg-[#CEF3FF]">
+      <div className="flex flex-wrap gap-2 mt-10 items-end justify-center">
+        <div className="bounce text-shadow">
+          <span className="text-3xl sm:text-[80px] lg:text-[150px] font-bold leading-none">
             F
           </span>
+        </div>
+        <div className="bounce image-shadow w-16 sm:w-24 lg:w-36">
           <Image
-            className=" rotate-[-12deg] bounce image-shadow"
+            className="rotate-[-12deg]"
             src="/img/logo-symbol.png"
             alt="로고이미지"
+            layout="responsive"
             width={150}
             height={150}
           />
+        </div>
+        <div className="bounce image-shadow w-12 sm:w-20 lg:w-28">
           <Image
-            className="mt-[auto] rotate-[12deg] bounce image-shadow"
+            className="rotate-[12deg]"
             src="/img/logo-symbol.png"
             alt="로고이미지"
+            layout="responsive"
             width={110}
             height={110}
           />
-          <span className="text-[150px] font-bold leading-none bounce text-shadow mr-[50px]">
+        </div>
+        <div className="bounce text-shadow">
+          <span className="text-3xl sm:text-[80px] lg:text-[150px] font-bold leading-none mr-2">
             D
           </span>
-          <span className="text-[150px] font-bold leading-none bounce text-shadow">
+        </div>
+        <div className="bounce text-shadow">
+          <span className="text-3xl sm:text-[80px] lg:text-[150px] font-bold leading-none">
             L
           </span>
         </div>
-        <div className="flex flex-row gap-[6px]">
+        <div className="bounce image-shadow w-12 sm:w-20 lg:w-32">
           <Image
-            className="mt-[auto] rotate-[20deg] bounce image-shadow"
+            className="rotate-[20deg]"
             src="/img/logo-symbol.png"
             alt="로고이미지"
+            layout="responsive"
             width={130}
             height={130}
           />
-          <span className="text-[150px] font-bold leading-none bounce text-shadow">
+        </div>
+        <div className="bounce text-shadow">
+          <span className="text-3xl sm:text-[80px] lg:text-[150px] font-bold leading-none">
             G
           </span>
         </div>
@@ -46,4 +59,5 @@ function Visual() {
     </div>
   );
 }
+
 export default Visual;
