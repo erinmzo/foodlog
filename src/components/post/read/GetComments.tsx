@@ -130,7 +130,7 @@ export default function GetComments() {
               {editingCommentId === comment.id ? (
                 <div>
                   <textarea
-                    className="w-full p-2 border rounded"
+                    className="w-full p-2 border rounded resize-none"
                     value={editContent}
                     onChange={(e) => setEditContent(e.target.value)}
                   />
