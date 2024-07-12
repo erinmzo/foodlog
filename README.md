@@ -1,9 +1,14 @@
-![header](https://capsule-render.vercel.app/api?type=slice&color=62D9FF&text=FOODLOG&fontSize=70&rotate=13&fontAlign=75&fontAlignY=25&fontColor=272727&height=200)
-<img src="https://github.com/user-attachments/assets/6a0a2691-507e-4a54-96aa-6472614d4a78" width="800"/>
+![Frame 4](https://github.com/user-attachments/assets/b963361d-2c60-41ca-b972-d92905d07553)
 
+
+
+<div align="center">
+<img src="https://github.com/user-attachments/assets/6a0a2691-507e-4a54-96aa-6472614d4a78" width="800"/>
+</div>
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Ferinmzo%2Ffoodlog&count_bg=%2300BBF7&title_bg=%23908E8E&icon=&icon_color=%23E7E7E7&title=Total&edge_flat=true)](https://hits.seeyoufarm.com)
 <br>
+
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Nanum+Gothic&weight=800&size=35&letterSpacing=&duration=6000&pause=2000&color=000000&random=false&width=1200&height=80&lines=%F0%9F%8D%BD%EF%B8%8F+%EC%98%A4%EB%8A%98+%EB%A8%B9%EC%9D%80+%EC%8B%9D%EB%8B%B9%EA%B3%BC+%EB%A9%94%EB%89%B4%EB%A5%BC+%EA%B8%B0%EB%A1%9D%ED%95%98%EA%B3%A0+%EB%A9%94%EB%89%B4+%EC%B6%94%EC%B2%9C%EC%9D%84+%EB%B0%9B%EC%95%84%EB%B3%B4%EC%84%B8%EC%9A%94~!)](https://git.io/typing-svg)
 <br>
 이 사이트는 사용자가 자신이 먹은 식당과 메뉴를 기록하고, 다른 사용자들과 공유하며 메뉴 추천도 받을 수 있는 플랫폼입니다.<br>
@@ -17,11 +22,6 @@
 
 ## PPT
 이미지, url 연결
-
-## 시연영상
-메인페이지 캡쳐, url 연결
-
-## 페이지 구성
 
 
 ## 기술환경 / 스택 및 부가 라이브러리
@@ -138,4 +138,4 @@
 
 
 copyright@1인자모였조
-![footer](https://capsule-render.vercel.app/api?type=slice&color=62D9FF&&fontSize=70&rotate=13&fontAlign=75&fontAlignY=25&fontColor=272727&height=150&section=footer)
+![Frame 4](https://github.com/user-attachments/assets/ab99e09f-d615-4745-b8e3-68f54d1824a9)
