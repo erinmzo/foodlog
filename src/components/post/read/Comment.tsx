@@ -1,13 +1,13 @@
 "use client";
 
 import { createClient } from "@/supabase/client";
-import { Comments } from "@/types/store";
+import { Comments } from "@/types/type";
 import { useAuthStore } from "@/zustand/auth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
+import { Notify } from "notiflix";
 import { useRef } from "react";
 import GetComments from "./GetComments";
-import { Notify } from "notiflix";
 
 type CommentsData = Omit<Comments, "id" | "created_at">;
 
@@ -20,11 +20,7 @@ export default function Comment() {
   const getProfileDate = async () => {
     if (user) {
       const supabase = createClient();
-      const data = await supabase
-        .from("profile")
-        .select("*")
-        .eq("id", user.id)
-        .maybeSingle();
+      const data = await supabase.from("profile").select("*").eq("id", user.id).maybeSingle();
 
       return data;
     }
@@ -88,8 +84,8 @@ export default function Comment() {
   };
 
   return (
-    <div className="bg-gray-100 p-6">
-      <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div className="bg-[#f5f5f5] pt-[20px] pb-[100px] px-[15px] lg:px-0 ">
+      <div className="max-w-4xl mx-auto bg-white p-[15px] rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-6">댓글</h2>
 
         <form onSubmit={onSubmit} className="mb-4 flex">
@@ -99,9 +95,7 @@ export default function Comment() {
             placeholder="Write a comment..."
             onKeyDown={onKeyDown}
           ></textarea>
-          <button className="w-[10%] bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600">
-            작성
-          </button>
+          <button className="w-[10%] bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600">작성</button>
         </form>
         <GetComments />
       </div>

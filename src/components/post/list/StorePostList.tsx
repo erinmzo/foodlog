@@ -1,5 +1,5 @@
 "use client";
-import { Post } from "@/types/store";
+import { Post } from "@/types/type";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Report } from "notiflix";
@@ -13,6 +13,7 @@ function StorePostList() {
   };
 
   const { data: posts, isPending, error } = useQuery<Post[]>({ queryKey: ["posts"], queryFn: getStoreData });
+
   if (isPending) {
     return <div className="h-screen flex items-center justify-center">Loading...</div>;
   }

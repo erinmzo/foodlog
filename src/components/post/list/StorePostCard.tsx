@@ -1,4 +1,4 @@
-import { Post } from "@/types/store";
+import { Post } from "@/types/type";
 import Image from "next/image";
 
 interface StorePostCardProps {

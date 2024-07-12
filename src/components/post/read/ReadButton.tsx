@@ -1,14 +1,11 @@
 "use client";
 
 import Button from "@/components/common/Button";
-import { Post } from "@/types/store";
+import { Post } from "@/types/type";
 import { useAuthStore } from "@/zustand/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Confirm, Notify } from "notiflix";
-interface ReadButtonProps {
-  postsId: string;
-}
 
 const ReadButton = ({ posts }: { posts: Post }) => {
   const { id, user_id } = posts;
@@ -40,7 +37,7 @@ const ReadButton = ({ posts }: { posts: Post }) => {
           await deletePost({ id });
           router.push("/");
         } catch (error) {
-          console.error("Failed to delete the post:", error);
+          console.error("삭제에 실패했습니다.", error);
         }
 
         Notify.success("삭제되었습니다.");
