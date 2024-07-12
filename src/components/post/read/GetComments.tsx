@@ -2,34 +2,31 @@
 
 import { Comments } from "@/types/store";
 import { useAuthStore } from "@/zustand/auth";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
 interface CommentsData {
-  user_name: string;
+  nickname: string;
   user_id: string;
   content: string;
   post_id: string;
 }
 
 export default function GetComments() {
-  const params = useParams();
-  const paramsId = params.id as string;
   const queryClient = useQueryClient();
   const user = useAuthStore((state) => state.user);
-
+  const params = useParams();
+  const paramsId = params.id as string;
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editContent, setEditContent] = useState<string>("");
 
   const getComments = async (paramsId: string): Promise<Comments[]> => {
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/comments/${paramsId}`,
-        {
-          method: "GET",
-        }
-      );
+      const response = await fetch(`/api/comments/${paramsId}`, {
+        method: "GET",
+      });
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -40,14 +37,8 @@ export default function GetComments() {
     }
   };
 
-  const updateComment = async ({
-    id,
-    content,
-  }: {
-    id: string;
-    content: string;
-  }): Promise<CommentsData> => {
-    const response = await fetch("http://localhost:3000/api/comments", {
+  const updateComment = async ({ id, content }: { id: string; content: string }): Promise<CommentsData> => {
+    const response = await fetch("/api/comments", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -80,31 +71,19 @@ export default function GetComments() {
     enabled: !!paramsId,
   });
 
-  const { mutate: updateMutation } = useMutation<
-    CommentsData,
-    Error,
-    { id: string; content: string }
-  >({
+  const { mutate: updateMutation } = useMutation<CommentsData, Error, { id: string; content: string }>({
     mutationFn: (editData) => updateComment(editData),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
   });
 
   const { mutate: deleteMutation } = useMutation<CommentsData, Error, string>({
     mutationFn: (id) => deleteComment(id),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["comment", paramsId] }),
   });
 
   const handleEditClick = (comment: Comments) => {
-    if (user === null) {
-      alert("로그인 시 가능합니다.");
-    } else if (user.id !== comment.user_id) {
-      alert("본인만 수정 가능합니다.");
-    } else {
-      setEditingCommentId(comment.id);
-      setEditContent(comment.content);
-    }
+    setEditingCommentId(comment.id);
+    setEditContent(comment.content);
   };
 
   const handleSaveClick = (id: string) => {
@@ -159,27 +138,25 @@ export default function GetComments() {
                 <div>
                   <div className="flex justify-between">
                     <div>
-                      <span className="font-semibold ">
-                        {comment.user_name}
-                      </span>
-                      <span className="text-gray-600 text-sm ml-4">
-                        {comment.created_at.slice(0, 10)}
-                      </span>
+                      <span className="font-semibold ">{comment.nickname}</span>
+                      <span className="text-gray-600 text-sm ml-4">{comment.created_at.slice(0, 10)}</span>
                     </div>
-                    <div className="flex space-x-4">
-                      <button
-                        onClick={() => handleEditClick(comment)}
-                        className="text-blue-400 hover:underline font-semibold"
-                      >
-                        수정
-                      </button>
-                      <button
-                        onClick={() => handleDelete(comment.id)}
-                        className="text-red-400 hover:underline font-semibold "
-                      >
-                        삭제
-                      </button>
-                    </div>
+                    {user && user.id === comment.user_id && (
+                      <div className="flex space-x-4">
+                        <button
+                          onClick={() => handleEditClick(comment)}
+                          className="text-blue-400 hover:underline font-semibold"
+                        >
+                          수정
+                        </button>
+                        <button
+                          onClick={() => handleDelete(comment.id)}
+                          className="text-red-400 hover:underline font-semibold "
+                        >
+                          삭제
+                        </button>
+                      </div>
+                    )}
                   </div>
                   <p className="text-gray-800 mt-2 mb-4">{comment.content}</p>
                 </div>
