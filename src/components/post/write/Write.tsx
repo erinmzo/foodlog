@@ -191,7 +191,11 @@ function WritePage() {
             </div>
             <div className="flex items-center">
               <label className="w-[80px] sm:w-[120px] font-bold">주소</label>
-              <input className="p-2 border rounded-md" type="text" ref={addressRef} />
+              <input 
+              className="p-2 border rounded-md"
+              placeholder="OO시 OO구 OO동"
+              type="text" 
+              ref={addressRef} />
             </div>
           </div>
           <ProductsImage setFile={setFile} />
