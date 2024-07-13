@@ -1,9 +1,7 @@
 ![Frame 4](https://github.com/user-attachments/assets/b963361d-2c60-41ca-b972-d92905d07553)
 
-
-
 <div align="center">
-<img src="https://github.com/user-attachments/assets/6a0a2691-507e-4a54-96aa-6472614d4a78" width="800"/>
+<a href="https://foodlog-2.vercel.app/"><img src="https://github.com/user-attachments/assets/6a0a2691-507e-4a54-96aa-6472614d4a78" width="800"/></a>
 </div>
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Ferinmzo%2Ffoodlog&count_bg=%2300BBF7&title_bg=%23908E8E&icon=&icon_color=%23E7E7E7&title=Total&edge_flat=true)](https://hits.seeyoufarm.com)
