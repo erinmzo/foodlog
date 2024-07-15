@@ -19,8 +19,14 @@
 ![Frame 2](https://github.com/user-attachments/assets/a6ffdb3f-4c61-4370-83c2-615b129f1502)
 
 ## PPT
-이미지, url 연결
 
+<a href="https://drive.google.com/file/d/1boSBcyx8kOpVUlOYTfuktxerXm7jrGVJ/view">
+<img
+  src="https://github.com/user-attachments/assets/318654ba-a8a4-46e9-9c26-b3e67c0b6201"
+  width="50%"
+  height="50%"
+/>
+</a>
 
 ## 기술환경 / 스택 및 부가 라이브러리
 
